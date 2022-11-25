@@ -3,6 +3,7 @@ import { Text, useColorScheme, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import IonIcons from '@expo/vector-icons/Ionicons';
+import Clients from './components/Clients';
 
 type Tabs = {
   Appointments: undefined;
@@ -17,16 +18,6 @@ function Appointments() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ color: colors.text }}>Appointments</Text>
-    </View>
-  );
-}
-
-function Clients() {
-  const { colors } = useTheme();
-
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: colors.text }}>Clients</Text>
     </View>
   );
 }
