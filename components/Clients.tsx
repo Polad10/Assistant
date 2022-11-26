@@ -3,6 +3,7 @@ import { View, Platform, StyleSheet } from 'react-native';
 import { SearchBar } from '@rneui/themed';
 import { Colors } from '../types/Colors';
 import { SetStateAction, useState } from 'react';
+import ClientGroup from './ClientGroup';
 
 export default function Clients() {
   const { colors } = useTheme();
@@ -24,6 +25,7 @@ export default function Clients() {
         value={search}
         onChangeText={updateSearch}
       />
+      <ClientGroup />
     </View>
   );
 }
