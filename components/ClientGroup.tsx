@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { ListItem, Divider } from '@rneui/base';
+import { ListItem, Divider } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
 

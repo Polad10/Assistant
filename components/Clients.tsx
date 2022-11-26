@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import { View, Platform, StyleSheet } from 'react-native';
-import { SearchBar } from '@rneui/themed';
+import { SearchBar, FAB } from '@rneui/themed';
 import { Colors } from '../types/Colors';
 import { SetStateAction, useState } from 'react';
 import ClientGroup from './ClientGroup';
@@ -13,32 +13,47 @@ export default function Clients() {
     setSearch(value);
   }
 
+  function addClient() {
+    return;
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <SearchBar
         placeholder='Search...'
         platform={Platform.OS === 'ios' || Platform.OS === 'android' ? Platform.OS : 'default'}
         lightTheme={false}
-        containerStyle={styles(colors).searchBarContainerStyle}
-        inputContainerStyle={styles(colors).searchBarInputContainerStyle}
-        inputStyle={styles(colors).searchBarInputStyle}
+        containerStyle={styles(colors).searchBarContainer}
+        inputContainerStyle={styles(colors).searchBarInputContainer}
+        inputStyle={styles(colors).searchBarInput}
         value={search}
         onChangeText={updateSearch}
       />
       <ClientGroup />
+      <FAB
+        icon={{ name: 'add' }}
+        placement='right'
+        color={colors.primary}
+        style={styles(colors).fab}
+        onPress={addClient}
+      />
     </View>
   );
 }
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
-    searchBarContainerStyle: {
+    searchBarContainer: {
       backgroundColor: colors.background,
     },
-    searchBarInputContainerStyle: {
+    searchBarInputContainer: {
       backgroundColor: colors.card,
     },
-    searchBarInputStyle: {
+    searchBarInput: {
       color: colors.text,
+    },
+    fab: {
+      marginRight: 20,
+      marginBottom: 30,
     },
   });
