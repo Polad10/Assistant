@@ -14,11 +14,14 @@ type Tabs = {
 const Tab = createBottomTabNavigator<Tabs>();
 
 export default function App() {
+  DarkTheme.colors.primary = '#ad164d';
+
   const scheme = useColorScheme();
-  const { colors } = useTheme();
+  const theme = scheme === 'dark' ? DarkTheme : DefaultTheme;
+  const { colors } = theme;
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer theme={theme}>
       <Tab.Navigator>
         <Tab.Screen
           name='Appointments'

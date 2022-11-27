@@ -12,7 +12,7 @@ export default function MyFAB() {
 
   return (
     <FAB
-      icon={{ name: 'add' }}
+      icon={{ name: 'add', color: colors.text }}
       placement='right'
       color={colors.primary}
       style={styles(colors).fab}

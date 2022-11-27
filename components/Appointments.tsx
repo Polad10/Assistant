@@ -44,12 +44,16 @@ export default function Appointments() {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <CalendarProvider showTodayButton={true} date={new Date().toDateString()}>
+      <CalendarProvider
+        showTodayButton={true}
+        date={new Date().toDateString()}
+        theme={{ todayButtonTextColor: colors.text }}
+        todayButtonStyle={styles(colors).todayButton}
+      >
         <ExpandableCalendar
           theme={{
             backgroundColor: colors.background,
             calendarBackground: colors.background,
-            todayButtonTextColor: colors.primary,
             arrowColor: colors.primary,
             monthTextColor: colors.text,
             textSectionTitleColor: colors.text,
@@ -70,5 +74,8 @@ const styles = (colors: Colors) =>
     agendaSection: {
       backgroundColor: colors.card,
       color: colors.text,
+    },
+    todayButton: {
+      backgroundColor: colors.primary,
     },
   });
