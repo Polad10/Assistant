@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import IonIcons from '@expo/vector-icons/Ionicons';
 import Clients from './components/Clients';
+import Appointments from './components/Appointments';
 
 type Tabs = {
   Appointments: undefined;
@@ -11,16 +12,6 @@ type Tabs = {
 };
 
 const Tab = createBottomTabNavigator<Tabs>();
-
-function Appointments() {
-  const { colors } = useTheme();
-
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: colors.text }}>Appointments</Text>
-    </View>
-  );
-}
 
 export default function App() {
   const scheme = useColorScheme();
