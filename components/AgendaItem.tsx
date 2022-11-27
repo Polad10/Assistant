@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Colors } from '../types/Colors';
 
 type ItemProps = {

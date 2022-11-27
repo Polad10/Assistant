@@ -1,9 +1,10 @@
 import { useTheme } from '@react-navigation/native';
 import { View, Platform, StyleSheet } from 'react-native';
-import { SearchBar, FAB } from '@rneui/themed';
+import { SearchBar } from '@rneui/themed';
 import { Colors } from '../types/Colors';
 import { SetStateAction, useState } from 'react';
 import ClientGroup from './ClientGroup';
+import MyFAB from './MyFAB';
 
 export default function Clients() {
   const { colors } = useTheme();
@@ -11,10 +12,6 @@ export default function Clients() {
 
   function updateSearch(value: SetStateAction<string>) {
     setSearch(value);
-  }
-
-  function addClient() {
-    return;
   }
 
   return (
@@ -30,13 +27,7 @@ export default function Clients() {
         onChangeText={updateSearch}
       />
       <ClientGroup />
-      <FAB
-        icon={{ name: 'add' }}
-        placement='right'
-        color={colors.primary}
-        style={styles(colors).fab}
-        onPress={addClient}
-      />
+      <MyFAB />
     </View>
   );
 }
@@ -51,9 +42,5 @@ const styles = (colors: Colors) =>
     },
     searchBarInput: {
       color: colors.text,
-    },
-    fab: {
-      marginRight: 20,
-      marginBottom: 30,
     },
   });

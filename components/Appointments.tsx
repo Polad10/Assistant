@@ -4,6 +4,7 @@ import { CalendarProvider, ExpandableCalendar, AgendaList } from 'react-native-c
 import { useCallback } from 'react';
 import AgendaItem from './AgendaItem';
 import { Colors } from '../types/Colors';
+import MyFAB from './MyFAB';
 
 export default function Appointments() {
   const { colors } = useTheme();
@@ -59,6 +60,7 @@ export default function Appointments() {
         />
         <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
       </CalendarProvider>
+      <MyFAB />
     </View>
   );
 }
