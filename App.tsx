@@ -1,9 +1,9 @@
-import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native';
-import { Text, useColorScheme, View } from 'react-native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { useColorScheme } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import IonIcons from '@expo/vector-icons/Ionicons';
-import Clients from './components/Clients';
+import Patients from './components/Patients';
 import Appointments from './components/Appointments';
 
 type Tabs = {
@@ -34,8 +34,8 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name='Clients'
-          component={Clients}
+          name='Patients'
+          component={Patients}
           options={{
             tabBarIcon: (props) => (
               <IonIcons name='people-outline' size={25} color={props.focused ? colors.primary : 'grey'} />
