@@ -5,11 +5,12 @@ import { useCallback } from 'react';
 import AgendaItem from './AgendaItem';
 import { Colors } from '../types/Colors';
 import MyFAB from './MyFAB';
+import NewAppointment from './NewAppointment';
 
-export default function Appointments() {
+export default function Appointments({ navigation }: any) {
   const { colors } = useTheme();
 
-  const renderItem = useCallback(({ item }) => {
+  const renderItem = useCallback(({ item }: any) => {
     return <AgendaItem item={item} />;
   }, []);
 
@@ -64,7 +65,7 @@ export default function Appointments() {
         />
         <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
       </CalendarProvider>
-      <MyFAB />
+      <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
     </View>
   );
 }

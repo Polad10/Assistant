@@ -1,14 +1,14 @@
 import { FAB } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, GestureResponderEvent } from 'react-native';
 import { Colors } from '../types/Colors';
 
-export default function MyFAB() {
-  const { colors } = useTheme();
+type Props = {
+  onPress: (event: GestureResponderEvent) => void;
+};
 
-  function fabPressed() {
-    Alert.alert('fab pressed');
-  }
+export default function MyFAB(props: Props) {
+  const { colors } = useTheme();
 
   return (
     <FAB
@@ -16,7 +16,7 @@ export default function MyFAB() {
       placement='right'
       color={colors.primary}
       style={styles(colors).fab}
-      onPress={fabPressed}
+      onPress={props.onPress}
     />
   );
 }
