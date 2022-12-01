@@ -56,7 +56,7 @@ export default function App() {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator>
-        <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name='NewAppointment' component={NewAppointment} />
         </Stack.Group>
