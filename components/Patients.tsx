@@ -6,7 +6,7 @@ import { SetStateAction, useState } from 'react';
 import PatientGroup from './PatientGroup';
 import MyFAB from './MyFAB';
 
-export default function Clients() {
+export default function Clients({ navigation }: any) {
   const { colors } = useTheme();
   const [search, setSearch] = useState('');
 
@@ -27,7 +27,7 @@ export default function Clients() {
         onChangeText={updateSearch}
       />
       <PatientGroup />
-      <MyFAB />
+      <MyFAB onPress={() => navigation.navigate('NewPatient')} />
     </View>
   );
 }

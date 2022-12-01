@@ -8,6 +8,7 @@ import IonIcons from '@expo/vector-icons/Ionicons';
 import Patients from './components/Patients';
 import Appointments from './components/Appointments';
 import NewAppointment from './components/NewAppointment';
+import NewPatient from './components/NewPatient';
 
 type Tabs = {
   Appointments: undefined;
@@ -58,6 +59,9 @@ export default function App() {
         <Stack.Screen name='Home' component={Home} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name='NewAppointment' component={NewAppointment} />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen name='NewPatient' component={NewPatient} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
