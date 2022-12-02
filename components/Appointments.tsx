@@ -5,7 +5,6 @@ import { useCallback } from 'react';
 import AgendaItem from './AgendaItem';
 import { Colors } from '../types/Colors';
 import MyFAB from './MyFAB';
-import NewAppointment from './NewAppointment';
 
 export default function Appointments({ navigation }: any) {
   const { colors } = useTheme();
