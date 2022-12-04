@@ -18,6 +18,8 @@ export default function MyInput(props: Props) {
       keyboardType={props.keyboardType}
       multiline={props.multiline}
       inputStyle={styles(colors).input}
+      inputContainerStyle={styles(colors).inputContainer}
+      containerStyle={styles(colors).container}
     />
   );
 }
@@ -26,5 +28,11 @@ const styles = (colors: Colors) =>
   StyleSheet.create({
     input: {
       color: colors.text,
+    },
+    inputContainer: {
+      borderColor: colors.border,
+    },
+    container: {
+      height: 50,
     },
   });
