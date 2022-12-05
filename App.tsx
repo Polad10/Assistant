@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import { NavigationContainer, DefaultTheme, DarkTheme, StackActions, useTheme } from '@react-navigation/native';
-import { useColorScheme } from 'react-native';
+import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native';
+import { useColorScheme, Button, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
@@ -47,6 +47,12 @@ function Home() {
   );
 }
 
+function SaveHeaderButton() {
+  const { colors } = useTheme();
+
+  return <Button title='Save' color={colors.primary} />;
+}
+
 export default function App() {
   DarkTheme.colors.primary = '#ad164d';
 
@@ -55,15 +61,29 @@ export default function App() {
 
   return (
     <NavigationContainer theme={theme}>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerRightContainerStyle: styles.headerRightContainer,
+          headerLeftContainerStyle: styles.headerLeftContainer,
+        }}
+      >
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='NewAppointment' component={NewAppointment} />
+          <Stack.Screen name='NewAppointment' component={NewAppointment} options={{ headerRight: SaveHeaderButton }} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='NewPatient' component={NewPatient} />
+          <Stack.Screen name='NewPatient' component={NewPatient} options={{ headerRight: SaveHeaderButton }} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  headerRightContainer: {
+    paddingRight: 5,
+  },
+  headerLeftContainer: {
+    paddingLeft: 5,
+  },
+});
