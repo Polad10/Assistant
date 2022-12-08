@@ -19,7 +19,6 @@ export default function NewAppointment() {
         </View>
       </TouchableWithoutFeedback>
       <MyInput placeholder='Actions' multiline={true} />
-      <MyInput placeholder='Actions' />
       <Button
         title='Choose the patient & service'
         color={colors.primary}
