@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-export default function NewAppointment() {
+export default function NewAppointment({ navigation }: any) {
   const { colors } = useTheme();
 
   return (
@@ -26,6 +26,7 @@ export default function NewAppointment() {
         buttonStyle={styles(colors).button}
         titleStyle={styles(colors).buttonTitle}
         style={styles(colors).buttonCore}
+        onPress={() => navigation.navigate('Treatments')}
       />
     </View>
   );

@@ -3,7 +3,7 @@ import PatientGroup from './PatientGroup';
 import MyFAB from './MyFAB';
 import MySearchBar from './MySearchBar';
 
-export default function Clients({ navigation }: any) {
+export default function Patients({ navigation }: any) {
   return (
     <View style={{ flex: 1 }}>
       <MySearchBar />
