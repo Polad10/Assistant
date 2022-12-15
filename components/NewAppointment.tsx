@@ -20,7 +20,7 @@ export default function NewAppointment({ navigation }: any) {
       </TouchableWithoutFeedback>
       <MyInput placeholder='Actions' multiline={true} />
       <Button
-        title='Choose the patient & service'
+        title='Choose a treatment'
         color={colors.primary}
         type='outline'
         buttonStyle={styles(colors).button}

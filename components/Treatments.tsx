@@ -1,9 +1,10 @@
 import { View, StyleSheet } from 'react-native';
 import MyFAB from './MyFAB';
 import MySearchBar from './MySearchBar';
-import { ListItem, Divider } from '@rneui/themed';
-import { Colors } from '../types/Colors';
+import { Divider } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
+import TreatmentItem from './TreatmentItem';
+import { Status } from '../enums/Status';
 
 export default function Treatments() {
   const { colors } = useTheme();
@@ -11,32 +12,34 @@ export default function Treatments() {
   return (
     <View style={{ flex: 1 }}>
       <MySearchBar />
-      <ListItem containerStyle={styles(colors).listItemContainer}>
-        <ListItem.Content>
-          <ListItem.Title style={styles(colors).listItemTitle}>Lorem ipsum dolor sit amet consectetur.</ListItem.Title>
-          <ListItem.Subtitle style={styles(colors).listItemSubtitle}>Patient: Polad Mammadov</ListItem.Subtitle>
-        </ListItem.Content>
-      </ListItem>
-      <Divider color={colors.border} style={styles(colors).divider} />
+      <TreatmentItem
+        description='Lorem ipsum dolor sit amet consectetur.'
+        patientName='Polad Mammadov'
+        startDate={new Date()}
+        status={Status.ONGOING}
+      />
+      <Divider color={colors.border} style={styles.divider} />
+      <TreatmentItem
+        description='Lorem ipsum dolor sit amet consectetur.'
+        patientName='Polad Mammadov'
+        startDate={new Date()}
+        status={Status.FINISHED}
+      />
+      <Divider color={colors.border} style={styles.divider} />
+      <TreatmentItem
+        description='Lorem ipsum dolor sit amet consectetur.'
+        patientName='Polad Mammadov'
+        startDate={new Date()}
+        status={Status.FINISHED}
+      />
+      <Divider color={colors.border} style={styles.divider} />
       <MyFAB onPress={() => alert('New Treatment!')} />
     </View>
   );
 }
 
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    listItemContainer: {
-      backgroundColor: colors.background,
-    },
-    listItemTitle: {
-      color: colors.text,
-      marginBottom: 15,
-    },
-    listItemSubtitle: {
-      color: colors.text,
-      opacity: 0.5,
-    },
-    divider: {
-      marginHorizontal: 13,
-    },
-  });
+const styles = StyleSheet.create({
+  divider: {
+    marginHorizontal: 13,
+  },
+});
