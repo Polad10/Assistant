@@ -9,6 +9,7 @@ type Props = {
   patientName: String;
   startDate: Date;
   status: Status;
+  onPress?: Function;
 };
 
 type StyleProps = {
@@ -25,7 +26,7 @@ export default function Treatments(props: Props) {
   };
 
   return (
-    <ListItem containerStyle={styles(styleProps).listItemContainer}>
+    <ListItem containerStyle={styles(styleProps).listItemContainer} onPress={() => props.onPress?.()}>
       <ListItem.Content>
         <ListItem.Title style={styles(styleProps).listItemTitle}>{props.description}</ListItem.Title>
         <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>Patient: {props.patientName}</ListItem.Subtitle>
