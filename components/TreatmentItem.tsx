@@ -3,6 +3,7 @@ import { ListItem } from '@rneui/themed';
 import { Colors } from '../types/Colors';
 import { useTheme } from '@react-navigation/native';
 import { Status } from '../enums/Status';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 type Props = {
   description: String;
@@ -26,23 +27,27 @@ export default function Treatments(props: Props) {
   };
 
   return (
-    <ListItem containerStyle={styles(styleProps).listItemContainer} onPress={() => props.onPress?.()}>
-      <ListItem.Content>
-        <ListItem.Title style={styles(styleProps).listItemTitle}>{props.description}</ListItem.Title>
-        <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>Patient: {props.patientName}</ListItem.Subtitle>
-        <View style={styles(styleProps).listItemStatus}>
+    <TouchableHighlight onPress={() => props.onPress?.()}>
+      <ListItem containerStyle={styles(styleProps).listItemContainer}>
+        <ListItem.Content>
+          <ListItem.Title style={styles(styleProps).listItemTitle}>{props.description}</ListItem.Title>
           <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>
-            Start date: {props.startDate.toLocaleDateString()}
+            Patient: {props.patientName}
           </ListItem.Subtitle>
-          <View style={styles(styleProps).listItemRow}>
-            <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>Status: </ListItem.Subtitle>
-            <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).statusColor]}>
-              {props.status}
+          <View style={styles(styleProps).listItemStatus}>
+            <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>
+              Start date: {props.startDate.toLocaleDateString()}
             </ListItem.Subtitle>
+            <View style={styles(styleProps).listItemRow}>
+              <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>Status: </ListItem.Subtitle>
+              <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).statusColor]}>
+                {props.status}
+              </ListItem.Subtitle>
+            </View>
           </View>
-        </View>
-      </ListItem.Content>
-    </ListItem>
+        </ListItem.Content>
+      </ListItem>
+    </TouchableHighlight>
   );
 }
 
