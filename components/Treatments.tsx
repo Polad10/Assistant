@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 import TreatmentItem from './TreatmentItem';
 import { Status } from '../enums/Status';
 
-export default function Treatments({ navigation }: any) {
+export default function Treatments() {
   const { colors } = useTheme();
 
   return (
@@ -17,7 +17,6 @@ export default function Treatments({ navigation }: any) {
         patientName='Polad Mammadov'
         startDate={new Date()}
         status={Status.ONGOING}
-        onPress={() => navigation.goBack()}
       />
       <Divider color={colors.border} style={styles.divider} />
       <TreatmentItem

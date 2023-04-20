@@ -1,13 +1,22 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, DeviceEventEmitter } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MyInput from './MyInput';
-import { Button } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
 
 export default function NewAppointment({ navigation }: any) {
   const { colors } = useTheme();
+  const [treatment, setTreatment] = useState<string>();
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect);
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('treatmentSelected');
+    };
+  }, []);
 
   return (
     <View style={styles(colors).mainView}>
@@ -19,17 +28,19 @@ export default function NewAppointment({ navigation }: any) {
         </View>
       </TouchableWithoutFeedback>
       <MyInput placeholder='Actions' multiline={true} />
-      <Button
-        title='Choose a treatment'
-        color={colors.primary}
-        type='outline'
-        buttonStyle={styles(colors).button}
-        titleStyle={styles(colors).buttonTitle}
-        style={styles(colors).buttonCore}
-        onPress={() => navigation.navigate('Treatments')}
+      <MyInput
+        placeholder='Select treatment'
+        onPressIn={() => navigation.navigate('Treatments')}
+        value={treatment}
+        editable={false}
       />
     </View>
   );
+
+  function handleTreatmentSelect(treatment: string) {
+    navigation.goBack();
+    setTreatment(treatment);
+  }
 }
 
 const styles = (colors: Colors) =>

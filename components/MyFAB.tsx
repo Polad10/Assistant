@@ -1,22 +1,18 @@
-import { FAB } from '@rneui/themed';
+import { FAB, FABProps } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
-import { StyleSheet, Alert, GestureResponderEvent } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors } from '../types/Colors';
 
-type Props = {
-  onPress: (event: GestureResponderEvent) => void;
-};
-
-export default function MyFAB(props: Props) {
+export default function MyFAB(props: FABProps) {
   const { colors } = useTheme();
 
   return (
     <FAB
+      {...props}
       icon={{ name: 'add', color: colors.text }}
       placement='right'
       color={colors.primary}
       style={styles(colors).fab}
-      onPress={props.onPress}
     />
   );
 }

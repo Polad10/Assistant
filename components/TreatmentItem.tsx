@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import { ListItem } from '@rneui/themed';
 import { Colors } from '../types/Colors';
 import { useTheme } from '@react-navigation/native';
@@ -6,11 +6,10 @@ import { Status } from '../enums/Status';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 type Props = {
-  description: String;
-  patientName: String;
+  description: string;
+  patientName: string;
   startDate: Date;
   status: Status;
-  onPress?: Function;
 };
 
 type StyleProps = {
@@ -27,7 +26,7 @@ export default function Treatments(props: Props) {
   };
 
   return (
-    <TouchableHighlight onPress={() => props.onPress?.()}>
+    <TouchableHighlight onPress={() => handleTreatmentSelect(props.description)}>
       <ListItem containerStyle={styles(styleProps).listItemContainer}>
         <ListItem.Content>
           <ListItem.Title style={styles(styleProps).listItemTitle}>{props.description}</ListItem.Title>
@@ -49,6 +48,10 @@ export default function Treatments(props: Props) {
       </ListItem>
     </TouchableHighlight>
   );
+
+  function handleTreatmentSelect(treatment: string) {
+    DeviceEventEmitter.emit('treatmentSelected', treatment);
+  }
 }
 
 const styles = (styleProps: StyleProps) =>
