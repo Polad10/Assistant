@@ -1,44 +1,43 @@
 import { View, StyleSheet, Text, DeviceEventEmitter } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import MyInput from './MyInput';
-import { useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
+import { useTheme } from '@react-navigation/native';
+import MyInput from './MyInput';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
 
-export default function NewAppointment({ navigation }: any) {
+export default function NewTreatment({ navigation }: any) {
   const { colors } = useTheme();
-  const [treatment, setTreatment] = useState<string>();
+  const [patient, setPatient] = useState<string>();
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect);
+    DeviceEventEmitter.addListener('patientSelected', handlePatientSelect);
 
     return () => {
-      DeviceEventEmitter.removeAllListeners('treatmentSelected');
+      DeviceEventEmitter.removeAllListeners('patientSelected');
     };
   }, []);
 
   return (
     <View style={styles(colors).mainView}>
       <View style={styles(colors).dateTimeContainer}>
-        <Text style={styles(colors).text}>Date and time</Text>
+        <Text style={styles(colors).text}>Start date</Text>
         <View style={styles(colors).dateTime}>
           <DateTimePicker mode='date' value={new Date()} />
-          <DateTimePicker mode='time' value={new Date()} style={styles(colors).timePicker} />
         </View>
       </View>
-      <MyInput placeholder='Actions' multiline={true} />
+      <MyInput placeholder='Title' />
       <MyInput
-        placeholder='Select treatment'
-        onPressIn={() => navigation.navigate('Treatments')}
-        value={treatment}
+        placeholder='Choose patient'
+        onPressIn={() => navigation.navigate('Patients')}
+        value={patient}
         editable={false}
       />
     </View>
   );
 
-  function handleTreatmentSelect(treatment: string) {
+  function handlePatientSelect(patient: string) {
     navigation.goBack();
-    setTreatment(treatment);
+    setPatient(patient);
   }
 }
 
@@ -46,12 +45,6 @@ const styles = (colors: Colors) =>
   StyleSheet.create({
     mainView: {
       flex: 1,
-    },
-    button: {
-      borderColor: colors.primary,
-    },
-    buttonTitle: {
-      color: colors.primary,
     },
     dateTimeContainer: {
       flexDirection: 'row',
@@ -69,11 +62,5 @@ const styles = (colors: Colors) =>
     },
     dateTime: {
       flexDirection: 'row',
-    },
-    timePicker: {
-      marginLeft: 5,
-    },
-    buttonCore: {
-      margin: 10,
     },
   });

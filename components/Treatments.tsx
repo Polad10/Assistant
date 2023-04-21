@@ -6,7 +6,7 @@ import { useTheme } from '@react-navigation/native';
 import TreatmentItem from './TreatmentItem';
 import { Status } from '../enums/Status';
 
-export default function Treatments() {
+export default function Treatments({ navigation }: any) {
   const { colors } = useTheme();
 
   return (
@@ -33,7 +33,7 @@ export default function Treatments() {
         status={Status.FINISHED}
       />
       <Divider color={colors.border} style={styles.divider} />
-      <MyFAB onPress={() => alert('New Treatment!')} />
+      <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
     </View>
   );
 }

@@ -10,6 +10,7 @@ import Appointments from './components/Appointments';
 import NewAppointment from './components/NewAppointment';
 import NewPatient from './components/NewPatient';
 import Treatments from './components/Treatments';
+import NewTreatment from './components/NewTreatment';
 
 type Tabs = {
   Appointments: undefined;
@@ -71,10 +72,14 @@ export default function App() {
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name='NewAppointment' component={NewAppointment} options={{ headerRight: SaveHeaderButton }} />
-          <Stack.Screen name='Treatments' component={Treatments} options={{ headerRight: SaveHeaderButton }} />
+          <Stack.Screen name='Treatments' component={Treatments} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name='NewPatient' component={NewPatient} options={{ headerRight: SaveHeaderButton }} />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen name='NewTreatment' component={NewTreatment} options={{ headerRight: SaveHeaderButton }} />
+          <Stack.Screen name='Patients' component={Patients} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

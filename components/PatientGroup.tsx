@@ -2,6 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { ListItem, Divider } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
+import PatientItem from './PatientItem';
 
 export default function ClientGroup() {
   const { colors } = useTheme();
@@ -14,11 +15,7 @@ export default function ClientGroup() {
         </ListItem.Content>
       </ListItem>
       <Divider color={colors.border} style={styles(colors).divider} />
-      <ListItem containerStyle={styles(colors).listItemContainer}>
-        <ListItem.Content>
-          <ListItem.Title style={styles(colors).listItemTitle}>Polad Mammadov</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
+      <PatientItem patientName='Polad Mammmadov' />
       <Divider color={colors.border} style={styles(colors).divider} />
     </View>
   );
@@ -32,9 +29,6 @@ const styles = (colors: Colors) =>
     listItemTitleCategory: {
       color: colors.text,
       opacity: 0.5,
-    },
-    listItemTitle: {
-      color: colors.text,
     },
     divider: {
       marginHorizontal: 13,

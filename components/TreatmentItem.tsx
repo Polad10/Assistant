@@ -17,7 +17,7 @@ type StyleProps = {
   status: Status;
 };
 
-export default function Treatments(props: Props) {
+export default function TreatmentItem(props: Props) {
   const { colors } = useTheme();
 
   const styleProps = {
