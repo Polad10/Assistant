@@ -20,7 +20,7 @@ type StyleProps = {
 export default function TreatmentItem(props: Props) {
   const { colors } = useTheme();
 
-  const styleProps = {
+  const styleProps: StyleProps = {
     colors: colors,
     status: props.status,
   };

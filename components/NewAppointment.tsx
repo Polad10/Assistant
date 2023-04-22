@@ -1,9 +1,9 @@
-import { View, StyleSheet, Text, DeviceEventEmitter } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import MyInput from './MyInput';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
 import { useEffect, useState } from 'react';
+import DateTimeInput from './DateTimeInput';
 
 export default function NewAppointment({ navigation }: any) {
   const { colors } = useTheme();
@@ -19,13 +19,7 @@ export default function NewAppointment({ navigation }: any) {
 
   return (
     <View style={styles(colors).mainView}>
-      <View style={styles(colors).dateTimeContainer}>
-        <Text style={styles(colors).text}>Date and time</Text>
-        <View style={styles(colors).dateTime}>
-          <DateTimePicker mode='date' value={new Date()} />
-          <DateTimePicker mode='time' value={new Date()} style={styles(colors).timePicker} />
-        </View>
-      </View>
+      <DateTimeInput text='Date and time' showDatePicker={true} showTimePicker={true} />
       <MyInput placeholder='Actions' multiline={true} />
       <MyInput
         placeholder='Select treatment'
@@ -52,26 +46,6 @@ const styles = (colors: Colors) =>
     },
     buttonTitle: {
       color: colors.primary,
-    },
-    dateTimeContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderBottomColor: colors.border,
-      borderBottomWidth: 1,
-      marginHorizontal: 10,
-      paddingVertical: 10,
-      marginBottom: 15,
-    },
-    text: {
-      color: colors.text,
-      fontSize: 18,
-    },
-    dateTime: {
-      flexDirection: 'row',
-    },
-    timePicker: {
-      marginLeft: 5,
     },
     buttonCore: {
       margin: 10,

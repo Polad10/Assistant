@@ -1,12 +1,9 @@
-import { View, StyleSheet, Text, DeviceEventEmitter } from 'react-native';
-import { Colors } from '../types/Colors';
-import { useTheme } from '@react-navigation/native';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import MyInput from './MyInput';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useEffect, useState } from 'react';
+import DateTimeInput from './DateTimeInput';
 
 export default function NewTreatment({ navigation }: any) {
-  const { colors } = useTheme();
   const [patient, setPatient] = useState<string>();
 
   useEffect(() => {
@@ -18,13 +15,8 @@ export default function NewTreatment({ navigation }: any) {
   }, []);
 
   return (
-    <View style={styles(colors).mainView}>
-      <View style={styles(colors).dateTimeContainer}>
-        <Text style={styles(colors).text}>Start date</Text>
-        <View style={styles(colors).dateTime}>
-          <DateTimePicker mode='date' value={new Date()} />
-        </View>
-      </View>
+    <View style={styles().mainView}>
+      <DateTimeInput text='Start date' showDatePicker={true} />
       <MyInput placeholder='Title' />
       <MyInput
         placeholder='Choose patient'
@@ -41,26 +33,9 @@ export default function NewTreatment({ navigation }: any) {
   }
 }
 
-const styles = (colors: Colors) =>
+const styles = () =>
   StyleSheet.create({
     mainView: {
       flex: 1,
-    },
-    dateTimeContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderBottomColor: colors.border,
-      borderBottomWidth: 1,
-      marginHorizontal: 10,
-      paddingVertical: 10,
-      marginBottom: 15,
-    },
-    text: {
-      color: colors.text,
-      fontSize: 18,
-    },
-    dateTime: {
-      flexDirection: 'row',
     },
   });
