@@ -1,12 +1,9 @@
-import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
-import MyInput from './MyInput';
-import { useTheme } from '@react-navigation/native';
-import { Colors } from '../types/Colors';
+import { DeviceEventEmitter } from 'react-native';
 import { useEffect, useState } from 'react';
-import DateTimeInput from './DateTimeInput';
+import Appointment from './Appointment';
+import { Mode } from '../enums/Mode';
 
 export default function NewAppointment({ navigation }: any) {
-  const { colors } = useTheme();
   const [treatment, setTreatment] = useState<string>();
 
   useEffect(() => {
@@ -17,37 +14,10 @@ export default function NewAppointment({ navigation }: any) {
     };
   }, []);
 
-  return (
-    <View style={styles(colors).mainView}>
-      <DateTimeInput text='Date and time' showDatePicker={true} showTimePicker={true} />
-      <MyInput placeholder='Actions' multiline={true} />
-      <MyInput
-        placeholder='Select treatment'
-        onPressIn={() => navigation.navigate('Treatments')}
-        value={treatment}
-        editable={false}
-      />
-    </View>
-  );
+  return <Appointment mode={Mode.NEW} treatment={treatment} />;
 
   function handleTreatmentSelect(treatment: string) {
     navigation.goBack();
     setTreatment(treatment);
   }
 }
-
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    mainView: {
-      flex: 1,
-    },
-    button: {
-      borderColor: colors.primary,
-    },
-    buttonTitle: {
-      color: colors.primary,
-    },
-    buttonCore: {
-      margin: 10,
-    },
-  });
