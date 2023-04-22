@@ -64,7 +64,7 @@ export default function Appointments({ navigation }: any) {
         />
         <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
       </CalendarProvider>
-      <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
+      <MyFAB onPress={() => navigation.navigate('New Appointment')} />
     </View>
   );
 }

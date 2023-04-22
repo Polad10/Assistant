@@ -33,7 +33,7 @@ export default function Treatments({ navigation }: any) {
         status={Status.FINISHED}
       />
       <Divider color={colors.border} style={styles.divider} />
-      <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
+      <MyFAB onPress={() => navigation.navigate('New Treatment')} />
     </View>
   );
 }
