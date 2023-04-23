@@ -72,21 +72,33 @@ export default function App() {
       >
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='New Appointment' component={NewAppointment} options={{ headerRight: SaveHeaderButton }} />
+          <Stack.Screen
+            name='NewAppointment'
+            component={NewAppointment}
+            options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
+          />
           <Stack.Screen name='Treatments' component={Treatments} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='New Patient' component={NewPatient} options={{ headerRight: SaveHeaderButton }} />
+          <Stack.Screen
+            name='NewPatient'
+            component={NewPatient}
+            options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
+          />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='New Treatment' component={NewTreatment} options={{ headerRight: SaveHeaderButton }} />
+          <Stack.Screen
+            name='NewTreatment'
+            component={NewTreatment}
+            options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
+          />
           <Stack.Screen name='Patients' component={Patients} />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
             name='EditAppointment'
             component={EditAppointment}
-            options={{ headerRight: SaveHeaderButton }}
+            options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
           />
         </Stack.Group>
       </Stack.Navigator>

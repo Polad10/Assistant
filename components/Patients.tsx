@@ -8,7 +8,7 @@ export default function Patients({ navigation }: any) {
     <View style={{ flex: 1 }}>
       <MySearchBar />
       <PatientGroup />
-      <MyFAB onPress={() => navigation.navigate('New Patient')} />
+      <MyFAB onPress={() => navigation.navigate('NewPatient')} />
     </View>
   );
 }
