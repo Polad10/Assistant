@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Colors } from '../types/Colors';
 
@@ -10,9 +10,10 @@ type ItemProps = {
 const AgendaItem = (props: ItemProps) => {
   const { item } = props;
   const { colors } = useTheme();
+  const navigation = useNavigation();
 
   const itemPressed = useCallback(() => {
-    Alert.alert(item.title);
+    navigation.navigate('EditAppointment', { treatment: `treatment for ${item.title}` });
   }, []);
 
   if (!item) {
