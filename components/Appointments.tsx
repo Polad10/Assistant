@@ -5,8 +5,9 @@ import { useCallback } from 'react';
 import AgendaItem from './AgendaItem';
 import { Colors } from '../types/Colors';
 import MyFAB from './MyFAB';
+import { RootStackScreenProps } from '../types/Navigation';
 
-export default function Appointments({ navigation }: any) {
+export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme();
 
   const renderItem = useCallback(({ item }: any) => {

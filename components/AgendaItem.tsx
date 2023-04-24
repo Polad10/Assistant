@@ -1,7 +1,9 @@
 import { memo, useCallback } from 'react';
 import { useNavigation, useTheme } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from '../types/Colors';
+
+import type { RootStackScreenProps } from '../types/Navigation';
 
 type ItemProps = {
   item: any;
@@ -10,7 +12,7 @@ type ItemProps = {
 const AgendaItem = (props: ItemProps) => {
   const { item } = props;
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>();
 
   const itemPressed = useCallback(() => {
     navigation.navigate('EditAppointment', { treatment: `treatment for ${item.title}` });

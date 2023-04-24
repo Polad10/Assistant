@@ -13,13 +13,15 @@ import Treatments from './components/Treatments';
 import NewTreatment from './components/NewTreatment';
 import EditAppointment from './components/EditAppointment';
 
+import type { RootStaskParamList } from './types/Navigation';
+
 type Tabs = {
   Appointments: undefined;
   Patients: undefined;
 };
 
 const Tab = createBottomTabNavigator<Tabs>();
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStaskParamList>();
 
 function Home() {
   const { colors } = useTheme();

@@ -2,8 +2,9 @@ import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
 import MyInput from './MyInput';
 import { useEffect, useState } from 'react';
 import DateTimeInput from './DateTimeInput';
+import { RootStackScreenProps } from '../types/Navigation';
 
-export default function NewTreatment({ navigation }: any) {
+export default function NewTreatment({ navigation }: RootStackScreenProps<'NewTreatment'>) {
   const [patient, setPatient] = useState<string>();
 
   useEffect(() => {

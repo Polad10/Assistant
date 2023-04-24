@@ -5,8 +5,9 @@ import { Divider } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
 import TreatmentItem from './TreatmentItem';
 import { Status } from '../enums/Status';
+import { RootStackScreenProps } from '../types/Navigation';
 
-export default function Treatments({ navigation }: any) {
+export default function Treatments({ navigation }: RootStackScreenProps<'Treatments'>) {
   const { colors } = useTheme();
 
   return (
