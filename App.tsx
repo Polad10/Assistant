@@ -14,6 +14,7 @@ import NewTreatment from './components/NewTreatment';
 import EditAppointment from './components/EditAppointment';
 
 import type { RootStaskParamList } from './types/Navigation';
+import Patient from './components/Patient';
 
 type Tabs = {
   Appointments: undefined;
@@ -74,29 +75,24 @@ export default function App() {
       >
         <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen name='Patients' component={Patients} />
+          <Stack.Screen name='Treatments' component={Treatments} />
+          <Stack.Screen name='Patient' component={Patient} />
           <Stack.Screen
             name='NewAppointment'
             component={NewAppointment}
             options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
           />
-          <Stack.Screen name='Treatments' component={Treatments} />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen
-            name='NewPatient'
-            component={NewPatient}
-            options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
             name='NewTreatment'
             component={NewTreatment}
             options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
           />
-          <Stack.Screen name='Patients' component={Patients} />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen
+            name='NewPatient'
+            component={NewPatient}
+            options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
+          />
           <Stack.Screen
             name='EditAppointment'
             component={EditAppointment}

@@ -5,6 +5,7 @@ import { useTheme } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
 import { Mode } from '../enums/Mode';
+import { RootStackScreenProps } from '../types/Navigation';
 
 type Props = {
   treatment?: string;
@@ -13,7 +14,7 @@ type Props = {
 
 export default function Appointment(props: Props) {
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>();
 
   return (
     <View style={styles(colors).mainView}>

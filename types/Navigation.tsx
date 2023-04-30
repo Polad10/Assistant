@@ -9,6 +9,7 @@ export type RootStaskParamList = {
   Appointments: undefined;
   Patients: undefined;
   Treatments: undefined;
+  Patient: { patient: string };
 };
 
 export type RootStackScreenProps<T extends keyof RootStaskParamList> = StackScreenProps<RootStaskParamList, T>;
