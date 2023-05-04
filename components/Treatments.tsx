@@ -1,46 +1,21 @@
 import { View, StyleSheet } from 'react-native';
 import MyFAB from './MyFAB';
 import MySearchBar from './MySearchBar';
-import { Divider } from '@rneui/themed';
-import { useTheme } from '@react-navigation/native';
-import TreatmentItem from './TreatmentItem';
-import { Status } from '../enums/Status';
 import { RootStackScreenProps } from '../types/Navigation';
+import TreatmentGroup from './TreatmentGroup';
 
 export default function Treatments({ navigation }: RootStackScreenProps<'Treatments'>) {
-  const { colors } = useTheme();
-
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.mainView}>
       <MySearchBar />
-      <TreatmentItem
-        description='Lorem ipsum dolor sit amet consectetur.'
-        patientName='Polad Mammadov'
-        startDate={new Date()}
-        status={Status.ONGOING}
-      />
-      <Divider color={colors.border} style={styles.divider} />
-      <TreatmentItem
-        description='Lorem ipsum dolor sit amet consectetur.'
-        patientName='Polad Mammadov'
-        startDate={new Date()}
-        status={Status.FINISHED}
-      />
-      <Divider color={colors.border} style={styles.divider} />
-      <TreatmentItem
-        description='Lorem ipsum dolor sit amet consectetur.'
-        patientName='Polad Mammadov'
-        startDate={new Date()}
-        status={Status.FINISHED}
-      />
-      <Divider color={colors.border} style={styles.divider} />
+      <TreatmentGroup />
       <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  divider: {
-    marginHorizontal: 13,
+  mainView: {
+    flex: 1,
   },
 });

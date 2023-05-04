@@ -6,6 +6,7 @@ import { ButtonGroup, Icon } from '@rneui/themed';
 import { useCallback, useState } from 'react';
 import AgendaItem from './AgendaItem';
 import { AgendaList } from 'react-native-calendars';
+import TreatmentGroup from './TreatmentGroup';
 
 const items = [
   {
@@ -83,7 +84,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 0:
         return <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />;
       case 1:
-        return null;
+        return <TreatmentGroup />;
       case 2:
         return null;
       default:
