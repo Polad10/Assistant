@@ -6,7 +6,7 @@ import PatientItem from './PatientItem';
 import { RootStackScreenProps } from '../types/Navigation';
 import { useEffect } from 'react';
 
-export default function ClientGroup() {
+export default function PatientList() {
   const { colors } = useTheme();
   const navigation = useNavigation<RootStackScreenProps<'Patients'>['navigation']>();
 

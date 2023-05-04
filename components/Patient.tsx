@@ -6,7 +6,7 @@ import { ButtonGroup } from '@rneui/themed';
 import { useCallback, useState } from 'react';
 import AgendaItem from './AgendaItem';
 import { AgendaList } from 'react-native-calendars';
-import TreatmentGroup from './TreatmentGroup';
+import TreatmentList from './TreatmentList';
 import PatientDetailTab from './PatientDetailTab';
 
 const items = [
@@ -66,7 +66,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 1:
         return (
           <View>
-            <TreatmentGroup />
+            <TreatmentList />
           </View>
         );
       case 2:

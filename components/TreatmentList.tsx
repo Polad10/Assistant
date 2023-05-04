@@ -4,7 +4,7 @@ import { Status } from '../enums/Status';
 import { Divider } from '@rneui/themed';
 import { useTheme } from '@react-navigation/native';
 
-export default function TreatmentGroup() {
+export default function TreatmentList() {
   const { colors } = useTheme();
 
   return (
