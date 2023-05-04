@@ -2,11 +2,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { RootStackScreenProps } from '../types/Navigation';
 import { Colors } from '../types/Colors';
 import { useTheme } from '@react-navigation/native';
-import { Button, ButtonGroup, Icon } from '@rneui/themed';
+import { ButtonGroup } from '@rneui/themed';
 import { useCallback, useState } from 'react';
 import AgendaItem from './AgendaItem';
 import { AgendaList } from 'react-native-calendars';
 import TreatmentGroup from './TreatmentGroup';
+import PatientDetailTab from './PatientDetailTab';
 
 const items = [
   {
@@ -48,34 +49,13 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
 
   const buttons = [
     {
-      element: () => (
-        <Icon
-          name='calendar'
-          size={22}
-          type='font-awesome-5'
-          color={selectedIndex === 0 ? colors.text : colors.background}
-        />
-      ),
+      element: () => <PatientDetailTab iconName='calendar' index={0} selectedIndex={selectedIndex} />,
     },
     {
-      element: () => (
-        <Icon
-          name='tooth'
-          size={22}
-          type='font-awesome-5'
-          color={selectedIndex === 1 ? colors.text : colors.background}
-        />
-      ),
+      element: () => <PatientDetailTab iconName='tooth' index={1} selectedIndex={selectedIndex} />,
     },
     {
-      element: () => (
-        <Icon
-          name='money-bill-alt'
-          size={22}
-          type='font-awesome-5'
-          color={selectedIndex === 2 ? colors.text : colors.background}
-        />
-      ),
+      element: () => <PatientDetailTab iconName='money-bill-alt' index={2} selectedIndex={selectedIndex} />,
     },
   ];
 
@@ -86,12 +66,6 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 1:
         return (
           <View>
-            <Button
-              title='Load previous treatments'
-              size='sm'
-              containerStyle={{ marginHorizontal: 10, marginTop: 10 }}
-              buttonStyle={{ backgroundColor: colors.border }}
-            />
             <TreatmentGroup />
           </View>
         );
