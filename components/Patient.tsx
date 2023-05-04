@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { RootStackScreenProps } from '../types/Navigation';
 import { Colors } from '../types/Colors';
 import { useTheme } from '@react-navigation/native';
-import { ButtonGroup, Icon } from '@rneui/themed';
+import { Button, ButtonGroup, Icon } from '@rneui/themed';
 import { useCallback, useState } from 'react';
 import AgendaItem from './AgendaItem';
 import { AgendaList } from 'react-native-calendars';
@@ -84,7 +84,17 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 0:
         return <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />;
       case 1:
-        return <TreatmentGroup />;
+        return (
+          <View>
+            <Button
+              title='Load previous treatments'
+              size='sm'
+              containerStyle={{ marginHorizontal: 10, marginTop: 10 }}
+              buttonStyle={{ backgroundColor: colors.border }}
+            />
+            <TreatmentGroup />
+          </View>
+        );
       case 2:
         return null;
       default:
