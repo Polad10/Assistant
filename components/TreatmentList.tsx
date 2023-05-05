@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import TreatmentItem from './TreatmentItem';
 import { Status } from '../enums/Status';
 import { Divider } from '@rneui/themed';
@@ -10,27 +10,29 @@ export default function TreatmentList() {
 
   return (
     <View style={styles(colors).mainView}>
-      <TreatmentItem
-        description='Lorem ipsum dolor sit amet consectetur.'
-        patientName='Polad Mammadov'
-        startDate={new Date()}
-        status={Status.ONGOING}
-      />
-      <Divider color={colors.border} style={styles(colors).divider} />
-      <TreatmentItem
-        description='Lorem ipsum dolor sit amet consectetur.'
-        patientName='Polad Mammadov'
-        startDate={new Date()}
-        status={Status.FINISHED}
-      />
-      <Divider color={colors.border} style={styles(colors).divider} />
-      <TreatmentItem
-        description='Lorem ipsum dolor sit amet consectetur.'
-        patientName='Polad Mammadov'
-        startDate={new Date()}
-        status={Status.FINISHED}
-      />
-      <Divider color={colors.border} style={styles(colors).divider} />
+      <ScrollView>
+        <TreatmentItem
+          description='Lorem ipsum dolor sit amet consectetur.'
+          patientName='Polad Mammadov'
+          startDate={new Date()}
+          status={Status.ONGOING}
+        />
+        <Divider color={colors.border} style={styles(colors).divider} />
+        <TreatmentItem
+          description='Lorem ipsum dolor sit amet consectetur.'
+          patientName='Polad Mammadov'
+          startDate={new Date()}
+          status={Status.FINISHED}
+        />
+        <Divider color={colors.border} style={styles(colors).divider} />
+        <TreatmentItem
+          description='Lorem ipsum dolor sit amet consectetur.'
+          patientName='Polad Mammadov'
+          startDate={new Date()}
+          status={Status.FINISHED}
+        />
+        <Divider color={colors.border} style={styles(colors).divider} />
+      </ScrollView>
     </View>
   );
 }
