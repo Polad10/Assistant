@@ -8,6 +8,7 @@ import AgendaItem from './AgendaItem';
 import { AgendaList } from 'react-native-calendars';
 import TreatmentList from './TreatmentList';
 import PatientDetailTab from './PatientDetailTab';
+import PaymentList from './PaymentList';
 
 const items = [
   {
@@ -64,13 +65,9 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 0:
         return <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />;
       case 1:
-        return (
-          <View>
-            <TreatmentList />
-          </View>
-        );
+        return <TreatmentList />;
       case 2:
-        return null;
+        return <PaymentList />;
       default:
         return null;
     }
