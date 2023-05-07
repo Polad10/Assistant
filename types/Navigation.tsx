@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 
-export type RootStaskParamList = {
+export type RootStackParamList = {
   Home: undefined;
   NewAppointment: undefined;
   NewPatient: undefined;
@@ -12,4 +12,4 @@ export type RootStaskParamList = {
   Patient: { patient: string };
 };
 
-export type RootStackScreenProps<T extends keyof RootStaskParamList> = StackScreenProps<RootStaskParamList, T>;
+export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

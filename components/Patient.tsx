@@ -65,7 +65,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 0:
         return <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />;
       case 1:
-        return <TreatmentList />;
+        return <TreatmentList pageName='Patient' />;
       case 2:
         return <PaymentList />;
       default:

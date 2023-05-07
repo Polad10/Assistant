@@ -2,11 +2,18 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import TreatmentItem from './TreatmentItem';
 import { Status } from '../enums/Status';
 import { Divider } from '@rneui/themed';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { Colors } from '../types/Colors';
+import MyFAB from './MyFAB';
+import { RootStackScreenProps, RootStackParamList } from '../types/Navigation';
 
-export default function TreatmentList() {
+type Props = {
+  pageName: keyof RootStackParamList;
+};
+
+export default function TreatmentList(props: Props) {
   const { colors } = useTheme();
+  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>();
 
   return (
     <View style={styles(colors).mainView}>
@@ -33,6 +40,7 @@ export default function TreatmentList() {
         />
         <Divider color={colors.border} style={styles(colors).divider} />
       </ScrollView>
+      <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
     </View>
   );
 }

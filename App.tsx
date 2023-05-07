@@ -13,7 +13,7 @@ import Treatments from './components/Treatments';
 import NewTreatment from './components/NewTreatment';
 import EditAppointment from './components/EditAppointment';
 
-import type { RootStaskParamList } from './types/Navigation';
+import type { RootStackParamList } from './types/Navigation';
 import Patient from './components/Patient';
 
 type Tabs = {
@@ -22,7 +22,7 @@ type Tabs = {
 };
 
 const Tab = createBottomTabNavigator<Tabs>();
-const Stack = createStackNavigator<RootStaskParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 function Home() {
   const { colors } = useTheme();
