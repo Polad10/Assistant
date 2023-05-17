@@ -67,7 +67,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 1:
         return <TreatmentList pageName='Patient' />;
       case 2:
-        return <PaymentList />;
+        return <PaymentList pageName='Patient' />;
       default:
         return null;
     }

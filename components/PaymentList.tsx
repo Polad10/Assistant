@@ -1,11 +1,18 @@
 import { Colors } from '../types/Colors';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import PaymentItem from './PaymentItem';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { Divider } from '@rneui/themed';
+import { RootStackParamList, RootStackScreenProps } from '../types/Navigation';
+import MyFAB from './MyFAB';
 
-export default function PaymentList() {
+type Props = {
+  pageName: keyof RootStackParamList;
+};
+
+export default function PaymentList(props: Props) {
   const { colors } = useTheme();
+  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>();
 
   return (
     <View style={styles(colors).mainView}>
@@ -16,6 +23,7 @@ export default function PaymentList() {
         <Divider color={colors.border} style={styles(colors).divider} />
         <PaymentItem date={new Date('2003-03-03')} amount={300} />
       </ScrollView>
+      <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
     </View>
   );
 }
