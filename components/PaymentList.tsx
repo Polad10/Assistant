@@ -23,7 +23,7 @@ export default function PaymentList(props: Props) {
         <Divider color={colors.border} style={styles(colors).divider} />
         <PaymentItem date={new Date('2003-03-03')} amount={300} />
       </ScrollView>
-      <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
+      <MyFAB onPress={() => navigation.navigate('NewPayment')} />
     </View>
   );
 }
