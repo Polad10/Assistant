@@ -1,14 +1,15 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { RootStackScreenProps } from '../types/Navigation';
-import { Colors } from '../types/Colors';
-import { useTheme } from '@react-navigation/native';
-import { ButtonGroup } from '@rneui/themed';
-import { useCallback, useState } from 'react';
-import AgendaItem from './AgendaItem';
-import { AgendaList } from 'react-native-calendars';
-import TreatmentList from './TreatmentList';
-import PatientDetailTab from './PatientDetailTab';
-import PaymentList from './PaymentList';
+import { View, Text, StyleSheet } from 'react-native'
+import { RootStackScreenProps } from '../types/Navigation'
+import { Colors } from '../types/Colors'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import { ButtonGroup } from '@rneui/themed'
+import { useCallback, useState } from 'react'
+import AgendaItem from './AgendaItem'
+import { AgendaList } from 'react-native-calendars'
+import TreatmentList from './TreatmentList'
+import PatientDetailTab from './PatientDetailTab'
+import PaymentList from './PaymentList'
+import MyFAB from './MyFAB'
 
 const items = [
   {
@@ -37,16 +38,18 @@ const items = [
       },
     ],
   },
-];
+]
 
 export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const { colors } = useTheme();
-  const { patient } = route.params;
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const { colors } = useTheme()
+  const { patient } = route.params
+
+  const navigation = useNavigation<RootStackScreenProps<'Patient'>['navigation']>()
 
   const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />;
-  }, []);
+    return <AgendaItem item={item} />
+  }, [])
 
   const buttons = [
     {
@@ -58,20 +61,25 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
     {
       element: () => <PatientDetailTab iconName='money-bill-alt' index={2} selectedIndex={selectedIndex} />,
     },
-  ];
+  ]
 
   const TabContent = () => {
     switch (selectedIndex) {
       case 0:
-        return <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />;
+        return (
+          <View style={styles(colors).mainView}>
+            <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
+            <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
+          </View>
+        )
       case 1:
-        return <TreatmentList pageName='Patient' />;
+        return <TreatmentList pageName='Patient' />
       case 2:
-        return <PaymentList pageName='Patient' />;
+        return <PaymentList pageName='Patient' />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <View style={styles(colors).mainView}>
@@ -93,7 +101,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
         <TabContent />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = (colors: Colors) =>
@@ -130,4 +138,4 @@ const styles = (colors: Colors) =>
       backgroundColor: colors.card,
       color: colors.text,
     },
-  });
+  })
