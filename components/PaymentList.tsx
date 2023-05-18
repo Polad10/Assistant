@@ -4,7 +4,6 @@ import PaymentItem from './PaymentItem'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
-import MyFAB from './MyFAB'
 
 type Props = {
   pageName: keyof RootStackParamList
