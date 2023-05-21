@@ -82,23 +82,6 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
     }
   }
 
-  useEffect(() => {
-    DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
-
-    return () => {
-      DeviceEventEmitter.removeAllListeners('treatmentSelected')
-    }
-  }, [])
-
-  function handleTreatmentSelect(treatment: string) {
-    navigation.navigate('Treatment', {
-      treatment: treatment,
-      patientName: 'Polad Mammadov',
-      startDate: new Date().toLocaleDateString(),
-      status: Status.ONGOING,
-    })
-  }
-
   return (
     <View style={styles(colors).mainView}>
       <View style={[styles(colors).headerView, styles(colors).card]}>

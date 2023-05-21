@@ -1,29 +1,33 @@
-import { View, StyleSheet, DeviceEventEmitter } from 'react-native';
-import { ListItem } from '@rneui/themed';
-import { Colors } from '../types/Colors';
-import { useTheme } from '@react-navigation/native';
-import { Status } from '../enums/Status';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
+import { ListItem } from '@rneui/themed'
+import { Colors } from '../types/Colors'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import { Status } from '../enums/Status'
+import { TouchableHighlight } from 'react-native-gesture-handler'
+import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 
-type Props = {
-  description: string;
-  patientName: string;
-  startDate: Date;
-  status: Status;
-};
+export type TreatmentItemProps = {
+  description: string
+  patientName: string
+  startDate: Date
+  status: Status
+  preventDefault?: boolean
+  pageName: keyof RootStackParamList
+}
 
 type StyleProps = {
-  colors: Colors;
-  status: Status;
-};
+  colors: Colors
+  status: Status
+}
 
-export default function TreatmentItem(props: Props) {
-  const { colors } = useTheme();
+export default function TreatmentItem(props: TreatmentItemProps) {
+  const { colors } = useTheme()
+  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
   const styleProps: StyleProps = {
     colors: colors,
     status: props.status,
-  };
+  }
 
   return (
     <TouchableHighlight onPress={() => handleTreatmentSelect(props.description)}>
@@ -47,10 +51,19 @@ export default function TreatmentItem(props: Props) {
         </ListItem.Content>
       </ListItem>
     </TouchableHighlight>
-  );
+  )
 
   function handleTreatmentSelect(treatment: string) {
-    DeviceEventEmitter.emit('treatmentSelected', treatment);
+    if (props.preventDefault) {
+      DeviceEventEmitter.emit('treatmentSelected', treatment)
+    } else {
+      navigation.navigate('Treatment', {
+        treatment: treatment,
+        patientName: 'Polad Mammadov',
+        startDate: new Date().toLocaleDateString(),
+        status: Status.ONGOING,
+      })
+    }
   }
 }
 
@@ -78,4 +91,4 @@ const styles = (styleProps: StyleProps) =>
     statusColor: {
       color: styleProps.status == Status.ONGOING ? 'orange' : 'lightgreen',
     },
-  });
+  })

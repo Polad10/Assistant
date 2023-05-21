@@ -9,7 +9,7 @@ export type RootStackParamList = {
   EditAppointment: { treatment: string }
   Appointments: undefined
   Patients: undefined
-  Treatments: undefined
+  Treatments: { preventDefault?: boolean } | undefined
   Patient: { patient: string }
   Treatment: { treatment: string; status: Status; patientName: string; startDate: string }
   NewPayment: undefined
