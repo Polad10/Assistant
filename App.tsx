@@ -1,31 +1,32 @@
-import 'react-native-gesture-handler';
-import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native';
-import { useColorScheme, Button, StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import IonIcons from '@expo/vector-icons/Ionicons';
-import Patients from './components/Patients';
-import Appointments from './components/Appointments';
-import NewAppointment from './components/NewAppointment';
-import NewPatient from './components/NewPatient';
-import Treatments from './components/Treatments';
-import NewTreatment from './components/NewTreatment';
-import EditAppointment from './components/EditAppointment';
+import 'react-native-gesture-handler'
+import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native'
+import { useColorScheme, Button, StyleSheet } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import React from 'react'
+import IonIcons from '@expo/vector-icons/Ionicons'
+import Patients from './components/Patients'
+import Appointments from './components/Appointments'
+import NewAppointment from './components/NewAppointment'
+import NewPatient from './components/NewPatient'
+import Treatments from './components/Treatments'
+import NewTreatment from './components/NewTreatment'
+import EditAppointment from './components/EditAppointment'
 
-import type { RootStackParamList } from './types/Navigation';
-import Patient from './components/Patient';
+import type { RootStackParamList } from './types/Navigation'
+import Patient from './components/Patient'
+import Treatment from './components/Treatment'
 
 type Tabs = {
-  Appointments: undefined;
-  Patients: undefined;
-};
+  Appointments: undefined
+  Patients: undefined
+}
 
-const Tab = createBottomTabNavigator<Tabs>();
-const Stack = createStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<Tabs>()
+const Stack = createStackNavigator<RootStackParamList>()
 
 function Home() {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   return (
     <Tab.Navigator>
@@ -50,20 +51,20 @@ function Home() {
         }}
       />
     </Tab.Navigator>
-  );
+  )
 }
 
 function SaveHeaderButton() {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
-  return <Button title='Save' color={colors.primary} />;
+  return <Button title='Save' color={colors.primary} />
 }
 
 export default function App() {
-  DarkTheme.colors.primary = '#ad164d';
+  DarkTheme.colors.primary = '#ad164d'
 
-  const scheme = useColorScheme();
-  const theme = scheme === 'dark' ? DarkTheme : DefaultTheme;
+  const scheme = useColorScheme()
+  const theme = scheme === 'dark' ? DarkTheme : DefaultTheme
 
   return (
     <NavigationContainer theme={theme}>
@@ -78,6 +79,7 @@ export default function App() {
           <Stack.Screen name='Patients' component={Patients} />
           <Stack.Screen name='Treatments' component={Treatments} />
           <Stack.Screen name='Patient' component={Patient} />
+          <Stack.Screen name='Treatment' component={Treatment} />
           <Stack.Screen
             name='NewAppointment'
             component={NewAppointment}
@@ -101,7 +103,7 @@ export default function App() {
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -111,4 +113,4 @@ const styles = StyleSheet.create({
   headerLeftContainer: {
     paddingLeft: 5,
   },
-});
+})

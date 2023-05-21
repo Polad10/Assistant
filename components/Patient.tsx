@@ -1,15 +1,16 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { Colors } from '../types/Colors'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { ButtonGroup } from '@rneui/themed'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import { AgendaList } from 'react-native-calendars'
 import TreatmentList from './TreatmentList'
-import PatientDetailTab from './PatientDetailTab'
+import DetailTab from './DetailTab'
 import PaymentList from './PaymentList'
 import MyFAB from './MyFAB'
+import { Status } from '../enums/Status'
 
 const items = [
   {
@@ -53,13 +54,13 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
 
   const buttons = [
     {
-      element: () => <PatientDetailTab iconName='calendar' index={0} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab iconName='calendar' index={0} selectedIndex={selectedIndex} />,
     },
     {
-      element: () => <PatientDetailTab iconName='tooth' index={1} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab iconName='tooth' index={1} selectedIndex={selectedIndex} />,
     },
     {
-      element: () => <PatientDetailTab iconName='money-bill-alt' index={2} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab iconName='money-bill-alt' index={2} selectedIndex={selectedIndex} />,
     },
   ]
 
@@ -79,6 +80,23 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       default:
         return null
     }
+  }
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('treatmentSelected')
+    }
+  }, [])
+
+  function handleTreatmentSelect(treatment: string) {
+    navigation.navigate('Treatment', {
+      treatment: treatment,
+      patientName: 'Polad Mammadov',
+      startDate: new Date().toLocaleDateString(),
+      status: Status.ONGOING,
+    })
   }
 
   return (
