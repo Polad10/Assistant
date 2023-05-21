@@ -16,6 +16,7 @@ import EditAppointment from './components/EditAppointment'
 import type { RootStackParamList } from './types/Navigation'
 import Patient from './components/Patient'
 import Treatment from './components/Treatment'
+import NewPayment from './components/NewPayment'
 
 type Tabs = {
   Appointments: undefined
@@ -99,6 +100,11 @@ export default function App() {
             name='EditAppointment'
             component={EditAppointment}
             options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
+          />
+          <Stack.Screen
+            name='NewPayment'
+            component={NewPayment}
+            options={{ title: 'New Payment', headerRight: SaveHeaderButton }}
           />
         </Stack.Group>
       </Stack.Navigator>

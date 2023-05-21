@@ -1,7 +1,7 @@
 import { Colors } from '../types/Colors'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import PaymentItem from './PaymentItem'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useTheme } from '@react-navigation/native'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 
@@ -11,7 +11,6 @@ type Props = {
 
 export default function PaymentList(props: Props) {
   const { colors } = useTheme()
-  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
   return (
     <View style={styles(colors).mainView}>

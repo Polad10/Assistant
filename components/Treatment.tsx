@@ -80,7 +80,12 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
           </View>
         )
       case 1:
-        return <PaymentList pageName='Patient' />
+        return (
+          <View style={styles(styleProps).mainView}>
+            <PaymentList pageName='Patient' />
+            <MyFAB onPress={() => navigation.navigate('NewPayment')} />
+          </View>
+        )
       default:
         return null
     }
