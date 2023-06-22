@@ -9,6 +9,7 @@ import { RootStackScreenProps, RootStackParamList } from '../types/Navigation'
 
 type Props = {
   pageName: keyof RootStackParamList
+  patient?: string
   preventDefault?: boolean
 }
 
@@ -47,7 +48,7 @@ export default function TreatmentList(props: Props) {
         />
         <Divider color={colors.border} style={styles(colors).divider} />
       </ScrollView>
-      <MyFAB onPress={() => navigation.navigate('NewTreatment')} />
+      <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: props.patient })} />
     </View>
   )
 }

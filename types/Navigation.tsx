@@ -5,7 +5,7 @@ export type RootStackParamList = {
   Home: undefined
   NewAppointment: undefined
   NewPatient: undefined
-  NewTreatment: undefined
+  NewTreatment: { patient?: string }
   EditAppointment: { treatment: string }
   Appointments: undefined
   Patients: undefined

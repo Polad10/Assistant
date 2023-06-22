@@ -1,15 +1,15 @@
-import { useTheme } from '@react-navigation/native';
-import { ListItem } from '@rneui/themed';
-import { TouchableHighlight } from 'react-native-gesture-handler';
-import { DeviceEventEmitter, StyleSheet } from 'react-native';
-import { Colors } from '../types/Colors';
+import { useTheme } from '@react-navigation/native'
+import { ListItem } from '@rneui/themed'
+import { TouchableHighlight } from 'react-native-gesture-handler'
+import { DeviceEventEmitter, StyleSheet } from 'react-native'
+import { Colors } from '../types/Colors'
 
 type Props = {
-  patientName: string;
-};
+  patientName: string
+}
 
 export default function PatientItem(props: Props) {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   return (
     <TouchableHighlight onPress={() => handlePatientSelect(props.patientName)}>
@@ -19,10 +19,10 @@ export default function PatientItem(props: Props) {
         </ListItem.Content>
       </ListItem>
     </TouchableHighlight>
-  );
+  )
 
   function handlePatientSelect(patient: string) {
-    DeviceEventEmitter.emit('patientSelected', patient);
+    DeviceEventEmitter.emit('patientSelected', patient)
   }
 }
 
@@ -34,4 +34,4 @@ const styles = (colors: Colors) =>
     listItemTitle: {
       color: colors.text,
     },
-  });
+  })

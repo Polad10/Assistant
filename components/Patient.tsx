@@ -10,7 +10,6 @@ import TreatmentList from './TreatmentList'
 import DetailTab from './DetailTab'
 import PaymentList from './PaymentList'
 import MyFAB from './MyFAB'
-import { Status } from '../enums/Status'
 
 const items = [
   {
@@ -74,7 +73,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
           </View>
         )
       case 1:
-        return <TreatmentList pageName='Patient' />
+        return <TreatmentList pageName='Patient' patient={patient} />
       case 2:
         return <PaymentList pageName='Patient' />
       default:
