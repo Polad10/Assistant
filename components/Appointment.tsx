@@ -1,13 +1,12 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
-import { useTheme } from '@react-navigation/native'
 import { useNavigation } from '@react-navigation/native'
-import { Colors } from '../types/Colors'
 import { Mode } from '../enums/Mode'
 import { RootStackScreenProps } from '../types/Navigation'
 import { Button } from '@rneui/themed'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import MainView from './MainView'
 
 type Props = {
   treatment?: string
@@ -15,11 +14,10 @@ type Props = {
 }
 
 export default function Appointment(props: Props) {
-  const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
 
   return (
-    <View style={styles(colors).mainView}>
+    <MainView>
       <DateTimeInput text='Date and time' showDatePicker={true} showTimePicker={true} />
       <MyInput placeholder='Actions' multiline={true} />
       <MyInput
@@ -29,26 +27,22 @@ export default function Appointment(props: Props) {
         editable={false}
       />
       {props.mode === Mode.EDIT && (
-        <SafeAreaView style={styles(colors).buttonView}>
-          <Button color='red' style={styles(colors).button}>
+        <SafeAreaView style={styles.buttonView}>
+          <Button color='red' style={styles.button}>
             Delete
           </Button>
         </SafeAreaView>
       )}
-    </View>
+    </MainView>
   )
 }
 
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    mainView: {
-      flex: 1,
-    },
-    buttonView: {
-      flex: 1,
-      justifyContent: 'flex-end',
-    },
-    button: {
-      marginHorizontal: 10,
-    },
-  })
+const styles = StyleSheet.create({
+  buttonView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginHorizontal: 10,
+  },
+})

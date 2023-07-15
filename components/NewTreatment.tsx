@@ -3,6 +3,7 @@ import MyInput from './MyInput'
 import { useEffect, useState } from 'react'
 import DateTimeInput from './DateTimeInput'
 import { RootStackScreenProps } from '../types/Navigation'
+import MainView from './MainView'
 
 type StyleProps = {
   patientEditable: boolean
@@ -26,7 +27,7 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
   }, [])
 
   return (
-    <View style={styles(styleProps).mainView}>
+    <MainView>
       <DateTimeInput text='Start date' showDatePicker={true} />
       <MyInput placeholder='Title' />
       <MyInput
@@ -36,7 +37,7 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
         editable={false}
         style={styles(styleProps).patient}
       />
-    </View>
+    </MainView>
   )
 
   function handlePatientSelect(patient: string) {
@@ -53,9 +54,6 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
 
 const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
-    mainView: {
-      flex: 1,
-    },
     patient: {
       opacity: styleProps.patientEditable ? 1 : 0.5,
     },

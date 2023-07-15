@@ -1,18 +1,19 @@
-import { View, StyleSheet } from 'react-native';
-import { useTheme } from '@react-navigation/native';
-import { CalendarProvider, ExpandableCalendar, AgendaList } from 'react-native-calendars';
-import { useCallback } from 'react';
-import AgendaItem from './AgendaItem';
-import { Colors } from '../types/Colors';
-import MyFAB from './MyFAB';
-import { RootStackScreenProps } from '../types/Navigation';
+import { View, StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
+import { CalendarProvider, ExpandableCalendar, AgendaList } from 'react-native-calendars'
+import { useCallback } from 'react'
+import AgendaItem from './AgendaItem'
+import { Colors } from '../types/Colors'
+import MyFAB from './MyFAB'
+import { RootStackScreenProps } from '../types/Navigation'
+import MainView from './MainView'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />;
-  }, []);
+    return <AgendaItem item={item} />
+  }, [])
 
   const items = [
     {
@@ -41,10 +42,10 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
         },
       ],
     },
-  ];
+  ]
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <MainView>
       <CalendarProvider
         showTodayButton={true}
         date={new Date().toDateString()}
@@ -66,8 +67,8 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
         <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
       </CalendarProvider>
       <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
-    </View>
-  );
+    </MainView>
+  )
 }
 
 const styles = (colors: Colors) =>
@@ -79,4 +80,4 @@ const styles = (colors: Colors) =>
     todayButton: {
       backgroundColor: colors.primary,
     },
-  });
+  })
