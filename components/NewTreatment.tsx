@@ -18,10 +18,10 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
   }
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
+    const listener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
 
     return () => {
-      DeviceEventEmitter.removeAllListeners('patientSelected')
+      listener.remove()
     }
   }, [])
 
