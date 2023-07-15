@@ -19,7 +19,7 @@ export default function Appointment(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
 
   return (
-    <SafeAreaView style={styles(colors).mainView}>
+    <View style={styles(colors).mainView}>
       <DateTimeInput text='Date and time' showDatePicker={true} showTimePicker={true} />
       <MyInput placeholder='Actions' multiline={true} />
       <MyInput
@@ -28,12 +28,12 @@ export default function Appointment(props: Props) {
         value={props.treatment}
         editable={false}
       />
-      <View style={styles(colors).buttonView}>
+      <SafeAreaView style={styles(colors).buttonView}>
         <Button color='red' style={styles(colors).button}>
           Delete
         </Button>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   )
 }
 
