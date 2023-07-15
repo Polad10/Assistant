@@ -28,11 +28,13 @@ export default function Appointment(props: Props) {
         value={props.treatment}
         editable={false}
       />
-      <SafeAreaView style={styles(colors).buttonView}>
-        <Button color='red' style={styles(colors).button}>
-          Delete
-        </Button>
-      </SafeAreaView>
+      {props.mode === Mode.EDIT && (
+        <SafeAreaView style={styles(colors).buttonView}>
+          <Button color='red' style={styles(colors).button}>
+            Delete
+          </Button>
+        </SafeAreaView>
+      )}
     </View>
   )
 }
