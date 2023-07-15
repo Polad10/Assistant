@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { Colors } from '../types/Colors'
 import { Mode } from '../enums/Mode'
 import { RootStackScreenProps } from '../types/Navigation'
+import { Button } from '@rneui/themed'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 type Props = {
   treatment?: string
@@ -17,7 +19,7 @@ export default function Appointment(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
 
   return (
-    <View style={styles(colors).mainView}>
+    <SafeAreaView style={styles(colors).mainView}>
       <DateTimeInput text='Date and time' showDatePicker={true} showTimePicker={true} />
       <MyInput placeholder='Actions' multiline={true} />
       <MyInput
@@ -26,7 +28,12 @@ export default function Appointment(props: Props) {
         value={props.treatment}
         editable={false}
       />
-    </View>
+      <View style={styles(colors).buttonView}>
+        <Button color='red' style={styles(colors).button}>
+          Delete
+        </Button>
+      </View>
+    </SafeAreaView>
   )
 }
 
@@ -35,13 +42,11 @@ const styles = (colors: Colors) =>
     mainView: {
       flex: 1,
     },
+    buttonView: {
+      flex: 1,
+      justifyContent: 'flex-end',
+    },
     button: {
-      borderColor: colors.primary,
-    },
-    buttonTitle: {
-      color: colors.primary,
-    },
-    buttonCore: {
-      margin: 10,
+      marginHorizontal: 10,
     },
   })
