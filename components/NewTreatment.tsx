@@ -1,4 +1,4 @@
-import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
+import { StyleSheet, DeviceEventEmitter } from 'react-native'
 import MyInput from './MyInput'
 import { useEffect, useState } from 'react'
 import DateTimeInput from './DateTimeInput'
@@ -12,14 +12,14 @@ type StyleProps = {
 export default function NewTreatment({ navigation, route }: RootStackScreenProps<'NewTreatment'>) {
   const [patient, setPatient] = useState<string | undefined>(route.params.patient)
 
-  let patientEditable = patient == null
-
-  const styleProps: StyleProps = {
-    patientEditable: patientEditable,
+  let styleProps: StyleProps = {
+    patientEditable: true,
   }
 
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
+
+    styleProps.patientEditable = patient == null
 
     return () => {
       listener.remove()
@@ -46,8 +46,8 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
   }
 
   function handlePatientChange() {
-    if (patientEditable) {
-      navigation.navigate('Patients')
+    if (styleProps.patientEditable) {
+      navigation.navigate('Patients', { pageName: 'NewTreatment', preventDefault: true })
     }
   }
 }

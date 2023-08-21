@@ -1,15 +1,19 @@
-import { useTheme } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
 import { ListItem } from '@rneui/themed'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import { DeviceEventEmitter, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
+import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 
 type Props = {
   patientName: string
+  pageName: keyof RootStackParamList
+  preventDefault?: boolean
 }
 
 export default function PatientItem(props: Props) {
   const { colors } = useTheme()
+  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
   return (
     <TouchableHighlight onPress={() => handlePatientSelect(props.patientName)}>
@@ -22,7 +26,11 @@ export default function PatientItem(props: Props) {
   )
 
   function handlePatientSelect(patient: string) {
-    DeviceEventEmitter.emit('patientSelected', patient)
+    if (props.preventDefault) {
+      DeviceEventEmitter.emit('patientSelected', patient)
+    } else {
+      navigation.navigate('Patient', { patient: patient })
+    }
   }
 }
 

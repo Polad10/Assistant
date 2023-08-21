@@ -1,22 +1,17 @@
-import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { ListItem, Divider } from '@rneui/themed'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useTheme } from '@react-navigation/native'
 import { Colors } from '../types/Colors'
 import PatientItem from './PatientItem'
-import { RootStackScreenProps } from '../types/Navigation'
-import { useEffect } from 'react'
+import { RootStackParamList } from '../types/Navigation'
 
-export default function PatientList() {
+type Props = {
+  pageName: keyof RootStackParamList
+  preventDefault?: boolean
+}
+
+export default function PatientList(props: Props) {
   const { colors } = useTheme()
-  const navigation = useNavigation<RootStackScreenProps<'Patients'>['navigation']>()
-
-  useEffect(() => {
-    const listener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
-
-    return () => {
-      listener.remove()
-    }
-  }, [])
 
   return (
     <View>
@@ -26,14 +21,10 @@ export default function PatientList() {
         </ListItem.Content>
       </ListItem>
       <Divider color={colors.border} style={styles(colors).divider} />
-      <PatientItem patientName='Polad Mammmadov' />
+      <PatientItem patientName='Polad Mammmadov' preventDefault={props.preventDefault} pageName={props.pageName} />
       <Divider color={colors.border} style={styles(colors).divider} />
     </View>
   )
-
-  function handlePatientSelect(patient: string) {
-    navigation.navigate('Patient', { patient: patient })
-  }
 }
 
 const styles = (colors: Colors) =>
