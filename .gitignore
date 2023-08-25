@@ -15,3 +15,4 @@ web-build/
 
 #vs code
 .vscode
+.env
