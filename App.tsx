@@ -3,7 +3,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-n
 import { useColorScheme, Button, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import Patients from './components/Patients'
 import Appointments from './components/Appointments'
@@ -17,6 +17,9 @@ import type { RootStackParamList } from './types/Navigation'
 import Patient from './components/Patient'
 import Treatment from './components/Treatment'
 import NewPayment from './components/NewPayment'
+import { supabase } from './src/supabase'
+import { Session } from '@supabase/supabase-js'
+import Auth from './components/Auth'
 
 type Tabs = {
   Appointments: undefined
@@ -62,13 +65,25 @@ function SaveHeaderButton() {
 }
 
 export default function App() {
+  const [session, setSession] = useState<Session | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
   DarkTheme.colors.primary = '#ad164d'
 
   const scheme = useColorScheme()
   const theme = scheme === 'dark' ? DarkTheme : DefaultTheme
 
-  return (
-    <NavigationContainer theme={theme}>
+  if (session && session.user) {
+    ;<NavigationContainer theme={theme}>
       <Stack.Navigator
         screenOptions={{
           headerRightContainerStyle: styles.headerRightContainer,
@@ -109,7 +124,9 @@ export default function App() {
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  } else {
+    return <Auth />
+  }
 }
 
 const styles = StyleSheet.create({
