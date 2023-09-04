@@ -83,47 +83,49 @@ export default function App() {
   const theme = scheme === 'dark' ? DarkTheme : DefaultTheme
 
   if (session && session.user) {
-    ;<NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerRightContainerStyle: styles.headerRightContainer,
-          headerLeftContainerStyle: styles.headerLeftContainer,
-        }}
-      >
-        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='Patients' component={Patients} />
-          <Stack.Screen name='Treatments' component={Treatments} />
-          <Stack.Screen name='Patient' component={Patient} />
-          <Stack.Screen name='Treatment' component={Treatment} />
-          <Stack.Screen
-            name='NewAppointment'
-            component={NewAppointment}
-            options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='NewTreatment'
-            component={NewTreatment}
-            options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='NewPatient'
-            component={NewPatient}
-            options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='EditAppointment'
-            component={EditAppointment}
-            options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='NewPayment'
-            component={NewPayment}
-            options={{ title: 'New Payment', headerRight: SaveHeaderButton }}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
+    return (
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerRightContainerStyle: styles.headerRightContainer,
+            headerLeftContainerStyle: styles.headerLeftContainer,
+          }}
+        >
+          <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name='Patients' component={Patients} />
+            <Stack.Screen name='Treatments' component={Treatments} />
+            <Stack.Screen name='Patient' component={Patient} />
+            <Stack.Screen name='Treatment' component={Treatment} />
+            <Stack.Screen
+              name='NewAppointment'
+              component={NewAppointment}
+              options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='NewTreatment'
+              component={NewTreatment}
+              options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='NewPatient'
+              component={NewPatient}
+              options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='EditAppointment'
+              component={EditAppointment}
+              options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='NewPayment'
+              component={NewPayment}
+              options={{ title: 'New Payment', headerRight: SaveHeaderButton }}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
   } else {
     return <Auth />
   }
