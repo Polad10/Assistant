@@ -17,7 +17,6 @@ import type { RootStackParamList } from './types/Navigation'
 import Patient from './components/Patient'
 import Treatment from './components/Treatment'
 import NewPayment from './components/NewPayment'
-import Auth from './components/Auth'
 
 type Tabs = {
   Appointments: undefined
