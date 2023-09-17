@@ -8,10 +8,26 @@ import { RootStackParamList } from '../types/Navigation'
 type Props = {
   pageName: keyof RootStackParamList
   preventDefault?: boolean
+  patients: Patient[]
 }
 
 export default function PatientList(props: Props) {
   const { colors } = useTheme()
+
+  const patientsJsx = props.patients.map((p) => (
+    <View key={p.id}>
+      <PatientItem
+        patientName={getPatientFullName(p)}
+        preventDefault={props.preventDefault}
+        pageName={props.pageName}
+      />
+      <Divider color={colors.border} style={styles(colors).divider} />
+    </View>
+  ))
+
+  function getPatientFullName(patient: Patient) {
+    return `${patient.first_name} ${patient.last_name}`
+  }
 
   return (
     <View>
@@ -21,8 +37,7 @@ export default function PatientList(props: Props) {
         </ListItem.Content>
       </ListItem>
       <Divider color={colors.border} style={styles(colors).divider} />
-      <PatientItem patientName='Polad Mammmadov' preventDefault={props.preventDefault} pageName={props.pageName} />
-      <Divider color={colors.border} style={styles(colors).divider} />
+      {patientsJsx}
     </View>
   )
 }
