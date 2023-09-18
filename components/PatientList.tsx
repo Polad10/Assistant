@@ -1,9 +1,6 @@
-import { View, StyleSheet } from 'react-native'
-import { ListItem, Divider } from '@rneui/themed'
-import { useTheme } from '@react-navigation/native'
-import { Colors } from '../types/Colors'
-import PatientItem from './PatientItem'
+import { View } from 'react-native'
 import { RootStackParamList } from '../types/Navigation'
+import PatientListSection from './PatientListSection'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -12,46 +9,29 @@ type Props = {
 }
 
 export default function PatientList(props: Props) {
-  const { colors } = useTheme()
+  const groupedPatients = new Map<string, Patient[]>()
 
-  const patientsJsx = props.patients.map((p) => (
-    <View key={p.id}>
-      <PatientItem
-        patientName={getPatientFullName(p)}
+  for (const patient of props.patients) {
+    const firstChar = patient.first_name.charAt(0).toUpperCase()
+
+    if (!groupedPatients.has(firstChar)) {
+      groupedPatients.set(firstChar, [])
+    }
+
+    groupedPatients.get(firstChar)?.push(patient)
+  }
+
+  const patientListSections = [...groupedPatients].sort().map(([key, value]) => {
+    return (
+      <PatientListSection
+        key={key}
+        sectionTiTle={key}
+        patients={value}
         preventDefault={props.preventDefault}
         pageName={props.pageName}
       />
-      <Divider color={colors.border} style={styles(colors).divider} />
-    </View>
-  ))
-
-  function getPatientFullName(patient: Patient) {
-    return `${patient.first_name} ${patient.last_name}`
-  }
-
-  return (
-    <View>
-      <ListItem containerStyle={styles(colors).listItemContainer}>
-        <ListItem.Content>
-          <ListItem.Title style={styles(colors).listItemTitleCategory}>P</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-      <Divider color={colors.border} style={styles(colors).divider} />
-      {patientsJsx}
-    </View>
-  )
-}
-
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    listItemContainer: {
-      backgroundColor: colors.background,
-    },
-    listItemTitleCategory: {
-      color: colors.text,
-      opacity: 0.5,
-    },
-    divider: {
-      marginHorizontal: 13,
-    },
+    )
   })
+
+  return <View>{patientListSections}</View>
+}
