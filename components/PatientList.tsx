@@ -1,6 +1,7 @@
-import { View } from 'react-native'
 import { RootStackParamList } from '../types/Navigation'
 import PatientListSection from './PatientListSection'
+import MainView from './MainView'
+import { ScrollView } from 'react-native'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -33,5 +34,9 @@ export default function PatientList(props: Props) {
     )
   })
 
-  return <View>{patientListSections}</View>
+  return (
+    <ScrollView>
+      <MainView>{patientListSections}</MainView>
+    </ScrollView>
+  )
 }
