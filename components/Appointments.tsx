@@ -18,8 +18,8 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     context!.fetchAppointments()
   }, [])
 
-  const renderItem = (item: any) => {
-    return <AgendaItem item={item} />
+  const renderItem = (item: Appointment) => {
+    return <AgendaItem appointment={item} />
   }
 
   const groupedAppointments = new Map<string, Appointment[]>()

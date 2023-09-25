@@ -48,7 +48,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const navigation = useNavigation<RootStackScreenProps<'Patient'>['navigation']>()
 
   const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />
+    return <AgendaItem appointment={item} />
   }, [])
 
   const buttons = [

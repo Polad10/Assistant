@@ -4,21 +4,22 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Colors } from '../types/Colors'
 
 import type { RootStackScreenProps } from '../types/Navigation'
+import { DateTime } from 'luxon'
 
 type ItemProps = {
-  item: any
+  appointment: Appointment
 }
 
 const AgendaItem = (props: ItemProps) => {
-  const { item } = props
+  const { appointment } = props
   const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
 
   const itemPressed = useCallback(() => {
-    navigation.navigate('EditAppointment', { treatment: item.treatment_id })
+    navigation.navigate('EditAppointment', { treatment: appointment.actions })
   }, [])
 
-  if (!item) {
+  if (!appointment) {
     return (
       <View style={styles(colors).emptyItem}>
         <Text style={styles(colors).emptyItemText}>No events planned Today</Text>
@@ -28,8 +29,14 @@ const AgendaItem = (props: ItemProps) => {
 
   return (
     <TouchableOpacity onPress={itemPressed} style={styles(colors).item}>
-      <View>
-        <Text style={styles(colors).itemHourText}>{item.actions}</Text>
+      <View style={styles(colors).mainView}>
+        <View style={styles(colors).header}>
+          <Text style={[styles(colors).defaultText, styles(colors).time]}>
+            {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
+          </Text>
+          <Text style={styles(colors).defaultText}>Polad Mammadov</Text>
+        </View>
+        <Text style={[styles(colors).defaultText, styles(colors).description]}>{appointment.actions}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -37,31 +44,31 @@ const AgendaItem = (props: ItemProps) => {
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
+    mainView: {
+      flex: 1,
+    },
     item: {
-      padding: 20,
+      padding: 10,
       backgroundColor: colors.background,
       borderBottomWidth: 1,
       borderBottomColor: colors.border,
       flexDirection: 'row',
     },
-    itemHourText: {
-      color: colors.text,
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
-    itemDurationText: {
-      color: colors.text,
-      fontSize: 12,
-      marginTop: 4,
-      marginLeft: 4,
-    },
-    itemTitleText: {
-      color: colors.text,
-      marginLeft: 16,
-      fontWeight: 'bold',
+    defaultText: {
       fontSize: 16,
+      color: colors.text,
     },
-    itemButtonContainer: {
-      flex: 1,
-      alignItems: 'flex-end',
+    time: {
+      color: colors.notification,
+      fontWeight: 'bold',
+    },
+    description: {
+      marginTop: 20,
+      fontStyle: 'italic',
     },
     emptyItem: {
       paddingLeft: 20,

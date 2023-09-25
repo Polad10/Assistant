@@ -58,7 +58,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   }
 
   const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />
+    return <AgendaItem appointment={item} />
   }, [])
 
   const buttons = [

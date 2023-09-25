@@ -1,15 +1,15 @@
-import { useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { AgendaList } from 'react-native-calendars';
-import AgendaItem from './AgendaItem';
-import MyFAB from './MyFAB';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { RootStackParamList, RootStackScreenProps } from '../types/Navigation';
-import { Colors } from '../types/Colors';
+import { useCallback } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { AgendaList } from 'react-native-calendars'
+import AgendaItem from './AgendaItem'
+import MyFAB from './MyFAB'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
+import { Colors } from '../types/Colors'
 
 type Props = {
-  pageName: keyof RootStackParamList;
-};
+  pageName: keyof RootStackParamList
+}
 
 const items = [
   {
@@ -38,22 +38,22 @@ const items = [
       },
     ],
   },
-];
+]
 
 export default function AppointmentList(props: Props) {
-  const { colors } = useTheme();
-  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>();
+  const { colors } = useTheme()
+  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
   const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />;
-  }, []);
+    return <AgendaItem appointment={item} />
+  }, [])
 
   return (
     <View>
       <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
       <MyFAB onPress={() => navigation.navigate('NewAppointment')} style={{ backgroundColor: 'red' }} />
     </View>
-  );
+  )
 }
 
 const styles = (colors: Colors) =>
@@ -62,4 +62,4 @@ const styles = (colors: Colors) =>
       backgroundColor: colors.card,
       color: colors.text,
     },
-  });
+  })
