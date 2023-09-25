@@ -3,7 +3,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-n
 import { useColorScheme, Button, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import Patients from './components/Patients'
 import Appointments from './components/Appointments'
@@ -17,6 +17,7 @@ import type { RootStackParamList } from './types/Navigation'
 import Patient from './components/Patient'
 import Treatment from './components/Treatment'
 import NewPayment from './components/NewPayment'
+import DataProvider from './providers/DataProvider'
 
 type Tabs = {
   Appointments: undefined
@@ -68,47 +69,49 @@ export default function App() {
   const theme = scheme === 'dark' ? DarkTheme : DefaultTheme
 
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerRightContainerStyle: styles.headerRightContainer,
-          headerLeftContainerStyle: styles.headerLeftContainer,
-        }}
-      >
-        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name='Patients' component={Patients} />
-          <Stack.Screen name='Treatments' component={Treatments} />
-          <Stack.Screen name='Patient' component={Patient} />
-          <Stack.Screen name='Treatment' component={Treatment} />
-          <Stack.Screen
-            name='NewAppointment'
-            component={NewAppointment}
-            options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='NewTreatment'
-            component={NewTreatment}
-            options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='NewPatient'
-            component={NewPatient}
-            options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='EditAppointment'
-            component={EditAppointment}
-            options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
-          />
-          <Stack.Screen
-            name='NewPayment'
-            component={NewPayment}
-            options={{ title: 'New Payment', headerRight: SaveHeaderButton }}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <DataProvider>
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerRightContainerStyle: styles.headerRightContainer,
+            headerLeftContainerStyle: styles.headerLeftContainer,
+          }}
+        >
+          <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name='Patients' component={Patients} />
+            <Stack.Screen name='Treatments' component={Treatments} />
+            <Stack.Screen name='Patient' component={Patient} />
+            <Stack.Screen name='Treatment' component={Treatment} />
+            <Stack.Screen
+              name='NewAppointment'
+              component={NewAppointment}
+              options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='NewTreatment'
+              component={NewTreatment}
+              options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='NewPatient'
+              component={NewPatient}
+              options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='EditAppointment'
+              component={EditAppointment}
+              options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
+            />
+            <Stack.Screen
+              name='NewPayment'
+              component={NewPayment}
+              options={{ title: 'New Payment', headerRight: SaveHeaderButton }}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </DataProvider>
   )
 }
 

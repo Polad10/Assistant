@@ -2,17 +2,24 @@ import { RootStackParamList } from '../types/Navigation'
 import PatientListSection from './PatientListSection'
 import MainView from './MainView'
 import { ScrollView } from 'react-native'
+import { useContext, useEffect } from 'react'
+import { DataContext } from '../contexts/DataContext'
 
 type Props = {
   pageName: keyof RootStackParamList
   preventDefault?: boolean
-  patients: Patient[]
 }
 
 export default function PatientList(props: Props) {
+  const context = useContext(DataContext)
+
+  useEffect(() => {
+    context!.fetchPatients()
+  }, [])
+
   const groupedPatients = new Map<string, Patient[]>()
 
-  for (const patient of props.patients) {
+  for (const patient of context?.patients ?? []) {
     const firstChar = patient.first_name.charAt(0).toUpperCase()
 
     if (!groupedPatients.has(firstChar)) {
