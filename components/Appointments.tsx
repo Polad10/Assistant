@@ -1,56 +1,51 @@
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
-import { CalendarProvider, ExpandableCalendar, AgendaList } from 'react-native-calendars'
-import { useCallback } from 'react'
+import { Agenda } from 'react-native-calendars'
+import { useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import { Colors } from '../types/Colors'
 import MyFAB from './MyFAB'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
+import axios from 'axios'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
+  const [appointments, setAppointments] = useState<Appointment[]>([])
 
-  const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem item={item} />
+  async function getPatients() {
+    const appointments = (await axios.get<Appointment[]>('http://192.168.1.236:3000/appointments')).data
+
+    setAppointments(appointments)
+  }
+
+  useEffect(() => {
+    getPatients()
   }, [])
 
-  const items = [
-    {
-      title: '2022-11-27',
-      data: [
-        {
-          hour: '12am',
-          title: 'Appointment-1',
-        },
-        {
-          hour: '1pm',
-          title: 'Appointment-2',
-        },
-      ],
-    },
-    {
-      title: '2022-11-28',
-      data: [
-        {
-          hour: '2pm',
-          title: 'Appointment-3',
-        },
-        {
-          hour: '3pm',
-          title: 'Appointment-4',
-        },
-      ],
-    },
-  ]
+  const renderItem = (item: any) => {
+    return <AgendaItem item={item} />
+  }
+
+  const items = {
+    '2023-09-25': [
+      {
+        id: 1,
+        datetime: new Date(),
+        actions: 'actions',
+        treatment_id: 2,
+      },
+    ],
+  }
 
   return (
     <MainView>
-      <CalendarProvider
+      {/* <CalendarProvider
         showTodayButton={true}
         date={new Date().toDateString()}
         theme={{ todayButtonTextColor: colors.text }}
         todayButtonStyle={styles(colors).todayButton}
+        onDateChanged={handleDateChanged}
       >
         <ExpandableCalendar
           theme={{
@@ -63,9 +58,24 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
             selectedDayBackgroundColor: colors.primary,
           }}
           style={{ backgroundColor: 'black' }}
+          date={new Date().toDateString()}
         />
         <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
-      </CalendarProvider>
+      </CalendarProvider> */}
+      <Agenda
+        items={items}
+        renderItem={renderItem}
+        theme={{
+          calendarBackground: colors.background,
+          monthTextColor: colors.text,
+          todayTextColor: colors.primary,
+          selectedDayBackgroundColor: colors.primary,
+          reservationsBackgroundColor: colors.background,
+          agendaDayNumColor: colors.text,
+          agendaDayTextColor: colors.text,
+          agendaTodayColor: colors.primary,
+        }}
+      />
       <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
     </MainView>
   )

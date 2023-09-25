@@ -1,41 +1,39 @@
-import { memo, useCallback } from 'react';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors } from '../types/Colors';
+import { memo, useCallback } from 'react'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Colors } from '../types/Colors'
 
-import type { RootStackScreenProps } from '../types/Navigation';
+import type { RootStackScreenProps } from '../types/Navigation'
 
 type ItemProps = {
-  item: any;
-};
+  item: any
+}
 
 const AgendaItem = (props: ItemProps) => {
-  const { item } = props;
-  const { colors } = useTheme();
-  const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>();
+  const { item } = props
+  const { colors } = useTheme()
+  const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
 
   const itemPressed = useCallback(() => {
-    navigation.navigate('EditAppointment', { treatment: `treatment for ${item.title}` });
-  }, []);
+    navigation.navigate('EditAppointment', { treatment: item.treatment_id })
+  }, [])
 
   if (!item) {
     return (
       <View style={styles(colors).emptyItem}>
         <Text style={styles(colors).emptyItemText}>No events planned Today</Text>
       </View>
-    );
+    )
   }
 
   return (
     <TouchableOpacity onPress={itemPressed} style={styles(colors).item}>
       <View>
-        <Text style={styles(colors).itemHourText}>{item.hour}</Text>
-        <Text style={styles(colors).itemDurationText}>{item.duration}</Text>
+        <Text style={styles(colors).itemHourText}>{item.actions}</Text>
       </View>
-      <Text style={styles(colors).itemTitleText}>{item.title}</Text>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
@@ -76,6 +74,6 @@ const styles = (colors: Colors) =>
       color: colors.text,
       fontSize: 14,
     },
-  });
+  })
 
-export default memo(AgendaItem);
+export default memo(AgendaItem)
