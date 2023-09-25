@@ -1,42 +1,44 @@
 import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import AgendaItem from './AgendaItem'
 import { Colors } from '../types/Colors'
 import MyFAB from './MyFAB'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
-import axios from 'axios'
+import { DataContext } from '../contexts/DataContext'
+import { DateTime } from 'luxon'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
-  const [appointments, setAppointments] = useState<Appointment[]>([])
-
-  async function getPatients() {
-    const appointments = (await axios.get<Appointment[]>('http://192.168.1.236:3000/appointments')).data
-
-    setAppointments(appointments)
-  }
+  const context = useContext(DataContext)
 
   useEffect(() => {
-    getPatients()
+    context!.fetchAppointments()
   }, [])
 
   const renderItem = (item: any) => {
     return <AgendaItem item={item} />
   }
 
-  const items = {
-    '2023-09-25': [
-      {
-        id: 1,
-        datetime: new Date(),
-        actions: 'actions',
-        treatment_id: 2,
-      },
-    ],
+  const groupedAppointments = new Map<string, Appointment[]>()
+
+  for (const appointment of context?.appointments ?? []) {
+    const date = DateTime.fromISO(appointment.datetime).toISODate()
+
+    if (!date) {
+      return
+    }
+
+    if (!groupedAppointments.has(date)) {
+      groupedAppointments.set(date, [])
+    }
+
+    groupedAppointments.get(date)?.push(appointment)
   }
+
+  const agendaItems = Object.fromEntries(groupedAppointments)
 
   return (
     <MainView>
@@ -63,7 +65,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
         <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
       </CalendarProvider> */}
       <Agenda
-        items={items}
+        items={agendaItems}
         renderItem={renderItem}
         theme={{
           calendarBackground: colors.background,
