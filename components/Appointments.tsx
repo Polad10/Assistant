@@ -38,6 +38,12 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     groupedAppointments.get(date)?.push(appointment)
   }
 
+  for (const [date, appointments] of groupedAppointments) {
+    appointments.sort((a1, a2) => {
+      return a1.datetime.localeCompare(a2.datetime)
+    })
+  }
+
   const agendaItems = Object.fromEntries(groupedAppointments)
 
   return (
