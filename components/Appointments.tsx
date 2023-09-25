@@ -48,28 +48,6 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
 
   return (
     <MainView>
-      {/* <CalendarProvider
-        showTodayButton={true}
-        date={new Date().toDateString()}
-        theme={{ todayButtonTextColor: colors.text }}
-        todayButtonStyle={styles(colors).todayButton}
-        onDateChanged={handleDateChanged}
-      >
-        <ExpandableCalendar
-          theme={{
-            backgroundColor: colors.background,
-            calendarBackground: colors.background,
-            arrowColor: colors.primary,
-            monthTextColor: colors.text,
-            textSectionTitleColor: colors.text,
-            todayTextColor: colors.primary,
-            selectedDayBackgroundColor: colors.primary,
-          }}
-          style={{ backgroundColor: 'black' }}
-          date={new Date().toDateString()}
-        />
-        <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
-      </CalendarProvider> */}
       <Agenda
         items={agendaItems}
         renderItem={renderItem}
