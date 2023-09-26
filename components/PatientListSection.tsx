@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 import PatientItem from './PatientItem'
 import { RootStackParamList } from '../types/Navigation'
+import { getPatientFullName } from '../helpers/PatientHelper'
 
 interface Props {
   sectionTiTle: string
@@ -25,10 +26,6 @@ export default function PatientListSection(props: Props) {
       <Divider color={colors.border} style={styles(colors).divider} />
     </View>
   ))
-
-  function getPatientFullName(patient: Patient) {
-    return `${patient.first_name} ${patient.last_name}`
-  }
 
   return (
     <View>

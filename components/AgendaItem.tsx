@@ -1,10 +1,11 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useContext } from 'react'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Colors } from '../types/Colors'
-
+import { getPatientFullName } from '../helpers/PatientHelper'
 import type { RootStackScreenProps } from '../types/Navigation'
 import { DateTime } from 'luxon'
+import { DataContext } from '../contexts/DataContext'
 
 type ItemProps = {
   appointment: Appointment
@@ -14,6 +15,10 @@ const AgendaItem = (props: ItemProps) => {
   const { appointment } = props
   const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
+  const context = useContext(DataContext)
+
+  const treatment = context!.treatments?.find((t) => t.id === appointment.treatment_id)
+  const patient = context!.patients?.find((p) => p.id === treatment?.patient_id)
 
   const itemPressed = useCallback(() => {
     navigation.navigate('EditAppointment', { treatment: appointment.actions })
@@ -34,7 +39,7 @@ const AgendaItem = (props: ItemProps) => {
           <Text style={[styles(colors).defaultText, styles(colors).time]}>
             {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
           </Text>
-          <Text style={styles(colors).defaultText}>Polad Mammadov</Text>
+          <Text style={styles(colors).defaultText}>{getPatientFullName(patient)}</Text>
         </View>
         <Text style={[styles(colors).defaultText, styles(colors).description]}>{appointment.actions}</Text>
       </View>

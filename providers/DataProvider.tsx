@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AppointmentsType, DataContext, PatientsType } from '../contexts/DataContext'
+import { AppointmentsType, DataContext, PatientsType, TreatmentsType } from '../contexts/DataContext'
 import React, { ReactNode, useState } from 'react'
 
 interface DataProviderProps {
@@ -9,6 +9,7 @@ interface DataProviderProps {
 export default function DataProvider({ children }: DataProviderProps) {
   const [patients, setPatients] = useState<PatientsType>(null)
   const [appointments, setAppointments] = useState<AppointmentsType>(null)
+  const [treatments, setTreatments] = useState<TreatmentsType>(null)
 
   async function fetchPatients() {
     if (!patients) {
@@ -26,8 +27,18 @@ export default function DataProvider({ children }: DataProviderProps) {
     }
   }
 
+  async function fetchTreatments() {
+    if (!treatments) {
+      const treatments = (await axios.get<Treatment[]>('http://192.168.1.236:3000/treatments')).data
+
+      setTreatments(treatments)
+    }
+  }
+
   return (
-    <DataContext.Provider value={{ fetchPatients, fetchAppointments, patients, appointments }}>
+    <DataContext.Provider
+      value={{ fetchPatients, fetchAppointments, fetchTreatments, patients, appointments, treatments }}
+    >
       {children}
     </DataContext.Provider>
   )
