@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
 import { useContext, useEffect } from 'react'
@@ -22,6 +22,14 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
 
   const renderItem = (item: Appointment) => {
     return <AgendaItem appointment={item} />
+  }
+
+  const renderEmptyData = () => {
+    return (
+      <View style={styles(colors).emptyDateView}>
+        <Text style={[styles(colors).defaultText, styles(colors).emptyDateText]}>No events found</Text>
+      </View>
+    )
   }
 
   const groupedAppointments = new Map<string, Appointment[]>()
@@ -53,6 +61,8 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
       <Agenda
         items={agendaItems}
         renderItem={renderItem}
+        renderEmptyData={renderEmptyData}
+        showOnlySelectedDayItems={true}
         theme={{
           calendarBackground: colors.background,
           monthTextColor: colors.text,
@@ -77,5 +87,16 @@ const styles = (colors: Colors) =>
     },
     todayButton: {
       backgroundColor: colors.primary,
+    },
+    defaultText: {
+      color: colors.text,
+    },
+    emptyDateView: {
+      flex: 1,
+      alignItems: 'center',
+      marginTop: 100,
+    },
+    emptyDateText: {
+      fontSize: 40,
     },
   })
