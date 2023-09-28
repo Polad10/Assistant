@@ -1,38 +1,39 @@
-import { View, Text, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Colors } from '../types/Colors';
-import { useTheme } from '@react-navigation/native';
+import { View, Text, StyleSheet } from 'react-native'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { Colors } from '../types/Colors'
+import { useTheme } from '@react-navigation/native'
 
 type Props = {
-  text: string;
-  showDatePicker?: boolean;
-  showTimePicker?: boolean;
-};
+  text: string
+  datetime: Date
+  showDatePicker?: boolean
+  showTimePicker?: boolean
+}
 
 type StyleProps = {
-  colors: Colors;
-  showDatePicker?: boolean;
-  showTimePicker?: boolean;
-};
+  colors: Colors
+  showDatePicker?: boolean
+  showTimePicker?: boolean
+}
 
 export default function DateTimeInput(props: Props) {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   const styleProps: StyleProps = {
     colors: colors,
     showDatePicker: props.showDatePicker,
     showTimePicker: props.showTimePicker,
-  };
+  }
 
   return (
     <View style={styles(styleProps).dateTimeContainer}>
       <Text style={styles(styleProps).text}>{props.text}</Text>
       <View style={styles(styleProps).dateTime}>
-        <DateTimePicker mode='date' value={new Date()} style={styles(styleProps).datePicker} />
-        <DateTimePicker mode='time' value={new Date()} style={styles(styleProps).timePicker} />
+        <DateTimePicker mode='date' value={props.datetime} style={styles(styleProps).datePicker} />
+        <DateTimePicker mode='time' value={props.datetime} style={styles(styleProps).timePicker} />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = (styleProps: StyleProps) =>
@@ -61,4 +62,4 @@ const styles = (styleProps: StyleProps) =>
     dateTime: {
       flexDirection: 'row',
     },
-  });
+  })

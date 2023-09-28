@@ -17,20 +17,12 @@ const AgendaItem = (props: ItemProps) => {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
   const context = useContext(DataContext)
 
-  const treatment = context!.treatments?.find((t) => t.id === appointment.treatment_id)
-  const patient = context!.patients?.find((p) => p.id === treatment?.patient_id)
+  const treatment = context?.treatments?.find((t) => t.id === appointment.treatment_id)
+  const patient = context?.patients?.find((p) => p.id === treatment?.patient_id)
 
   const itemPressed = useCallback(() => {
-    navigation.navigate('EditAppointment', { treatment: appointment.actions })
+    navigation.navigate('EditAppointment', { appointmentId: appointment.id })
   }, [])
-
-  if (!appointment) {
-    return (
-      <View style={styles(colors).emptyItem}>
-        <Text style={styles(colors).emptyItemText}>No events planned Today</Text>
-      </View>
-    )
-  }
 
   return (
     <TouchableOpacity onPress={itemPressed} style={styles(colors).item}>

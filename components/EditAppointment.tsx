@@ -1,9 +1,9 @@
-import { Mode } from '../enums/Mode';
-import { RootStackScreenProps } from '../types/Navigation';
-import Appointment from './Appointment';
+import { Mode } from '../enums/Mode'
+import { RootStackScreenProps } from '../types/Navigation'
+import Appointment from './Appointment'
 
 export default function EditAppointment({ route }: RootStackScreenProps<'EditAppointment'>) {
-  const { treatment } = route.params;
+  const { appointmentId } = route.params
 
-  return <Appointment mode={Mode.EDIT} treatment={treatment} />;
+  return <Appointment mode={Mode.EDIT} appointmentId={appointmentId} />
 }

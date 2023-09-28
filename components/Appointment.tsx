@@ -7,23 +7,29 @@ import { RootStackScreenProps } from '../types/Navigation'
 import { Button } from '@rneui/themed'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MainView from './MainView'
+import { useContext } from 'react'
+import { DataContext } from '../contexts/DataContext'
 
 type Props = {
-  treatment?: string
+  appointmentId: number
   mode: Mode
 }
 
 export default function Appointment(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
+  const context = useContext(DataContext)
 
+  const appointment = context?.appointments?.find((a) => a.id === props.appointmentId)
+  const treatment = context?.treatments?.find((t) => t.id === appointment?.treatment_id)
+  const datetime = appointment ? new Date(appointment.datetime) : new Date()
   return (
     <MainView>
-      <DateTimeInput text='Date and time' showDatePicker={true} showTimePicker={true} />
-      <MyInput placeholder='Actions' multiline={true} />
+      <DateTimeInput text='Date and time' datetime={datetime} showDatePicker={true} showTimePicker={true} />
+      <MyInput placeholder='Actions' multiline={true} value={appointment?.actions} />
       <MyInput
         placeholder='Select treatment'
         onPressIn={() => (props.mode === Mode.NEW ? navigation.navigate('Treatments', { preventDefault: true }) : null)}
-        value={props.treatment}
+        value={treatment?.title}
         editable={false}
       />
       {props.mode === Mode.EDIT && (
