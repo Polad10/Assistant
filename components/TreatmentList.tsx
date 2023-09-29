@@ -1,15 +1,16 @@
 import { View, StyleSheet, ScrollView } from 'react-native'
 import TreatmentItem from './TreatmentItem'
-import { Status } from '../enums/Status'
 import { Divider } from '@rneui/themed'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { Colors } from '../types/Colors'
 import MyFAB from './MyFAB'
 import { RootStackScreenProps, RootStackParamList } from '../types/Navigation'
+import MainView from './MainView'
 
 type Props = {
   pageName: keyof RootStackParamList
   patient?: string
+  treatments?: Treatment[]
   preventDefault?: boolean
 }
 
@@ -17,39 +18,26 @@ export default function TreatmentList(props: Props) {
   const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
+  let treatmentElements = null
+
+  if (props.treatments) {
+    treatmentElements = props.treatments.map((t) => {
+      return (
+        <View key={t.id}>
+          <TreatmentItem treatment={t} pageName={props.pageName} preventDefault={props.preventDefault} />
+          <Divider color={colors.border} style={styles(colors).divider} />
+        </View>
+      )
+    })
+  }
+
   return (
-    <View style={styles(colors).mainView}>
+    <MainView>
       <ScrollView>
-        <TreatmentItem
-          description='Lorem ipsum dolor sit amet consectetur.'
-          patientName='Polad Mammadov'
-          startDate={new Date()}
-          status={Status.ONGOING}
-          pageName={props.pageName}
-          preventDefault={props.preventDefault}
-        />
-        <Divider color={colors.border} style={styles(colors).divider} />
-        <TreatmentItem
-          description='Lorem ipsum dolor sit amet consectetur.'
-          patientName='Polad Mammadov'
-          startDate={new Date()}
-          status={Status.FINISHED}
-          pageName={props.pageName}
-          preventDefault={props.preventDefault}
-        />
-        <Divider color={colors.border} style={styles(colors).divider} />
-        <TreatmentItem
-          description='Lorem ipsum dolor sit amet consectetur.'
-          patientName='Polad Mammadov'
-          startDate={new Date()}
-          status={Status.FINISHED}
-          pageName={props.pageName}
-          preventDefault={props.preventDefault}
-        />
-        <Divider color={colors.border} style={styles(colors).divider} />
+        <MainView>{treatmentElements}</MainView>
       </ScrollView>
       <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: props.patient })} />
-    </View>
+    </MainView>
   )
 }
 

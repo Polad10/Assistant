@@ -5,46 +5,50 @@ import { useNavigation, useTheme } from '@react-navigation/native'
 import { Status } from '../enums/Status'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
+import { getPatientFullName } from '../helpers/PatientHelper'
+import { DateTime } from 'luxon'
+import { useContext } from 'react'
+import { DataContext } from '../contexts/DataContext'
 
 export type TreatmentItemProps = {
-  description: string
-  patientName: string
-  startDate: Date
-  status: Status
+  treatment: Treatment
   preventDefault?: boolean
   pageName: keyof RootStackParamList
 }
 
 type StyleProps = {
   colors: Colors
-  status: Status
+  finished: boolean
 }
 
 export default function TreatmentItem(props: TreatmentItemProps) {
   const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
+  const context = useContext(DataContext)
 
   const styleProps: StyleProps = {
     colors: colors,
-    status: props.status,
+    finished: props.treatment.finished,
   }
 
+  const patient = context?.patients?.find((p) => p.id === props.treatment.patient_id)
+
   return (
-    <TouchableHighlight onPress={() => handleTreatmentSelect(props.description)}>
+    <TouchableHighlight onPress={() => handleTreatmentSelect(props.treatment.title)}>
       <ListItem containerStyle={styles(styleProps).listItemContainer}>
         <ListItem.Content>
-          <ListItem.Title style={styles(styleProps).listItemTitle}>{props.description}</ListItem.Title>
+          <ListItem.Title style={styles(styleProps).listItemTitle}>{props.treatment.title}</ListItem.Title>
           <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>
-            Patient: {props.patientName}
+            Patient: {getPatientFullName(patient)}
           </ListItem.Subtitle>
           <View style={styles(styleProps).listItemStatus}>
             <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>
-              Start date: {props.startDate.toLocaleDateString()}
+              Start date: {DateTime.fromISO(props.treatment.start_date).toISODate()}
             </ListItem.Subtitle>
             <View style={styles(styleProps).listItemRow}>
               <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>Status: </ListItem.Subtitle>
               <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).statusColor]}>
-                {props.status}
+                {props.treatment.finished ? 'Finished' : 'Ongoing'}
               </ListItem.Subtitle>
             </View>
           </View>
@@ -89,6 +93,6 @@ const styles = (styleProps: StyleProps) =>
       flexDirection: 'row',
     },
     statusColor: {
-      color: styleProps.status == Status.ONGOING ? 'orange' : 'lightgreen',
+      color: styleProps.finished ? 'lightgreen' : 'orange',
     },
   })
