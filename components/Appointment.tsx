@@ -11,7 +11,8 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 
 type Props = {
-  appointmentId: number
+  appointmentId?: number
+  treatment?: Treatment
   mode: Mode
 }
 
@@ -20,8 +21,13 @@ export default function Appointment(props: Props) {
   const context = useContext(DataContext)
 
   const appointment = context?.appointments?.find((a) => a.id === props.appointmentId)
-  const treatment = context?.treatments?.find((t) => t.id === appointment?.treatment_id)
+  let treatment = context?.treatments?.find((t) => t.id === appointment?.treatment_id)
   const datetime = appointment ? new Date(appointment.datetime) : new Date()
+
+  if (props.mode === Mode.NEW) {
+    treatment = props.treatment
+  }
+
   return (
     <MainView>
       <DateTimeInput text='Date and time' datetime={datetime} showDatePicker={true} showTimePicker={true} />

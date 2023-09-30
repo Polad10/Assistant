@@ -34,7 +34,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
   const patient = context?.patients?.find((p) => p.id === props.treatment.patient_id)
 
   return (
-    <TouchableHighlight onPress={() => handleTreatmentSelect(props.treatment.title)}>
+    <TouchableHighlight onPress={() => handleTreatmentSelect(props.treatment)}>
       <ListItem containerStyle={styles(styleProps).listItemContainer}>
         <ListItem.Content>
           <ListItem.Title style={styles(styleProps).listItemTitle}>{props.treatment.title}</ListItem.Title>
@@ -57,12 +57,12 @@ export default function TreatmentItem(props: TreatmentItemProps) {
     </TouchableHighlight>
   )
 
-  function handleTreatmentSelect(treatment: string) {
+  function handleTreatmentSelect(treatment: Treatment) {
     if (props.preventDefault) {
       DeviceEventEmitter.emit('treatmentSelected', treatment)
     } else {
       navigation.navigate('Treatment', {
-        treatment: treatment,
+        treatment: treatment.title,
         patientName: 'Polad Mammadov',
         startDate: new Date().toLocaleDateString(),
         status: Status.ONGOING,

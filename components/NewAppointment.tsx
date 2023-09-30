@@ -5,7 +5,7 @@ import { Mode } from '../enums/Mode'
 import { RootStackScreenProps } from '../types/Navigation'
 
 export default function NewAppointment({ navigation }: RootStackScreenProps<'NewAppointment'>) {
-  const [treatment, setTreatment] = useState<string>()
+  const [treatment, setTreatment] = useState<Treatment | undefined>(undefined)
 
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
@@ -17,7 +17,7 @@ export default function NewAppointment({ navigation }: RootStackScreenProps<'New
 
   return <Appointment mode={Mode.NEW} treatment={treatment} />
 
-  function handleTreatmentSelect(treatment: string) {
+  function handleTreatmentSelect(treatment: Treatment) {
     navigation.goBack()
     setTreatment(treatment)
   }
