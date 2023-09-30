@@ -4,7 +4,6 @@ import { View, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 import PatientItem from './PatientItem'
 import { RootStackParamList } from '../types/Navigation'
-import { getPatientFullName } from '../helpers/PatientHelper'
 
 interface Props {
   sectionTiTle: string
@@ -18,11 +17,7 @@ export default function PatientListSection(props: Props) {
 
   const patientElements = props.patients.map((p) => (
     <View key={p.id}>
-      <PatientItem
-        patientName={getPatientFullName(p)}
-        preventDefault={props.preventDefault}
-        pageName={props.pageName}
-      />
+      <PatientItem patient={p} preventDefault={props.preventDefault} pageName={props.pageName} />
       <Divider color={colors.border} style={styles(colors).divider} />
     </View>
   ))
