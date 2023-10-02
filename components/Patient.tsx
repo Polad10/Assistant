@@ -1,15 +1,17 @@
-import { View, Text, StyleSheet, DeviceEventEmitter } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { Colors } from '../types/Colors'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { ButtonGroup } from '@rneui/themed'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import { AgendaList } from 'react-native-calendars'
 import TreatmentList from './TreatmentList'
 import DetailTab from './DetailTab'
 import PaymentList from './PaymentList'
 import MyFAB from './MyFAB'
+import { DataContext } from '../contexts/DataContext'
+import { getPatientFullName } from '../helpers/PatientHelper'
 
 const items = [
   {
@@ -43,9 +45,12 @@ const items = [
 export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { colors } = useTheme()
-  const { patient } = route.params
+  const { patientId } = route.params
 
   const navigation = useNavigation<RootStackScreenProps<'Patient'>['navigation']>()
+  const context = useContext(DataContext)
+
+  const patient = context?.patients?.find((p) => p.id === patientId)
 
   const renderItem = useCallback(({ item }: any) => {
     return <AgendaItem appointment={item} />
@@ -84,12 +89,12 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   return (
     <View style={styles(colors).mainView}>
       <View style={[styles(colors).headerView, styles(colors).card]}>
-        <Text style={styles(colors).title}>{patient}</Text>
+        <Text style={styles(colors).title}>{getPatientFullName(patient)}</Text>
       </View>
       <View style={[styles(colors).infoView, styles(colors).card]}>
-        <Text style={styles(colors).text}>City: Eindhoven</Text>
-        <Text style={styles(colors).text}>Phone number: +31606060606</Text>
-        <Text style={styles(colors).text}>Extra info: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+        <Text style={styles(colors).text}>City: {patient?.city}</Text>
+        <Text style={styles(colors).text}>Phone number: {patient?.phone}</Text>
+        <Text style={styles(colors).text}>Extra info: {patient?.extra_info}</Text>
       </View>
       <View style={[styles(colors).additionalInfoView, styles(colors).card]}>
         <ButtonGroup

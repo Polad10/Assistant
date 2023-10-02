@@ -4,4 +4,5 @@ interface Patient {
   last_name: string
   city: string
   phone: string
+  extra_info: string
 }

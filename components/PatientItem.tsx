@@ -30,7 +30,7 @@ export default function PatientItem(props: Props) {
     if (props.preventDefault) {
       DeviceEventEmitter.emit('patientSelected', patient)
     } else {
-      navigation.navigate('Patient', { patient: patient })
+      navigation.navigate('Patient', { patientId: patient.id })
     }
   }
 }
