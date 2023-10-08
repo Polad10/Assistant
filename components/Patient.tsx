@@ -12,35 +12,8 @@ import PaymentList from './PaymentList'
 import MyFAB from './MyFAB'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
-
-const items = [
-  {
-    title: '2022-11-27',
-    data: [
-      {
-        hour: '12am',
-        title: 'Appointment-1',
-      },
-      {
-        hour: '1pm',
-        title: 'Appointment-2',
-      },
-    ],
-  },
-  {
-    title: '2022-11-28',
-    data: [
-      {
-        hour: '2pm',
-        title: 'Appointment-3',
-      },
-      {
-        hour: '3pm',
-        title: 'Appointment-4',
-      },
-    ],
-  },
-]
+import { getGroupedAppointments } from '../helpers/AppointmentHelper'
+import { DateTime } from 'luxon'
 
 export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -50,7 +23,39 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const navigation = useNavigation<RootStackScreenProps<'Patient'>['navigation']>()
   const context = useContext(DataContext)
 
-  const patient = context?.patients?.find((p) => p.id === patientId)
+  if (!context) {
+    return
+  }
+
+  useEffect(() => {
+    context.fetchAppointments()
+    context.fetchTreatments()
+  }, [])
+
+  const today = DateTime.local().toISODate()
+
+  const patient = context.patients?.find((p) => p.id === patientId)
+  const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id)
+
+  const appointments = context.appointments?.filter((a) => {
+    const datetime = DateTime.fromISO(a.datetime).toISODate()
+
+    if (!datetime || !today) {
+      return false
+    }
+
+    return treatments?.some((t) => t.id === a.treatment_id) && datetime >= today
+  })
+
+  const groupedAppointments = appointments ? getGroupedAppointments(appointments) : null
+  const agendaItems = groupedAppointments
+    ? Array.from(groupedAppointments).map(([date, appointments]) => {
+        return {
+          title: date,
+          data: appointments,
+        }
+      })
+    : null
 
   const renderItem = useCallback(({ item }: any) => {
     return <AgendaItem appointment={item} />
@@ -73,7 +78,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 0:
         return (
           <View style={styles(colors).mainView}>
-            <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
+            <AgendaList sections={agendaItems} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
             <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
           </View>
         )

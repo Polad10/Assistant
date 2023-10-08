@@ -8,16 +8,20 @@ import MyFAB from './MyFAB'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
-import { DateTime } from 'luxon'
+import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
   const context = useContext(DataContext)
 
+  if (!context) {
+    return
+  }
+
   useEffect(() => {
-    context!.fetchAppointments()
-    context!.fetchTreatments()
-    context!.fetchPatients()
+    context.fetchAppointments()
+    context.fetchTreatments()
+    context.fetchPatients()
   }, [])
 
   const renderItem = (item: Appointment) => {
@@ -32,29 +36,8 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     )
   }
 
-  const groupedAppointments = new Map<string, Appointment[]>()
-
-  for (const appointment of context?.appointments ?? []) {
-    const date = DateTime.fromISO(appointment.datetime).toISODate()
-
-    if (!date) {
-      return
-    }
-
-    if (!groupedAppointments.has(date)) {
-      groupedAppointments.set(date, [])
-    }
-
-    groupedAppointments.get(date)?.push(appointment)
-  }
-
-  for (const [date, appointments] of groupedAppointments) {
-    appointments.sort((a1, a2) => {
-      return a1.datetime.localeCompare(a2.datetime)
-    })
-  }
-
-  const agendaItems = Object.fromEntries(groupedAppointments)
+  const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
+  const agendaItems = groupedAppointments ? Object.fromEntries(groupedAppointments) : {}
 
   return (
     <MainView>
