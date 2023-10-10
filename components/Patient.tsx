@@ -35,7 +35,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const today = DateTime.local().toISODate()
 
   const patient = context.patients?.find((p) => p.id === patientId)
-  const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id)
+  const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !t.finished)
 
   const appointments = context.appointments?.filter((a) => {
     const datetime = DateTime.fromISO(a.datetime).toISODate()
