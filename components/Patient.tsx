@@ -30,12 +30,14 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   useEffect(() => {
     context.fetchAppointments()
     context.fetchTreatments()
+    context.fetchPayments()
   }, [])
 
   const today = DateTime.local().toISODate()
 
   const patient = context.patients?.find((p) => p.id === patientId)
   const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !t.finished)
+  const payments = context.payments?.filter((p) => treatments?.some((t) => t.id === p.treatment_id)) ?? []
 
   const appointments = context.appointments?.filter((a) => {
     const datetime = DateTime.fromISO(a.datetime).toISODate()
@@ -85,7 +87,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       case 1:
         return <TreatmentList pageName='Patient' patient={patient} />
       case 2:
-        return <PaymentList pageName='Patient' />
+        return <PaymentList pageName='Patient' payments={payments} />
       default:
         return null
     }

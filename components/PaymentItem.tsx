@@ -1,24 +1,24 @@
-import { ListItem } from '@rneui/themed';
-import { StyleSheet } from 'react-native';
-import { Colors } from '../types/Colors';
-import { useTheme } from '@react-navigation/native';
+import { ListItem } from '@rneui/themed'
+import { StyleSheet } from 'react-native'
+import { Colors } from '../types/Colors'
+import { useTheme } from '@react-navigation/native'
 
 type Props = {
-  date: Date;
-  amount: number;
-};
+  date: string
+  amount: number
+}
 
 export default function PaymentItem(props: Props) {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
   return (
     <ListItem containerStyle={styles(colors).listItemContainer}>
       <ListItem.Content style={styles(colors).listItemRow}>
-        <ListItem.Title style={styles(colors).listItemTitle}>{props.date.toLocaleDateString('en-GB')}</ListItem.Title>
-        <ListItem.Title style={styles(colors).listItemTitle}>+{props.amount}</ListItem.Title>
+        <ListItem.Title style={styles(colors).listItemTitle}>{props.date}</ListItem.Title>
+        <ListItem.Title style={styles(colors).listItemTitle}>+ {props.amount}</ListItem.Title>
       </ListItem.Content>
     </ListItem>
-  );
+  )
 }
 
 const styles = (colors: Colors) =>
@@ -33,4 +33,4 @@ const styles = (colors: Colors) =>
     listItemTitle: {
       color: colors.text,
     },
-  });
+  })
