@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
 
@@ -8,6 +8,7 @@ type Props = {
   datetime: Date
   showDatePicker?: boolean
   showTimePicker?: boolean
+  onChange?: (event: DateTimePickerEvent, dateTime: Date | undefined) => void
 }
 
 type StyleProps = {
@@ -29,8 +30,18 @@ export default function DateTimeInput(props: Props) {
     <View style={styles(styleProps).dateTimeContainer}>
       <Text style={styles(styleProps).text}>{props.text}</Text>
       <View style={styles(styleProps).dateTime}>
-        <DateTimePicker mode='date' value={props.datetime} style={styles(styleProps).datePicker} />
-        <DateTimePicker mode='time' value={props.datetime} style={styles(styleProps).timePicker} />
+        <DateTimePicker
+          mode='date'
+          value={props.datetime}
+          style={styles(styleProps).datePicker}
+          onChange={props.onChange}
+        />
+        <DateTimePicker
+          mode='time'
+          value={props.datetime}
+          style={styles(styleProps).timePicker}
+          onChange={props.onChange}
+        />
       </View>
     </View>
   )
