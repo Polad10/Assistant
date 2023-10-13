@@ -11,7 +11,7 @@ export type RootStackParamList = {
   Patients: { preventDefault?: boolean; pageName: keyof RootStackParamList } | undefined
   Treatments: { preventDefault?: boolean } | undefined
   Patient: { patientId: number }
-  Treatment: { treatment: string; status: Status; patientName: string; startDate: string }
+  Treatment: { treatmentId: number }
   NewPayment: undefined
 }
 

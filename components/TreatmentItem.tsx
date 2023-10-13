@@ -2,7 +2,6 @@ import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
 import { ListItem } from '@rneui/themed'
 import { Colors } from '../types/Colors'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import { Status } from '../enums/Status'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
@@ -61,12 +60,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
     if (props.preventDefault) {
       DeviceEventEmitter.emit('treatmentSelected', treatment)
     } else {
-      navigation.navigate('Treatment', {
-        treatment: treatment.title,
-        patientName: 'Polad Mammadov',
-        startDate: new Date().toLocaleDateString(),
-        status: Status.ONGOING,
-      })
+      navigation.navigate('Treatment', { treatmentId: treatment.id })
     }
   }
 }

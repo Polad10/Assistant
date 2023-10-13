@@ -1,5 +1,5 @@
 import { useNavigation, useTheme } from '@react-navigation/native'
-import { useCallback, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
 import AgendaItem from './AgendaItem'
 import DetailTab from './DetailTab'
@@ -8,58 +8,61 @@ import { AgendaList } from 'react-native-calendars'
 import MyFAB from './MyFAB'
 import PaymentList from './PaymentList'
 import { Colors } from '../types/Colors'
-import { Status } from '../enums/Status'
 import { ButtonGroup } from '@rneui/themed'
-
-const items = [
-  {
-    title: '2022-11-27',
-    data: [
-      {
-        hour: '12am',
-        title: 'Appointment-1',
-      },
-      {
-        hour: '1pm',
-        title: 'Appointment-2',
-      },
-    ],
-  },
-  {
-    title: '2022-11-28',
-    data: [
-      {
-        hour: '2pm',
-        title: 'Appointment-3',
-      },
-      {
-        hour: '3pm',
-        title: 'Appointment-4',
-      },
-    ],
-  },
-]
+import { DataContext } from '../contexts/DataContext'
+import { getPatientFullName } from '../helpers/PatientHelper'
+import { DateTime } from 'luxon'
+import { getGroupedAppointments } from '../helpers/AppointmentHelper'
+import { Status } from '../enums/Status'
 
 type StyleProps = {
   colors: Colors
-  status: Status
+  treatmentFinished: boolean | undefined
 }
 
 export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { colors } = useTheme()
-  const { treatment, status, patientName, startDate } = route.params
+  const { treatmentId } = route.params
 
   const navigation = useNavigation<RootStackScreenProps<'Treatment'>['navigation']>()
+  const context = useContext(DataContext)
 
-  const styleProps: StyleProps = {
-    colors: colors,
-    status: status,
+  if (!context) {
+    return
   }
+
+  useEffect(() => {
+    context.fetchTreatments()
+    context.fetchPatients()
+    context.fetchAppointments()
+    context.fetchPayments()
+  }, [])
+
+  const treatment = context.treatments?.find((t) => t.id === treatmentId)
+  const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
+  const appointments = context.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
+  const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
+
+  const groupedAppointments = getGroupedAppointments(appointments)
+
+  const agendaItems = groupedAppointments
+    ? Array.from(groupedAppointments).map(([date, appointments]) => {
+        return {
+          title: date,
+          data: appointments,
+        }
+      })
+    : null
 
   const renderItem = useCallback(({ item }: any) => {
     return <AgendaItem appointment={item} />
   }, [])
+
+  const styleProps: StyleProps = {
+    colors: colors,
+    treatmentFinished: treatment?.finished,
+  }
 
   const buttons = [
     {
@@ -75,14 +78,18 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
       case 0:
         return (
           <View style={styles(styleProps).mainView}>
-            <AgendaList sections={items} renderItem={renderItem} sectionStyle={styles(styleProps).agendaSection} />
+            <AgendaList
+              sections={agendaItems}
+              renderItem={renderItem}
+              sectionStyle={styles(styleProps).agendaSection}
+            />
             <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
           </View>
         )
       case 1:
         return (
           <View style={styles(styleProps).mainView}>
-            <PaymentList pageName='Patient' />
+            <PaymentList pageName='Patient' payments={payments} />
             <MyFAB onPress={() => navigation.navigate('NewPayment')} />
           </View>
         )
@@ -91,18 +98,22 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
     }
   }
 
+  const status = treatment?.finished ? Status.FINISHED : Status.ONGOING
+
   return (
     <View style={styles(styleProps).mainView}>
       <View style={[styles(styleProps).headerView, styles(styleProps).card]}>
-        <Text style={styles(styleProps).title}>{treatment}</Text>
+        <Text style={styles(styleProps).title}>{treatment?.title}</Text>
       </View>
       <View style={[styles(styleProps).infoView, styles(styleProps).card]}>
         <View style={styles(styleProps).statusView}>
           <Text style={styles(styleProps).text}>Status: </Text>
           <Text style={[styles(styleProps).text, styles(styleProps).status]}>{status}</Text>
         </View>
-        <Text style={styles(styleProps).text}>Patient name: {patientName}</Text>
-        <Text style={styles(styleProps).text}>Start date: {startDate}</Text>
+        <Text style={styles(styleProps).text}>Patient: {getPatientFullName(patient)}</Text>
+        <Text style={styles(styleProps).text}>
+          Start date: {DateTime.fromISO(treatment?.start_date || '').toISODate()}
+        </Text>
       </View>
       <View style={[styles(styleProps).additionalInfoView, styles(styleProps).card]}>
         <ButtonGroup
@@ -155,6 +166,6 @@ const styles = (styleProps: StyleProps) =>
       flexDirection: 'row',
     },
     status: {
-      color: styleProps.status == Status.ONGOING ? 'orange' : 'lightgreen',
+      color: styleProps.treatmentFinished ? 'lightgreen' : 'orange',
     },
   })
