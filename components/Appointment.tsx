@@ -10,6 +10,7 @@ import MainView from './MainView'
 import { useContext, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import Treatment from '@polad10/assistant-models/Treatment'
 
 type Props = {
   appointmentId?: number

@@ -4,6 +4,7 @@ import MainView from './MainView'
 import { ScrollView } from 'react-native'
 import { useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
+import Patient from '@polad10/assistant-models/Patient'
 
 type Props = {
   pageName: keyof RootStackParamList

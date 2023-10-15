@@ -5,6 +5,7 @@ import DateTimeInput from './DateTimeInput'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { getPatientFullName } from '../helpers/PatientHelper'
+import Patient from '@polad10/assistant-models/Patient'
 
 type StyleProps = {
   patientEditable: boolean

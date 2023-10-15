@@ -1,4 +1,3 @@
-import { View, StyleSheet } from 'react-native'
 import MyInput from './MyInput'
 import MainView from './MainView'
 
