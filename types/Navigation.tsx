@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { Status } from '../enums/Status'
+import Patient from '@polad10/assistant-models/Patient'
 
 export type RootStackParamList = {
   Home: undefined

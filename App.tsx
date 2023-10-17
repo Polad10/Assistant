@@ -56,12 +56,6 @@ function Home() {
   )
 }
 
-function SaveHeaderButton() {
-  const { colors } = useTheme()
-
-  return <Button title='Save' color={colors.primary} />
-}
-
 export default function App() {
   DarkTheme.colors.primary = '#ad164d'
 
@@ -83,31 +77,11 @@ export default function App() {
             <Stack.Screen name='Treatments' component={Treatments} />
             <Stack.Screen name='Patient' component={Patient} />
             <Stack.Screen name='Treatment' component={Treatment} />
-            <Stack.Screen
-              name='NewAppointment'
-              component={NewAppointment}
-              options={{ title: 'New Appointment', headerRight: SaveHeaderButton }}
-            />
-            <Stack.Screen
-              name='NewTreatment'
-              component={NewTreatment}
-              options={{ title: 'New Treatment', headerRight: SaveHeaderButton }}
-            />
-            <Stack.Screen
-              name='NewPatient'
-              component={NewPatient}
-              options={{ title: 'New Patient', headerRight: SaveHeaderButton }}
-            />
-            <Stack.Screen
-              name='EditAppointment'
-              component={EditAppointment}
-              options={{ title: 'Appointment', headerRight: SaveHeaderButton }}
-            />
-            <Stack.Screen
-              name='NewPayment'
-              component={NewPayment}
-              options={{ title: 'New Payment', headerRight: SaveHeaderButton }}
-            />
+            <Stack.Screen name='NewAppointment' component={NewAppointment} />
+            <Stack.Screen name='NewTreatment' component={NewTreatment} />
+            <Stack.Screen name='NewPatient' component={NewPatient} />
+            <Stack.Screen name='EditAppointment' component={EditAppointment} />
+            <Stack.Screen name='NewPayment' component={NewPayment} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
