@@ -1,30 +1,36 @@
-import { StyleSheet } from 'react-native';
-import { Input, InputProps } from '@rneui/themed';
-import { useTheme } from '@react-navigation/native';
-import { Colors } from '../types/Colors';
+import { StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
+import { Colors } from '../types/Colors'
+import { Input, InputProps } from '@rneui/themed'
 
-export default function MyInput(props: InputProps) {
-  const { colors } = useTheme();
-
-  return (
-    <Input
-      {...props}
-      inputStyle={styles(colors).input}
-      inputContainerStyle={styles(colors).inputContainer}
-      containerStyle={styles(colors).container}
-    />
-  );
+type StyleProps = {
+  colors: Colors
+  showError?: boolean
 }
 
-const styles = (colors: Colors) =>
+type Props = InputProps & {
+  showError?: boolean
+}
+
+export default function MyInput(props: Props) {
+  const { colors } = useTheme()
+
+  const styleProps: StyleProps = {
+    colors: colors,
+    showError: props.showError,
+  }
+
+  return (
+    <Input {...props} inputStyle={styles(styleProps).input} inputContainerStyle={styles(styleProps).inputContainer} />
+  )
+}
+
+const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
     input: {
-      color: colors.text,
+      color: styleProps.colors.text,
     },
     inputContainer: {
-      borderColor: colors.border,
+      borderColor: styleProps.showError ? 'red' : styleProps.colors.border,
     },
-    container: {
-      height: 50,
-    },
-  });
+  })

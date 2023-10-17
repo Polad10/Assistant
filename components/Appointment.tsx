@@ -27,15 +27,39 @@ export default function Appointment(props: Props) {
 
   const initialDateTime = appointment ? new Date(appointment.datetime) : new Date()
 
+  const [showActionsInputError, setShowActionsInputError] = useState(false)
+  const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
   const [dateTime, setDateTime] = useState(initialDateTime)
   const [actions, setActions] = useState(appointment?.actions)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
   const handleSave = useCallback(() => {
-    console.log(dateTime)
-    console.log(actions)
-    console.log(selectedTreatment)
+    if (validate()) {
+      console.log(dateTime)
+      console.log(actions)
+      console.log(selectedTreatment)
+    }
   }, [dateTime, actions, selectedTreatment])
+
+  function validate() {
+    let valid = true
+
+    if (!actions) {
+      valid = false
+      setShowActionsInputError(true)
+    } else {
+      setShowActionsInputError(false)
+    }
+
+    if (!selectedTreatment) {
+      valid = false
+      setShowTreatmentInputError(true)
+    } else {
+      setShowTreatmentInputError(false)
+    }
+
+    return valid
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -60,11 +84,13 @@ export default function Appointment(props: Props) {
   }
 
   function handleActionsChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
+    setShowActionsInputError(false)
     setActions(event.nativeEvent.text)
   }
 
   function handleTreatmentSelect(treatment: Treatment) {
     navigation.goBack()
+    setShowTreatmentInputError(false)
     setSelectedTreatment(treatment)
   }
 
@@ -77,12 +103,19 @@ export default function Appointment(props: Props) {
         showTimePicker={true}
         onChange={handleDateTimeChange}
       />
-      <MyInput placeholder='Actions' multiline={true} value={actions} onChange={handleActionsChange} />
+      <MyInput
+        placeholder='Actions'
+        multiline={true}
+        value={actions}
+        onChange={handleActionsChange}
+        showError={showActionsInputError}
+      />
       <MyInput
         placeholder='Select treatment'
         onPressIn={() => (props.mode === Mode.NEW ? navigation.navigate('Treatments', { preventDefault: true }) : null)}
         value={selectedTreatment?.title}
         editable={false}
+        showError={showTreatmentInputError}
       />
       {props.mode === Mode.EDIT && (
         <SafeAreaView style={styles.buttonView}>
