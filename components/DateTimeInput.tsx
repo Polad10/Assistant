@@ -5,7 +5,7 @@ import { useTheme } from '@react-navigation/native'
 
 type Props = {
   text: string
-  datetime: Date
+  datetime?: Date
   showDatePicker?: boolean
   showTimePicker?: boolean
   onChange?: (event: DateTimePickerEvent, dateTime: Date | undefined) => void
@@ -20,6 +20,8 @@ type StyleProps = {
 export default function DateTimeInput(props: Props) {
   const { colors } = useTheme()
 
+  const datetime = props.datetime ?? new Date()
+
   const styleProps: StyleProps = {
     colors: colors,
     showDatePicker: props.showDatePicker,
@@ -30,18 +32,8 @@ export default function DateTimeInput(props: Props) {
     <View style={styles(styleProps).dateTimeContainer}>
       <Text style={styles(styleProps).text}>{props.text}</Text>
       <View style={styles(styleProps).dateTime}>
-        <DateTimePicker
-          mode='date'
-          value={props.datetime}
-          style={styles(styleProps).datePicker}
-          onChange={props.onChange}
-        />
-        <DateTimePicker
-          mode='time'
-          value={props.datetime}
-          style={styles(styleProps).timePicker}
-          onChange={props.onChange}
-        />
+        <DateTimePicker mode='date' value={datetime} style={styles(styleProps).datePicker} onChange={props.onChange} />
+        <DateTimePicker mode='time' value={datetime} style={styles(styleProps).timePicker} onChange={props.onChange} />
       </View>
     </View>
   )

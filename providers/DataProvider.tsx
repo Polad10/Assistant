@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
 import React, { ReactNode, useState } from 'react'
+import Patient from '@polad10/assistant-models/Patient'
+import Appointment from '@polad10/assistant-models/Appointment'
+import Treatment from '@polad10/assistant-models/Treatment'
+import Payment from '@polad10/assistant-models/Payment'
 
 interface DataProviderProps {
   children: ReactNode
