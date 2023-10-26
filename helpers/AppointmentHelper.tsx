@@ -2,7 +2,7 @@ import Appointment from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
 
 export function getGroupedAppointments(appointments: Appointment[]) {
-  const groupedAppointments = new Map<string, Appointment[]>()
+  let groupedAppointments = new Map<string, Appointment[]>()
 
   for (const appointment of appointments) {
     const date = DateTime.fromISO(appointment.datetime).toISODate()
@@ -17,6 +17,8 @@ export function getGroupedAppointments(appointments: Appointment[]) {
 
     groupedAppointments.get(date)?.push(appointment)
   }
+
+  groupedAppointments = new Map([...groupedAppointments.entries()].sort())
 
   for (const [date, appointments] of groupedAppointments) {
     appointments.sort((a1, a2) => {
