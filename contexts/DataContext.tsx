@@ -13,6 +13,7 @@ export interface DataContextType {
   fetchPatients: () => Promise<void>
   fetchAppointments: () => Promise<void>
   createAppointment: (appointment: AppointmentRequest) => Promise<void>
+  updateAppointment: (appointment: AppointmentRequest) => Promise<void>
   fetchTreatments: () => Promise<void>
   fetchPayments: () => Promise<void>
   patients: PatientsType

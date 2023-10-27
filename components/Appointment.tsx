@@ -47,7 +47,13 @@ export default function Appointment(props: Props) {
         treatment_id: selectedTreatment!.id,
       }
 
-      await context.createAppointment(newAppointment)
+      if (props.mode === Mode.EDIT) {
+        newAppointment.id = appointment?.id
+        await context.updateAppointment(newAppointment)
+      } else {
+        await context.createAppointment(newAppointment)
+      }
+
       navigation.goBack()
     }
   }, [dateTime, actions, selectedTreatment])

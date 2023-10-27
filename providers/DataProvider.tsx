@@ -47,6 +47,15 @@ export default function DataProvider({ children }: DataProviderProps) {
     setAppointments(appointmentsNew)
   }
 
+  async function updateAppointment(appointment: AppointmentRequest) {
+    const updatedAppointment = (await axios.put<Appointment>(appointmentsApi, appointment)).data
+
+    const appointmentsNew = appointments ? [...appointments].filter((a) => a.id !== appointment.id) : []
+    appointmentsNew.push(updatedAppointment)
+
+    setAppointments(appointmentsNew)
+  }
+
   async function fetchTreatments() {
     if (!treatments) {
       const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
@@ -69,6 +78,7 @@ export default function DataProvider({ children }: DataProviderProps) {
         fetchPatients,
         fetchAppointments,
         createAppointment,
+        updateAppointment,
         fetchTreatments,
         fetchPayments,
         patients,
