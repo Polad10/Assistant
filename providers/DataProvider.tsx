@@ -2,7 +2,7 @@ import axios from 'axios'
 import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
 import React, { ReactNode, useState } from 'react'
 import Patient from '@polad10/assistant-models/Patient'
-import Appointment from '@polad10/assistant-models/Appointment'
+import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import Treatment from '@polad10/assistant-models/Treatment'
 import Payment from '@polad10/assistant-models/Payment'
 
@@ -16,9 +16,15 @@ export default function DataProvider({ children }: DataProviderProps) {
   const [treatments, setTreatments] = useState<TreatmentsType>(null)
   const [payments, setPayments] = useState<PaymentsType>(null)
 
+  const apiBaseUrl = 'http://192.168.1.236:3000'
+  const patientsApi = `${apiBaseUrl}/patients`
+  const appointmentsApi = `${apiBaseUrl}/appointments`
+  const treatmentsApi = `${apiBaseUrl}/treatments`
+  const paymentsApi = `${apiBaseUrl}/payments`
+
   async function fetchPatients() {
     if (!patients) {
-      const patients = (await axios.get<Patient[]>('http://192.168.1.236:3000/patients')).data
+      const patients = (await axios.get<Patient[]>(patientsApi)).data
 
       setPatients(patients)
     }
@@ -26,15 +32,24 @@ export default function DataProvider({ children }: DataProviderProps) {
 
   async function fetchAppointments() {
     if (!appointments) {
-      const appointments = (await axios.get<Appointment[]>('http://192.168.1.236:3000/appointments')).data
+      const appointments = (await axios.get<Appointment[]>(appointmentsApi)).data
 
       setAppointments(appointments)
     }
   }
 
+  async function createAppointment(appointment: AppointmentRequest) {
+    const createdAppointment = (await axios.post<Appointment>(appointmentsApi, appointment)).data
+
+    const appointmentsNew = appointments ? [...appointments] : []
+    appointmentsNew?.push(createdAppointment)
+
+    setAppointments(appointmentsNew)
+  }
+
   async function fetchTreatments() {
     if (!treatments) {
-      const treatments = (await axios.get<Treatment[]>('http://192.168.1.236:3000/treatments')).data
+      const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
 
       setTreatments(treatments)
     }
@@ -42,7 +57,7 @@ export default function DataProvider({ children }: DataProviderProps) {
 
   async function fetchPayments() {
     if (!payments) {
-      const payments = (await axios.get<Payment[]>('http://192.168.1.236:3000/payments')).data
+      const payments = (await axios.get<Payment[]>(paymentsApi)).data
 
       setPayments(payments)
     }
@@ -53,6 +68,7 @@ export default function DataProvider({ children }: DataProviderProps) {
       value={{
         fetchPatients,
         fetchAppointments,
+        createAppointment,
         fetchTreatments,
         fetchPayments,
         patients,

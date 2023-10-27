@@ -6,7 +6,7 @@ import { getPatientFullName } from '../helpers/PatientHelper'
 import type { RootStackScreenProps } from '../types/Navigation'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
-import Appointment from '@polad10/assistant-models/Appointment'
+import { Appointment } from '@polad10/assistant-models/Appointment'
 
 type ItemProps = {
   appointment: Appointment

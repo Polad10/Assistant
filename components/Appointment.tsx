@@ -12,6 +12,8 @@ import { DataContext } from '../contexts/DataContext'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import Treatment from '@polad10/assistant-models/Treatment'
 import HeaderButton from './HeaderButton'
+import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
+import { DateTime } from 'luxon'
 
 type Props = {
   appointmentId?: number
@@ -22,8 +24,12 @@ export default function Appointment(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
   const context = useContext(DataContext)
 
-  const appointment = context?.appointments?.find((a) => a.id === props.appointmentId)
-  let treatment = context?.treatments?.find((t) => t.id === appointment?.treatment_id)
+  if (!context) {
+    return
+  }
+
+  const appointment = context.appointments?.find((a) => a.id === props.appointmentId)
+  let treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
 
   const initialDateTime = appointment ? new Date(appointment.datetime) : new Date()
 
@@ -33,11 +39,16 @@ export default function Appointment(props: Props) {
   const [actions, setActions] = useState(appointment?.actions)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     if (validate()) {
-      console.log(dateTime)
-      console.log(actions)
-      console.log(selectedTreatment)
+      const newAppointment: AppointmentRequest = {
+        datetime: DateTime.fromJSDate(dateTime).toISO()!,
+        actions: actions,
+        treatment_id: selectedTreatment!.id,
+      }
+
+      await context.createAppointment(newAppointment)
+      navigation.goBack()
     }
   }, [dateTime, actions, selectedTreatment])
 

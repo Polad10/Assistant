@@ -9,7 +9,7 @@ import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
-import Appointment from '@polad10/assistant-models/Appointment'
+import { Appointment } from '@polad10/assistant-models/Appointment'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
