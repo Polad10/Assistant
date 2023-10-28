@@ -58,6 +58,14 @@ export default function Appointment(props: Props) {
     }
   }, [dateTime, actions, selectedTreatment])
 
+  const handleDelete = useCallback(async () => {
+    if (appointment) {
+      await context.deleteAppointment(appointment.id)
+
+      navigation.goBack()
+    }
+  }, [])
+
   function validate() {
     let valid = true
 
@@ -136,7 +144,7 @@ export default function Appointment(props: Props) {
       />
       {props.mode === Mode.EDIT && (
         <SafeAreaView style={styles.buttonView}>
-          <Button color='red' style={styles.button}>
+          <Button color='red' style={styles.button} onPress={handleDelete}>
             Delete
           </Button>
         </SafeAreaView>

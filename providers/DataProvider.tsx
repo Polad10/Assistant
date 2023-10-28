@@ -5,6 +5,7 @@ import Patient from '@polad10/assistant-models/Patient'
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import Treatment from '@polad10/assistant-models/Treatment'
 import Payment from '@polad10/assistant-models/Payment'
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
 
 interface DataProviderProps {
   children: ReactNode
@@ -56,6 +57,15 @@ export default function DataProvider({ children }: DataProviderProps) {
     setAppointments(appointmentsNew)
   }
 
+  async function deleteAppointment(appointmentId: Int32) {
+    const url = `${appointmentsApi}/${appointmentId}`
+
+    await axios.delete(url)
+
+    const appointmentsNew = appointments ? [...appointments].filter((a) => a.id !== appointmentId) : []
+    setAppointments(appointmentsNew)
+  }
+
   async function fetchTreatments() {
     if (!treatments) {
       const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
@@ -79,6 +89,7 @@ export default function DataProvider({ children }: DataProviderProps) {
         fetchAppointments,
         createAppointment,
         updateAppointment,
+        deleteAppointment,
         fetchTreatments,
         fetchPayments,
         patients,

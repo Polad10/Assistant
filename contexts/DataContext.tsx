@@ -3,6 +3,7 @@ import Patient from '@polad10/assistant-models/Patient'
 import Payment from '@polad10/assistant-models/Payment'
 import Treatment from '@polad10/assistant-models/Treatment'
 import { createContext } from 'react'
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
 
 export type PatientsType = Patient[] | null
 export type AppointmentsType = Appointment[] | null
@@ -14,6 +15,7 @@ export interface DataContextType {
   fetchAppointments: () => Promise<void>
   createAppointment: (appointment: AppointmentRequest) => Promise<void>
   updateAppointment: (appointment: AppointmentRequest) => Promise<void>
+  deleteAppointment: (appointmentId: Int32) => Promise<void>
   fetchTreatments: () => Promise<void>
   fetchPayments: () => Promise<void>
   patients: PatientsType
