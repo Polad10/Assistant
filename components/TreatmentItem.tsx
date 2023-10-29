@@ -8,7 +8,7 @@ import { getPatientFullName } from '../helpers/PatientHelper'
 import { DateTime } from 'luxon'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import Treatment from '@polad10/assistant-models/Treatment'
+import { Treatment } from '@polad10/assistant-models/Treatment'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -60,6 +60,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
   function handleTreatmentSelect(treatment: Treatment) {
     if (props.preventDefault) {
       DeviceEventEmitter.emit('treatmentSelected', treatment)
+      navigation.goBack()
     } else {
       navigation.navigate('Treatment', { treatmentId: treatment.id })
     }

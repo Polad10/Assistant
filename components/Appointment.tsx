@@ -10,7 +10,7 @@ import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import Treatment from '@polad10/assistant-models/Treatment'
+import { Treatment } from '@polad10/assistant-models/Treatment'
 import HeaderButton from './HeaderButton'
 import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
@@ -35,8 +35,9 @@ export default function Appointment(props: Props) {
 
   const [showActionsInputError, setShowActionsInputError] = useState(false)
   const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
+
   const [dateTime, setDateTime] = useState(initialDateTime)
-  const [actions, setActions] = useState(appointment?.actions)
+  const [actions, setActions] = useState(appointment?.actions ?? undefined)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
   const handleSave = useCallback(async () => {
@@ -94,10 +95,12 @@ export default function Appointment(props: Props) {
 
   if (props.mode === Mode.NEW) {
     useEffect(() => {
-      const listener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
+      const treatmentSelectedListener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
+      const treatmentCreatedListener = DeviceEventEmitter.addListener('treatmentCreated', handleTreatmentSelect)
 
       return () => {
-        listener.remove()
+        treatmentSelectedListener.remove()
+        treatmentCreatedListener.remove()
       }
     }, [])
   }
@@ -114,7 +117,6 @@ export default function Appointment(props: Props) {
   }
 
   function handleTreatmentSelect(treatment: Treatment) {
-    navigation.goBack()
     setShowTreatmentInputError(false)
     setSelectedTreatment(treatment)
   }

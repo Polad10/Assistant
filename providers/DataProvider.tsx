@@ -3,7 +3,7 @@ import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsTy
 import React, { ReactNode, useState } from 'react'
 import Patient from '@polad10/assistant-models/Patient'
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
-import Treatment from '@polad10/assistant-models/Treatment'
+import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
 import Payment from '@polad10/assistant-models/Payment'
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
 
@@ -39,6 +39,22 @@ export default function DataProvider({ children }: DataProviderProps) {
     }
   }
 
+  async function fetchTreatments() {
+    if (!treatments) {
+      const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
+
+      setTreatments(treatments)
+    }
+  }
+
+  async function fetchPayments() {
+    if (!payments) {
+      const payments = (await axios.get<Payment[]>(paymentsApi)).data
+
+      setPayments(payments)
+    }
+  }
+
   async function createAppointment(appointment: AppointmentRequest) {
     const createdAppointment = (await axios.post<Appointment>(appointmentsApi, appointment)).data
 
@@ -66,20 +82,13 @@ export default function DataProvider({ children }: DataProviderProps) {
     setAppointments(appointmentsNew)
   }
 
-  async function fetchTreatments() {
-    if (!treatments) {
-      const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
+  async function createTreatment(treatment: TreatmentRequest) {
+    const createdTreatment = (await axios.post<Treatment>(treatmentsApi, treatment)).data
 
-      setTreatments(treatments)
-    }
-  }
+    const treatmentsNew = treatments ? [...treatments] : []
+    treatmentsNew?.push(createdTreatment)
 
-  async function fetchPayments() {
-    if (!payments) {
-      const payments = (await axios.get<Payment[]>(paymentsApi)).data
-
-      setPayments(payments)
-    }
+    setTreatments(treatmentsNew)
   }
 
   return (
@@ -87,11 +96,15 @@ export default function DataProvider({ children }: DataProviderProps) {
       value={{
         fetchPatients,
         fetchAppointments,
+        fetchTreatments,
+        fetchPayments,
+
         createAppointment,
         updateAppointment,
         deleteAppointment,
-        fetchTreatments,
-        fetchPayments,
+
+        createTreatment,
+
         patients,
         appointments,
         treatments,
