@@ -1,10 +1,15 @@
-import { PropsWithChildren } from 'react'
-import { TouchableWithoutFeedback, View, StyleSheet, Keyboard } from 'react-native'
+import { ReactNode } from 'react'
+import { TouchableWithoutFeedback, View, StyleSheet, Keyboard, ViewStyle } from 'react-native'
 
-export default function MainView({ children }: PropsWithChildren) {
+type Props = {
+  children: ReactNode
+  style?: ViewStyle
+}
+
+export default function MainView(props: Props) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.mainView}>{children}</View>
+      <View style={[props.style, styles.mainView]}>{props.children}</View>
     </TouchableWithoutFeedback>
   )
 }
