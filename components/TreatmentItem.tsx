@@ -60,7 +60,6 @@ export default function TreatmentItem(props: TreatmentItemProps) {
   function handleTreatmentSelect(treatment: Treatment) {
     if (props.preventDefault) {
       DeviceEventEmitter.emit('treatmentSelected', treatment)
-      navigation.goBack()
     } else {
       navigation.navigate('Treatment', { treatmentId: treatment.id })
     }

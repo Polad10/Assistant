@@ -119,6 +119,8 @@ export default function Appointment(props: Props) {
   function handleTreatmentSelect(treatment: Treatment) {
     setShowTreatmentInputError(false)
     setSelectedTreatment(treatment)
+
+    navigation.navigate('NewAppointment')
   }
 
   return (

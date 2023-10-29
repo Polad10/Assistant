@@ -89,6 +89,8 @@ export default function DataProvider({ children }: DataProviderProps) {
     treatmentsNew?.push(createdTreatment)
 
     setTreatments(treatmentsNew)
+
+    return createdTreatment
   }
 
   return (

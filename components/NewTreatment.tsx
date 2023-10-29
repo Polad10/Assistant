@@ -26,22 +26,25 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
 
   const context = useContext(DataContext)
 
+  if (!context) {
+    return
+  }
+
   let styleProps: StyleProps = {
     patientEditable: true,
   }
 
   const handleSave = useCallback(async () => {
     if (validate()) {
-      const newTreatment: TreatmentRequest = {
+      const newTreatmentRequest: TreatmentRequest = {
         start_date: DateTime.fromJSDate(startDate).toISODate()!,
         title: title!,
         patient_id: patient!.id,
       }
 
-      await context?.createTreatment(newTreatment)
+      const newTreatment = await context.createTreatment(newTreatmentRequest)
 
       DeviceEventEmitter.emit('treatmentCreated', newTreatment)
-      navigation.goBack()
     }
   }, [patient, startDate, title])
 

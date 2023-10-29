@@ -20,7 +20,7 @@ export interface DataContextType {
   updateAppointment: (appointment: AppointmentRequest) => Promise<void>
   deleteAppointment: (appointmentId: Int32) => Promise<void>
 
-  createTreatment: (treatment: TreatmentRequest) => Promise<void>
+  createTreatment: (treatment: TreatmentRequest) => Promise<Treatment>
 
   patients: PatientsType
   appointments: AppointmentsType
