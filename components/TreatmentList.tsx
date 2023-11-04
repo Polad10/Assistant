@@ -15,7 +15,6 @@ type Props = {
   pageName: keyof RootStackParamList
   patient?: Patient
   treatments?: Treatment[]
-  preventDefault?: boolean
 }
 
 export default function TreatmentList(props: Props) {
@@ -38,7 +37,7 @@ export default function TreatmentList(props: Props) {
   treatmentElements = treatments?.map((t) => {
     return (
       <View key={t.id}>
-        <TreatmentItem treatment={t} pageName={props.pageName} preventDefault={props.preventDefault} />
+        <TreatmentItem treatment={t} pageName={props.pageName} />
         <Divider color={colors.border} style={styles(colors).divider} />
       </View>
     )

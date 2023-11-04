@@ -9,7 +9,6 @@ import { Patient } from '@polad10/assistant-models/Patient'
 interface Props {
   sectionTiTle: string
   patients: Patient[]
-  preventDefault?: boolean
   pageName: keyof RootStackParamList
 }
 
@@ -18,7 +17,7 @@ export default function PatientListSection(props: Props) {
 
   const patientElements = props.patients.map((p) => (
     <View key={p.id}>
-      <PatientItem patient={p} preventDefault={props.preventDefault} pageName={props.pageName} />
+      <PatientItem patient={p} pageName={props.pageName} />
       <Divider color={colors.border} style={styles(colors).divider} />
     </View>
   ))

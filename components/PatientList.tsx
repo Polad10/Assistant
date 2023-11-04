@@ -8,7 +8,6 @@ import { Patient } from '@polad10/assistant-models/Patient'
 
 type Props = {
   pageName: keyof RootStackParamList
-  preventDefault?: boolean
 }
 
 export default function PatientList(props: Props) {
@@ -31,15 +30,7 @@ export default function PatientList(props: Props) {
   }
 
   const patientListSections = [...groupedPatients].sort().map(([key, value]) => {
-    return (
-      <PatientListSection
-        key={key}
-        sectionTiTle={key}
-        patients={value}
-        preventDefault={props.preventDefault}
-        pageName={props.pageName}
-      />
-    )
+    return <PatientListSection key={key} sectionTiTle={key} patients={value} pageName={props.pageName} />
   })
 
   return (

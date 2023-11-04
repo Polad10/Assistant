@@ -6,7 +6,6 @@ import { useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
-  const preventDefault = route.params?.preventDefault
   const context = useContext(DataContext)
 
   useEffect(() => {
@@ -20,7 +19,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   return (
     <MainView>
       <MySearchBar />
-      <TreatmentList pageName='Treatments' preventDefault={preventDefault} treatments={ongoingTreatments} />
+      <TreatmentList pageName='Treatments' treatments={ongoingTreatments} />
     </MainView>
   )
 }

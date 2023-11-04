@@ -139,7 +139,7 @@ export default function Appointment(props: Props) {
       />
       <MyInput
         placeholder='Select treatment'
-        onPressIn={() => (props.mode === Mode.NEW ? navigation.navigate('Treatments', { preventDefault: true }) : null)}
+        onPressIn={() => (props.mode === Mode.NEW ? navigation.navigate('Treatments') : null)}
         value={selectedTreatment?.title}
         editable={false}
         showError={showTreatmentInputError}

@@ -10,7 +10,6 @@ import { Patient } from '@polad10/assistant-models/Patient'
 type Props = {
   patient: Patient
   pageName: keyof RootStackParamList
-  preventDefault?: boolean
 }
 
 export default function PatientItem(props: Props) {
@@ -28,7 +27,7 @@ export default function PatientItem(props: Props) {
   )
 
   function handlePatientSelect(patient: Patient) {
-    if (props.preventDefault) {
+    if (DeviceEventEmitter.listenerCount('patientSelected') > 0) {
       DeviceEventEmitter.emit('patientSelected', patient)
     } else {
       navigation.navigate('Patient', { patientId: patient.id })

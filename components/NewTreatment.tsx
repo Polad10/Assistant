@@ -110,7 +110,7 @@ export default function NewTreatment() {
 
   function handlePatientChange() {
     if (styleProps.patientEditable) {
-      navigation.navigate('Patients', { pageName: 'NewTreatment', preventDefault: true })
+      navigation.navigate('Patients', { pageName: 'NewTreatment' })
     }
   }
 

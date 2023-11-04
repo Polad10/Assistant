@@ -12,7 +12,6 @@ import { Treatment } from '@polad10/assistant-models/Treatment'
 
 export type TreatmentItemProps = {
   treatment: Treatment
-  preventDefault?: boolean
   pageName: keyof RootStackParamList
 }
 
@@ -58,7 +57,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
   )
 
   function handleTreatmentSelect(treatment: Treatment) {
-    if (props.preventDefault) {
+    if (DeviceEventEmitter.listenerCount('treatmentSelected') > 0) {
       DeviceEventEmitter.emit('treatmentSelected', treatment)
     } else {
       navigation.navigate('Treatment', { treatmentId: treatment.id })
