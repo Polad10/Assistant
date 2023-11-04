@@ -6,6 +6,7 @@ import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { DateTime } from 'luxon'
 import Payment from '@polad10/assistant-models/Payment'
+import MainView from './MainView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -27,18 +28,14 @@ export default function PaymentList(props: Props) {
   })
 
   return (
-    <View style={styles(colors).mainView}>
+    <MainView>
       <ScrollView>{paymentElements}</ScrollView>
-    </View>
+    </MainView>
   )
 }
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
-    mainView: {
-      flex: 1,
-      backgroundColor: colors.background,
-    },
     divider: {
       marginHorizontal: 13,
     },

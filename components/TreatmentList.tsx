@@ -55,10 +55,6 @@ export default function TreatmentList(props: Props) {
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
-    mainView: {
-      flex: 1,
-      backgroundColor: colors.background,
-    },
     divider: {
       marginHorizontal: 13,
     },
