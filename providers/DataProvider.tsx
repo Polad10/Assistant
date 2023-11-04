@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AppointmentsType, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
+import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
 import { ReactNode, useState } from 'react'
 import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
