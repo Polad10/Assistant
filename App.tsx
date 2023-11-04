@@ -12,7 +12,7 @@ import NewPatient from './components/NewPatient'
 import Treatments from './components/Treatments'
 import NewTreatment from './components/NewTreatment'
 import EditAppointment from './components/EditAppointment'
-
+import { useFonts } from 'expo-font'
 import type { RootStackParamList } from './types/Navigation'
 import Patient from './components/Patient'
 import Treatment from './components/Treatment'
@@ -61,6 +61,10 @@ export default function App() {
 
   const scheme = useColorScheme()
   const theme = scheme === 'dark' ? DarkTheme : DefaultTheme
+
+  useFonts({
+    Fontello: require('./assets/fontello/font/fontello.ttf'),
+  })
 
   return (
     <DataProvider>

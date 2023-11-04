@@ -1,7 +1,8 @@
 import { ListItem } from '@rneui/themed'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
+import CustomIcon from './CustomIcon'
 
 type Props = {
   date: string
@@ -13,9 +14,12 @@ export default function PaymentItem(props: Props) {
 
   return (
     <ListItem containerStyle={styles(colors).listItemContainer}>
-      <ListItem.Content style={styles(colors).listItemRow}>
-        <ListItem.Title style={styles(colors).listItemTitle}>{props.date}</ListItem.Title>
-        <ListItem.Title style={styles(colors).listItemTitle}>+ {props.amount}</ListItem.Title>
+      <ListItem.Content style={[styles(colors).flexRow, styles(colors).spacedItems]}>
+        <ListItem.Title style={styles(colors).defaultText}>{props.date}</ListItem.Title>
+        <View style={styles(colors).flexRow}>
+          <ListItem.Title style={styles(colors).payment}>+ {props.amount}</ListItem.Title>
+          <CustomIcon style={styles(colors).currency} name='manat' size={18} color={colors.text} />
+        </View>
       </ListItem.Content>
     </ListItem>
   )
@@ -26,11 +30,20 @@ const styles = (colors: Colors) =>
     listItemContainer: {
       backgroundColor: colors.background,
     },
-    listItemRow: {
+    flexRow: {
       flexDirection: 'row',
+    },
+    spacedItems: {
       justifyContent: 'space-between',
     },
-    listItemTitle: {
+    defaultText: {
       color: colors.text,
+    },
+    payment: {
+      color: colors.notification,
+    },
+    currency: {
+      marginLeft: 10,
+      color: colors.notification,
     },
   })
