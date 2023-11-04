@@ -1,10 +1,8 @@
 import { useNavigation, useTheme } from '@react-navigation/native'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
-import AgendaItem from './AgendaItem'
 import DetailTab from './DetailTab'
 import { View, StyleSheet, Text } from 'react-native'
-import { AgendaList } from 'react-native-calendars'
 import MyFAB from './MyFAB'
 import PaymentList from './PaymentList'
 import { Colors } from '../types/Colors'
@@ -14,6 +12,8 @@ import { getPatientFullName } from '../helpers/PatientHelper'
 import { DateTime } from 'luxon'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Status } from '../enums/Status'
+import MainView from './MainView'
+import MyAgendaList from './MyAgendaList'
 
 type StyleProps = {
   colors: Colors
@@ -55,10 +55,6 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
       })
     : []
 
-  const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem appointment={item} />
-  }, [])
-
   const styleProps: StyleProps = {
     colors: colors,
     treatmentFinished: treatment?.finished,
@@ -77,21 +73,17 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
     switch (selectedIndex) {
       case 0:
         return (
-          <View style={styles(styleProps).mainView}>
-            <AgendaList
-              sections={agendaItems}
-              renderItem={renderItem}
-              sectionStyle={styles(styleProps).agendaSection}
-            />
+          <MainView>
+            <MyAgendaList sections={agendaItems} pageName='Treatment' />
             <MyFAB onPress={() => navigation.navigate('NewAppointment', { treatment: treatment })} />
-          </View>
+          </MainView>
         )
       case 1:
         return (
-          <View style={styles(styleProps).mainView}>
+          <MainView>
             <PaymentList pageName='Patient' payments={payments} />
             <MyFAB onPress={() => navigation.navigate('NewPayment')} />
-          </View>
+          </MainView>
         )
       default:
         return null
@@ -101,7 +93,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   const status = treatment?.finished ? Status.FINISHED : Status.ONGOING
 
   return (
-    <View style={styles(styleProps).mainView}>
+    <MainView>
       <View style={[styles(styleProps).headerView, styles(styleProps).card]}>
         <Text style={styles(styleProps).title}>{treatment?.title}</Text>
       </View>
@@ -124,15 +116,12 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         />
         <TabContent />
       </View>
-    </View>
+    </MainView>
   )
 }
 
 const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
-    mainView: {
-      flex: 1,
-    },
     headerView: {
       flex: 1,
       justifyContent: 'center',
@@ -157,10 +146,6 @@ const styles = (styleProps: StyleProps) =>
     card: {
       backgroundColor: styleProps.colors.card,
       marginTop: 5,
-    },
-    agendaSection: {
-      backgroundColor: styleProps.colors.card,
-      color: styleProps.colors.text,
     },
     statusView: {
       flexDirection: 'row',

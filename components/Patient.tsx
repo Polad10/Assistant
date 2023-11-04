@@ -1,27 +1,24 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { Colors } from '../types/Colors'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useTheme } from '@react-navigation/native'
 import { ButtonGroup } from '@rneui/themed'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import AgendaItem from './AgendaItem'
-import { AgendaList } from 'react-native-calendars'
+import { useContext, useEffect, useState } from 'react'
 import TreatmentList from './TreatmentList'
 import DetailTab from './DetailTab'
 import PaymentList from './PaymentList'
-import MyFAB from './MyFAB'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { DateTime } from 'luxon'
-import NoDataFound from './NoDataView'
+import MyAgendaList from './MyAgendaList'
+import MainView from './MainView'
 
 export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { colors } = useTheme()
   const { patientId } = route.params
 
-  const navigation = useNavigation<RootStackScreenProps<'Patient'>['navigation']>()
   const context = useContext(DataContext)
 
   if (!context) {
@@ -60,10 +57,6 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
       })
     : []
 
-  const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem appointment={item} />
-  }, [])
-
   const buttons = [
     {
       element: () => <DetailTab iconName='calendar' index={0} selectedIndex={selectedIndex} />,
@@ -76,29 +69,10 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
     },
   ]
 
-  function getAppointmentsView() {
-    let content = null
-
-    if (agendaItems.length > 0) {
-      content = (
-        <AgendaList sections={agendaItems} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
-      )
-    } else {
-      content = <NoDataFound text='No appointments found' />
-    }
-
-    return (
-      <View style={styles(colors).mainView}>
-        {content}
-        <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
-      </View>
-    )
-  }
-
   const TabContent = () => {
     switch (selectedIndex) {
       case 0:
-        return getAppointmentsView()
+        return <MyAgendaList sections={agendaItems} pageName='Patient' />
       case 1:
         return <TreatmentList pageName='Patient' patient={patient} />
       case 2:
@@ -109,7 +83,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   }
 
   return (
-    <View style={styles(colors).mainView}>
+    <MainView>
       <View style={[styles(colors).headerView, styles(colors).card]}>
         <Text style={styles(colors).title}>{getPatientFullName(patient)}</Text>
       </View>
@@ -127,15 +101,12 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
         />
         <TabContent />
       </View>
-    </View>
+    </MainView>
   )
 }
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
-    mainView: {
-      flex: 1,
-    },
     headerView: {
       flex: 1,
       justifyContent: 'center',
@@ -160,10 +131,6 @@ const styles = (colors: Colors) =>
     card: {
       backgroundColor: colors.card,
       marginTop: 5,
-    },
-    agendaSection: {
-      backgroundColor: colors.card,
-      color: colors.text,
     },
     defaultText: {
       color: colors.text,
