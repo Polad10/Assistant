@@ -7,6 +7,7 @@ import { RootStackParamList } from '../types/Navigation'
 import { DateTime } from 'luxon'
 import Payment from '@polad10/assistant-models/Payment'
 import MainView from './MainView'
+import NoDataFound from './NoDataView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -27,11 +28,15 @@ export default function PaymentList(props: Props) {
     )
   })
 
-  return (
-    <MainView>
-      <ScrollView>{paymentElements}</ScrollView>
-    </MainView>
-  )
+  function getPaymentsContentView() {
+    if (paymentElements.length > 0) {
+      return <ScrollView>{paymentElements}</ScrollView>
+    } else {
+      return <NoDataFound text='No payments found' />
+    }
+  }
+
+  return <MainView>{getPaymentsContentView()}</MainView>
 }
 
 const styles = (colors: Colors) =>

@@ -10,6 +10,7 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Patient } from '@polad10/assistant-models/Patient'
 import { Treatment } from '@polad10/assistant-models/Treatment'
+import NoDataFound from './NoDataView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -27,27 +28,38 @@ export default function TreatmentList(props: Props) {
   }
 
   let treatments = props.treatments
-  let treatmentElements = null
 
   if (props.patient) {
     treatments = context.treatments?.filter((t) => t.patient_id === props.patient?.id)
     treatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
   }
 
-  treatmentElements = treatments?.map((t) => {
-    return (
-      <View key={t.id}>
-        <TreatmentItem treatment={t} pageName={props.pageName} />
-        <Divider color={colors.border} style={styles(colors).divider} />
-      </View>
-    )
-  })
+  const treatmentElements = treatments
+    ? treatments?.map((t) => {
+        return (
+          <View key={t.id}>
+            <TreatmentItem treatment={t} pageName={props.pageName} />
+            <Divider color={colors.border} style={styles(colors).divider} />
+          </View>
+        )
+      })
+    : []
+
+  function getTreatmentsContentView() {
+    if (treatmentElements.length > 0) {
+      return (
+        <ScrollView>
+          <MainView>{treatmentElements}</MainView>
+        </ScrollView>
+      )
+    } else {
+      return <NoDataFound text='No treatments found' />
+    }
+  }
 
   return (
     <MainView>
-      <ScrollView>
-        <MainView>{treatmentElements}</MainView>
-      </ScrollView>
+      {getTreatmentsContentView()}
       <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: props.patient })} />
     </MainView>
   )
