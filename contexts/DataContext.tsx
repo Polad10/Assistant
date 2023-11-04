@@ -1,5 +1,5 @@
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
-import Patient from '@polad10/assistant-models/Patient'
+import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
 import Payment from '@polad10/assistant-models/Payment'
 import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
 import { createContext } from 'react'
@@ -19,6 +19,8 @@ export interface DataContextType {
   createAppointment: (appointment: AppointmentRequest) => Promise<void>
   updateAppointment: (appointment: AppointmentRequest) => Promise<void>
   deleteAppointment: (appointmentId: Int32) => Promise<void>
+
+  createPatient: (patient: PatientRequest) => Promise<Patient>
 
   createTreatment: (treatment: TreatmentRequest) => Promise<Treatment>
 

@@ -5,7 +5,7 @@ import { DeviceEventEmitter, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import Patient from '@polad10/assistant-models/Patient'
+import { Patient } from '@polad10/assistant-models/Patient'
 
 type Props = {
   patient: Patient

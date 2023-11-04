@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 import PatientItem from './PatientItem'
 import { RootStackParamList } from '../types/Navigation'
-import Patient from '@polad10/assistant-models/Patient'
+import { Patient } from '@polad10/assistant-models/Patient'
 
 interface Props {
   sectionTiTle: string

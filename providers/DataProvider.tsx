@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
 import React, { ReactNode, useState } from 'react'
-import Patient from '@polad10/assistant-models/Patient'
+import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
 import Payment from '@polad10/assistant-models/Payment'
@@ -59,7 +59,7 @@ export default function DataProvider({ children }: DataProviderProps) {
     const createdAppointment = (await axios.post<Appointment>(appointmentsApi, appointment)).data
 
     const appointmentsNew = appointments ? [...appointments] : []
-    appointmentsNew?.push(createdAppointment)
+    appointmentsNew.push(createdAppointment)
 
     setAppointments(appointmentsNew)
   }
@@ -82,11 +82,22 @@ export default function DataProvider({ children }: DataProviderProps) {
     setAppointments(appointmentsNew)
   }
 
+  async function createPatient(patient: PatientRequest) {
+    const createdPatient = (await axios.post<Patient>(patientsApi, patient)).data
+
+    const patientsNew = patients ? [...patients] : []
+    patientsNew.push(createdPatient)
+
+    setPatients(patientsNew)
+
+    return createdPatient
+  }
+
   async function createTreatment(treatment: TreatmentRequest) {
     const createdTreatment = (await axios.post<Treatment>(treatmentsApi, treatment)).data
 
     const treatmentsNew = treatments ? [...treatments] : []
-    treatmentsNew?.push(createdTreatment)
+    treatmentsNew.push(createdTreatment)
 
     setTreatments(treatmentsNew)
 
@@ -104,6 +115,8 @@ export default function DataProvider({ children }: DataProviderProps) {
         createAppointment,
         updateAppointment,
         deleteAppointment,
+
+        createPatient,
 
         createTreatment,
 

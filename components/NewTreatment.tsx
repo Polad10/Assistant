@@ -5,22 +5,26 @@ import DateTimeInput from './DateTimeInput'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import Patient from '@polad10/assistant-models/Patient'
+import { Patient } from '@polad10/assistant-models/Patient'
 import HeaderButton from './HeaderButton'
 import { TreatmentRequest } from '@polad10/assistant-models/Treatment'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import { useNavigation } from '@react-navigation/native'
 
 type StyleProps = {
   patientEditable: boolean
 }
 
-export default function NewTreatment({ navigation, route }: RootStackScreenProps<'NewTreatment'>) {
+export default function NewTreatment() {
+  const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
+  const route = useNavigation<RootStackScreenProps<'NewTreatment'>['route']>()
+
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
 
-  const [patient, setPatient] = useState<Patient | undefined>(route.params.patient)
+  const [patient, setPatient] = useState<Patient | undefined>(route.params?.patient)
   const [startDate, setStartDate] = useState(new Date())
   const [title, setTitle] = useState<string | undefined>(undefined)
 
@@ -54,15 +58,11 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
     if (!patient) {
       valid = false
       setShowPatientInputError(true)
-    } else {
-      setShowPatientInputError(false)
     }
 
     if (!title) {
       valid = false
       setShowTitleInputError(true)
-    } else {
-      setShowTitleInputError(false)
     }
 
     return valid
@@ -73,12 +73,14 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
       headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
     })
 
-    const listener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
+    const patientSelectListener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
+    const patientCreatedListener = DeviceEventEmitter.addListener('patientCreated', handlePatientSelect)
 
     styleProps.patientEditable = patient == null
 
     return () => {
-      listener.remove()
+      patientSelectListener.remove()
+      patientCreatedListener.remove()
     }
   }, [navigation, handleSave])
 
@@ -98,9 +100,18 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
   }
 
   function handlePatientSelect(patient: Patient) {
+    // first navigate, then set patient
+    // avoids reseting patient
+    navigation.navigate('NewTreatment')
+
     setShowPatientInputError(false)
     setPatient(patient)
-    navigation.goBack()
+  }
+
+  function handlePatientChange() {
+    if (styleProps.patientEditable) {
+      navigation.navigate('Patients', { pageName: 'NewTreatment', preventDefault: true })
+    }
   }
 
   return (
@@ -117,12 +128,6 @@ export default function NewTreatment({ navigation, route }: RootStackScreenProps
       />
     </MainView>
   )
-
-  function handlePatientChange() {
-    if (styleProps.patientEditable) {
-      navigation.navigate('Patients', { pageName: 'NewTreatment', preventDefault: true })
-    }
-  }
 }
 
 const styles = (styleProps: StyleProps) =>

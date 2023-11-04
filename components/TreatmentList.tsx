@@ -8,7 +8,7 @@ import { RootStackScreenProps, RootStackParamList } from '../types/Navigation'
 import MainView from './MainView'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import Patient from '@polad10/assistant-models/Patient'
+import { Patient } from '@polad10/assistant-models/Patient'
 import { Treatment } from '@polad10/assistant-models/Treatment'
 
 type Props = {

@@ -73,15 +73,11 @@ export default function Appointment(props: Props) {
     if (!actions) {
       valid = false
       setShowActionsInputError(true)
-    } else {
-      setShowActionsInputError(false)
     }
 
     if (!selectedTreatment) {
       valid = false
       setShowTreatmentInputError(true)
-    } else {
-      setShowTreatmentInputError(false)
     }
 
     return valid
@@ -117,10 +113,12 @@ export default function Appointment(props: Props) {
   }
 
   function handleTreatmentSelect(treatment: Treatment) {
+    // first navigate, then set appointment
+    // avoids reseting appointment
+    navigation.navigate('NewAppointment')
+
     setShowTreatmentInputError(false)
     setSelectedTreatment(treatment)
-
-    navigation.navigate('NewAppointment')
   }
 
   return (
