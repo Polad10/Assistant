@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
 import { useContext, useEffect } from 'react'
