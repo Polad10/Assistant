@@ -17,6 +17,7 @@ import { DateTime } from 'luxon'
 
 type Props = {
   appointmentId?: number
+  treatment?: Treatment
   mode: Mode
 }
 
@@ -29,7 +30,11 @@ export default function Appointment(props: Props) {
   }
 
   const appointment = context.appointments?.find((a) => a.id === props.appointmentId)
-  let treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
+  let treatment = props.treatment
+
+  if (appointment) {
+    treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
+  }
 
   const initialDateTime = appointment ? new Date(appointment.datetime) : new Date()
 
@@ -121,6 +126,14 @@ export default function Appointment(props: Props) {
     setSelectedTreatment(treatment)
   }
 
+  function handleTreatmentChange() {
+    if (props.treatment || props.mode === Mode.EDIT) {
+      return
+    }
+
+    navigation.navigate('Treatments')
+  }
+
   return (
     <MainView>
       <DateTimeInput
@@ -139,7 +152,7 @@ export default function Appointment(props: Props) {
       />
       <MyInput
         placeholder='Select treatment'
-        onPressIn={() => (props.mode === Mode.NEW ? navigation.navigate('Treatments') : null)}
+        onPressIn={handleTreatmentChange}
         value={selectedTreatment?.title}
         editable={false}
         showError={showTreatmentInputError}

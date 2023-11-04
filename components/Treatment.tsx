@@ -53,7 +53,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
           data: appointments,
         }
       })
-    : null
+    : []
 
   const renderItem = useCallback(({ item }: any) => {
     return <AgendaItem appointment={item} />
@@ -83,7 +83,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
               renderItem={renderItem}
               sectionStyle={styles(styleProps).agendaSection}
             />
-            <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
+            <MyFAB onPress={() => navigation.navigate('NewAppointment', { treatment: treatment })} />
           </View>
         )
       case 1:

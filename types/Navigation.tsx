@@ -1,9 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { Patient } from '@polad10/assistant-models/Patient'
+import { Treatment } from '@polad10/assistant-models/Treatment'
 
 export type RootStackParamList = {
   Home: undefined
-  NewAppointment: undefined
+  NewAppointment: { treatment?: Treatment } | undefined
   NewPatient: undefined
   NewTreatment: { patient?: Patient } | undefined
   EditAppointment: { appointmentId: number }
