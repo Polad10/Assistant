@@ -10,6 +10,7 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '@polad10/assistant-models/Appointment'
+import NoDataFound from './NoDataView'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
@@ -30,11 +31,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return (
-      <View style={styles(colors).emptyDateView}>
-        <Text style={[styles(colors).defaultText, styles(colors).emptyDateText]}>No events found</Text>
-      </View>
-    )
+    return <NoDataFound text='No appointments found' />
   }
 
   const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null

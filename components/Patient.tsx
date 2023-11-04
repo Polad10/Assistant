@@ -14,6 +14,7 @@ import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { DateTime } from 'luxon'
+import NoDataFound from './NoDataView'
 
 export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -57,7 +58,7 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
           data: appointments,
         }
       })
-    : null
+    : []
 
   const renderItem = useCallback(({ item }: any) => {
     return <AgendaItem appointment={item} />
@@ -75,15 +76,29 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
     },
   ]
 
+  function getAppointmentsView() {
+    let content = null
+
+    if (agendaItems.length > 0) {
+      content = (
+        <AgendaList sections={agendaItems} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
+      )
+    } else {
+      content = <NoDataFound text='No appointments found' />
+    }
+
+    return (
+      <View style={styles(colors).mainView}>
+        {content}
+        <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
+      </View>
+    )
+  }
+
   const TabContent = () => {
     switch (selectedIndex) {
       case 0:
-        return (
-          <View style={styles(colors).mainView}>
-            <AgendaList sections={agendaItems} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
-            <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
-          </View>
-        )
+        return getAppointmentsView()
       case 1:
         return <TreatmentList pageName='Patient' patient={patient} />
       case 2:
@@ -149,5 +164,16 @@ const styles = (colors: Colors) =>
     agendaSection: {
       backgroundColor: colors.card,
       color: colors.text,
+    },
+    defaultText: {
+      color: colors.text,
+    },
+    emptyDateView: {
+      flex: 1,
+      alignItems: 'center',
+      marginTop: 100,
+    },
+    emptyDateText: {
+      fontSize: 40,
     },
   })
