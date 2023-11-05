@@ -32,7 +32,11 @@ export default function PaymentList(props: Props) {
 
   function getPaymentsContentView() {
     if (paymentElements.length > 0) {
-      return <ScrollView>{paymentElements}</ScrollView>
+      return (
+        <ScrollView>
+          <MainView>{paymentElements}</MainView>
+        </ScrollView>
+      )
     } else {
       return <NoDataFound text='No payments found' />
     }
