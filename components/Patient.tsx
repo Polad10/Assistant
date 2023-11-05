@@ -13,8 +13,9 @@ import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { DateTime } from 'luxon'
 import MyAgendaList from './MyAgendaList'
 import MainView from './MainView'
+import HeaderButton from './HeaderButton'
 
-export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
+export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { colors } = useTheme()
   const { patientId } = route.params
@@ -25,7 +26,14 @@ export default function Patient({ route }: RootStackScreenProps<'Patient'>) {
     return
   }
 
+  function handleEdit() {
+    navigation.navigate('EditPatient', { patientId: patientId })
+  }
+
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
+    })
     context.fetchAppointments()
     context.fetchTreatments()
     context.fetchPayments()
