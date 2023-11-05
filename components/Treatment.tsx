@@ -40,6 +40,11 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   }, [])
 
   const treatment = context.treatments?.find((t) => t.id === treatmentId)
+
+  if (!treatment) {
+    return
+  }
+
   const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
   const appointments = context.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
   const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
@@ -82,7 +87,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         return (
           <MainView>
             <PaymentList pageName='Patient' payments={payments} />
-            <MyFAB onPress={() => navigation.navigate('NewPayment')} />
+            <MyFAB onPress={() => navigation.navigate('NewPayment', { treatmentId: treatment.id })} />
           </MainView>
         )
       default:

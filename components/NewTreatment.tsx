@@ -17,10 +17,7 @@ type StyleProps = {
   patientEditable: boolean
 }
 
-export default function NewTreatment() {
-  const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
-  const route = useNavigation<RootStackScreenProps<'NewTreatment'>['route']>()
-
+export default function NewTreatment({ navigation, route }: RootStackScreenProps<'NewTreatment'>) {
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
 

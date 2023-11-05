@@ -5,7 +5,7 @@ import { useTheme } from '@react-navigation/native'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { DateTime } from 'luxon'
-import Payment from '@polad10/assistant-models/Payment'
+import { Payment } from '@polad10/assistant-models/Payment'
 import MainView from './MainView'
 import NoDataFound from './NoDataView'
 

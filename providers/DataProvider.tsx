@@ -4,7 +4,7 @@ import { ReactNode, useState } from 'react'
 import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
-import Payment from '@polad10/assistant-models/Payment'
+import { Payment, PaymentRequest } from '@polad10/assistant-models/Payment'
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
 
 interface DataProviderProps {
@@ -104,6 +104,17 @@ export default function DataProvider({ children }: DataProviderProps) {
     return createdTreatment
   }
 
+  async function createPayment(payment: PaymentRequest) {
+    const createdPayment = (await axios.post<Payment>(paymentsApi, payment)).data
+
+    const paymentsNew = payments ? [...payments] : []
+    paymentsNew.push(createdPayment)
+
+    setPayments(paymentsNew)
+
+    return createdPayment
+  }
+
   return (
     <DataContext.Provider
       value={{
@@ -119,6 +130,8 @@ export default function DataProvider({ children }: DataProviderProps) {
         createPatient,
 
         createTreatment,
+
+        createPayment,
 
         patients,
         appointments,

@@ -1,6 +1,6 @@
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
-import Payment from '@polad10/assistant-models/Payment'
+import { Payment, PaymentRequest } from '@polad10/assistant-models/Payment'
 import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
 import { createContext } from 'react'
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
@@ -23,6 +23,8 @@ export interface DataContextType {
   createPatient: (patient: PatientRequest) => Promise<Patient>
 
   createTreatment: (treatment: TreatmentRequest) => Promise<Treatment>
+
+  createPayment: (payment: PaymentRequest) => Promise<Payment>
 
   patients: PatientsType
   appointments: AppointmentsType
