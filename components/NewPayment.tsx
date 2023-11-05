@@ -64,7 +64,7 @@ export default function NewPayment({ navigation, route }: RootStackScreenProps<'
 
   function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
     setShowAmountInputError(false)
-    setAmount(event.nativeEvent.text)
+    setAmount(event.nativeEvent.text.replace(',', '.'))
   }
 
   return (
@@ -75,7 +75,7 @@ export default function NewPayment({ navigation, route }: RootStackScreenProps<'
         value={amount}
         showError={showAmountInputError}
         onChange={handleAmountChange}
-        keyboardType='numeric'
+        keyboardType='decimal-pad'
         rightIcon={<CustomIcon name='manat' color={colors.text} size={20} />}
       />
     </View>
