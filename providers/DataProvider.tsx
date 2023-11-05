@@ -62,6 +62,8 @@ export default function DataProvider({ children }: DataProviderProps) {
     appointmentsNew.push(createdAppointment)
 
     setAppointments(appointmentsNew)
+
+    return createdAppointment
   }
 
   async function updateAppointment(appointment: AppointmentRequest) {
@@ -71,6 +73,8 @@ export default function DataProvider({ children }: DataProviderProps) {
     appointmentsNew.push(updatedAppointment)
 
     setAppointments(appointmentsNew)
+
+    return updatedAppointment
   }
 
   async function deleteAppointment(appointmentId: Int32) {
@@ -91,6 +95,26 @@ export default function DataProvider({ children }: DataProviderProps) {
     setPatients(patientsNew)
 
     return createdPatient
+  }
+
+  async function updatePatient(patient: PatientRequest) {
+    const updatedPatient = (await axios.put<Patient>(patientsApi, patient)).data
+
+    const patientsNew = patients ? [...patients].filter((p) => p.id !== patient.id) : []
+    patientsNew.push(updatedPatient)
+
+    setPatients(patientsNew)
+
+    return updatedPatient
+  }
+
+  async function deletePatient(patientId: Int32) {
+    const url = `${patientsApi}/${patientId}`
+
+    await axios.delete(url)
+
+    const patientsNew = patients ? [...patients].filter((p) => p.id !== patientId) : []
+    setPatients(patientsNew)
   }
 
   async function createTreatment(treatment: TreatmentRequest) {
@@ -128,6 +152,8 @@ export default function DataProvider({ children }: DataProviderProps) {
         deleteAppointment,
 
         createPatient,
+        updatePatient,
+        deletePatient,
 
         createTreatment,
 
