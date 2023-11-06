@@ -34,6 +34,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
     navigation.setOptions({
       headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
     })
+
     context.fetchAppointments()
     context.fetchTreatments()
     context.fetchPayments()

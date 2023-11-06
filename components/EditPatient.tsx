@@ -1,10 +1,12 @@
 import { useCallback, useContext, useEffect } from 'react'
 import PatientForm from './PatientForm'
-import { DeviceEventEmitter } from 'react-native'
+import { DeviceEventEmitter, SafeAreaView, StyleSheet } from 'react-native'
 import { PatientRequest } from '@polad10/assistant-models/Patient'
 import { DataContext } from '../contexts/DataContext'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
+import MainView from './MainView'
+import { Button } from '@rneui/themed'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
@@ -32,5 +34,30 @@ export default function EditPatient() {
     }
   }, [])
 
-  return <PatientForm patient={patient} pageName='EditPatient' />
+  const handleDelete = useCallback(async () => {
+    await context.deletePatient(patientId)
+
+    navigation.popToTop() // 'bug Patients' is not in the stack, so it opens a new model
+  }, [])
+
+  return (
+    <MainView>
+      <PatientForm patient={patient} pageName='EditPatient' />
+      <SafeAreaView style={styles.buttonView}>
+        <Button color='red' style={styles.button} onPress={handleDelete}>
+          Delete
+        </Button>
+      </SafeAreaView>
+    </MainView>
+  )
 }
+
+const styles = StyleSheet.create({
+  buttonView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginHorizontal: 10,
+  },
+})
