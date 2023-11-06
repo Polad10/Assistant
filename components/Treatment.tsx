@@ -112,9 +112,12 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
           Start date: {DateTime.fromISO(treatment?.start_date || '').toISODate()}
         </Text>
       </View>
-      <View style={[styles(styleProps).additionalInfoView, styles(styleProps).card]}>
+      <View style={styles(styleProps).additionalInfoView}>
         <ButtonGroup
           buttons={buttons}
+          buttonStyle={{ backgroundColor: colors.background }}
+          containerStyle={{ borderColor: colors.border }}
+          innerBorderStyle={{ color: colors.border }}
           selectedIndex={selectedIndex}
           onPress={(value) => setSelectedIndex(value)}
           selectedButtonStyle={{ backgroundColor: colors.primary }}
