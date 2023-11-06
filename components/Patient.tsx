@@ -101,9 +101,12 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
         <Text style={styles(colors).text}>Phone number: {patient?.phone}</Text>
         <Text style={styles(colors).text}>Extra info: {patient?.extra_info}</Text>
       </View>
-      <View style={[styles(colors).additionalInfoView, styles(colors).card]}>
+      <View style={styles(colors).additionalInfoView}>
         <ButtonGroup
           buttons={buttons}
+          buttonStyle={{ backgroundColor: colors.background }}
+          containerStyle={{ borderColor: colors.border }}
+          innerBorderStyle={{ color: colors.border }}
           selectedIndex={selectedIndex}
           onPress={(value) => setSelectedIndex(value)}
           selectedButtonStyle={{ backgroundColor: colors.primary }}
