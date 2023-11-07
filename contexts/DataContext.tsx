@@ -28,6 +28,8 @@ export interface DataContextType {
   deleteTreatment: (treatmentId: number) => Promise<void>
 
   createPayment: (payment: PaymentRequest) => Promise<Payment>
+  updatePayment: (payment: PaymentRequest) => Promise<Payment>
+  deletePayment: (paymentId: number) => Promise<void>
 
   patients: PatientsType
   appointments: AppointmentsType

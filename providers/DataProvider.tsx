@@ -158,6 +158,26 @@ export default function DataProvider({ children }: DataProviderProps) {
     return createdPayment
   }
 
+  async function updatePayment(payment: PaymentRequest) {
+    const updatedPayment = (await axios.put<Payment>(paymentsApi, payment)).data
+
+    const paymentsNew = payments ? [...payments].filter((p) => p.id !== payment.id) : []
+    paymentsNew.push(updatedPayment)
+
+    setPayments(paymentsNew)
+
+    return updatedPayment
+  }
+
+  async function deletePayment(paymentId: number) {
+    const url = `${paymentsApi}/${paymentId}`
+
+    await axios.delete(url)
+
+    const paymentsNew = payments ? [...payments].filter((p) => p.id !== paymentId) : []
+    setPayments(paymentsNew)
+  }
+
   return (
     <DataContext.Provider
       value={{
@@ -179,6 +199,8 @@ export default function DataProvider({ children }: DataProviderProps) {
         deleteTreatment,
 
         createPayment,
+        updatePayment,
+        deletePayment,
 
         patients,
         appointments,

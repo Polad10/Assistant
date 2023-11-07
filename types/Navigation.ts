@@ -10,6 +10,7 @@ export type RootStackParamList = {
   EditAppointment: { appointmentId: number }
   EditPatient: { patientId: number }
   EditTreatment: { treatmentId: number }
+  EditPayment: { paymentId: number }
   Appointments: undefined
   Patients: { pageName: keyof RootStackParamList } | undefined
   Treatments: undefined

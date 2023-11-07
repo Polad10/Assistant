@@ -1,18 +1,14 @@
-import { NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
-import DateTimeInput from './DateTimeInput'
-import MyInput from './MyInput'
-import { useTheme } from '@react-navigation/native'
-import CustomIcon from './CustomIcon'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import PaymentForm from './PaymentForm'
 import { RootStackScreenProps } from '../types/Navigation'
-import HeaderButton from './HeaderButton'
-import { PaymentRequest } from '@polad10/assistant-models/Payment'
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import { DateTime } from 'luxon'
+import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
+import { PaymentRequest } from '@polad10/assistant-models/Payment'
+import { DeviceEventEmitter } from 'react-native'
 
-export default function NewPayment({ navigation, route }: RootStackScreenProps<'NewPayment'>) {
-  const { colors } = useTheme()
+export default function NewPayment() {
+  const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
+  const route = useRoute<RootStackScreenProps<'NewPayment'>['route']>()
   const context = useContext(DataContext)
 
   if (!context) {
@@ -21,63 +17,19 @@ export default function NewPayment({ navigation, route }: RootStackScreenProps<'
 
   const treatmentId = route.params.treatmentId
 
-  const [date, setDate] = useState(new Date())
-  const [amount, setAmount] = useState('')
+  const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
+    await context.createPayment(payment)
 
-  const [showAmountInputError, setShowAmountInputError] = useState(false)
-
-  const handleSave = useCallback(async () => {
-    if (validate()) {
-      const newPaymentRequest: PaymentRequest = {
-        date: DateTime.fromJSDate(date).toISODate()!,
-        amount: Number(amount),
-        treatment_id: treatmentId,
-      }
-
-      await context.createPayment(newPaymentRequest)
-      navigation.goBack()
-    }
-  }, [date, amount, treatmentId])
-
-  function validate() {
-    let valid = true
-
-    if (!amount) {
-      valid = false
-      setShowAmountInputError(true)
-    }
-
-    return valid
-  }
+    navigation.goBack()
+  }, [])
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
-    })
-  }, [navigation, handleSave])
+    const listener = DeviceEventEmitter.addListener('paymentSaved', handlePaymentSave)
 
-  function handleDateChange(event: DateTimePickerEvent, date: Date | undefined) {
-    if (date) {
-      setDate(date)
+    return () => {
+      listener.remove()
     }
-  }
+  }, [])
 
-  function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
-    setShowAmountInputError(false)
-    setAmount(event.nativeEvent.text.replace(',', '.'))
-  }
-
-  return (
-    <View>
-      <DateTimeInput text='Date' showDatePicker={true} datetime={date} onChange={handleDateChange} />
-      <MyInput
-        placeholder='Amount'
-        value={amount}
-        showError={showAmountInputError}
-        onChange={handleAmountChange}
-        keyboardType='decimal-pad'
-        rightIcon={<CustomIcon name='manat' color={colors.text} size={20} />}
-      />
-    </View>
-  )
+  return <PaymentForm pageName='NewPayment' treatmentId={treatmentId} />
 }
