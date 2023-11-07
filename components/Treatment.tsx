@@ -14,6 +14,7 @@ import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Status } from '../enums/Status'
 import MainView from './MainView'
 import MyAgendaList from './MyAgendaList'
+import HeaderButton from './HeaderButton'
 
 type StyleProps = {
   colors: Colors
@@ -32,7 +33,15 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
     return
   }
 
+  function handleEdit() {
+    navigation.navigate('EditTreatment', { treatmentId: treatmentId })
+  }
+
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
+    })
+
     context.fetchTreatments()
     context.fetchPatients()
     context.fetchAppointments()

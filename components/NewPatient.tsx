@@ -26,6 +26,10 @@ export default function NewPatient() {
 
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener('patientSaved', handlePatientSave)
+
+    return () => {
+      listener.remove()
+    }
   }, [])
 
   return <PatientForm pageName='NewPatient' />

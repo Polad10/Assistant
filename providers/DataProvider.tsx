@@ -127,6 +127,26 @@ export default function DataProvider({ children }: DataProviderProps) {
     return createdTreatment
   }
 
+  async function updateTreatment(treatment: TreatmentRequest) {
+    const updatedTreatment = (await axios.put<Treatment>(treatmentsApi, treatment)).data
+
+    const treatmentsNew = treatments ? [...treatments].filter((t) => t.id !== treatment.id) : []
+    treatmentsNew.push(updatedTreatment)
+
+    setTreatments(treatmentsNew)
+
+    return updatedTreatment
+  }
+
+  async function deleteTreatment(treatmentId: number) {
+    const url = `${treatmentsApi}/${treatmentId}`
+
+    await axios.delete(url)
+
+    const treatmentsNew = treatments ? [...treatments].filter((t) => t.id !== treatmentId) : []
+    setTreatments(treatmentsNew)
+  }
+
   async function createPayment(payment: PaymentRequest) {
     const createdPayment = (await axios.post<Payment>(paymentsApi, payment)).data
 
@@ -155,6 +175,8 @@ export default function DataProvider({ children }: DataProviderProps) {
         deletePatient,
 
         createTreatment,
+        updateTreatment,
+        deleteTreatment,
 
         createPayment,
 

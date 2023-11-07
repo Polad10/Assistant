@@ -19,6 +19,7 @@ import Treatment from './components/Treatment'
 import NewPayment from './components/NewPayment'
 import DataProvider from './providers/DataProvider'
 import EditPatient from './components/EditPatient'
+import EditTreatment from './components/EditTreatment'
 
 type Tabs = {
   Appointments: undefined
@@ -87,6 +88,7 @@ export default function App() {
             <Stack.Screen name='NewPatient' component={NewPatient} />
             <Stack.Screen name='EditAppointment' component={EditAppointment} />
             <Stack.Screen name='EditPatient' component={EditPatient} />
+            <Stack.Screen name='EditTreatment' component={EditTreatment} />
             <Stack.Screen name='NewPayment' component={NewPayment} />
           </Stack.Group>
         </Stack.Navigator>

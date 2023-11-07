@@ -24,6 +24,8 @@ export interface DataContextType {
   deletePatient: (patientId: number) => Promise<void>
 
   createTreatment: (treatment: TreatmentRequest) => Promise<Treatment>
+  updateTreatment: (treatment: TreatmentRequest) => Promise<Treatment>
+  deleteTreatment: (treatmentId: number) => Promise<void>
 
   createPayment: (payment: PaymentRequest) => Promise<Payment>
 

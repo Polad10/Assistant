@@ -37,7 +37,7 @@ export default function EditPatient() {
   const handleDelete = useCallback(async () => {
     await context.deletePatient(patientId)
 
-    navigation.popToTop() // 'bug Patients' is not in the stack, so it opens a new model
+    navigation.popToTop()
   }, [])
 
   return (
