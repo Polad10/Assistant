@@ -1,11 +1,9 @@
-import { StyleSheet, NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
+import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
 import { useNavigation } from '@react-navigation/native'
 import { Mode } from '../enums/Mode'
 import { RootStackScreenProps } from '../types/Navigation'
-import { Button } from '@rneui/themed'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
@@ -14,6 +12,7 @@ import { Treatment } from '@polad10/assistant-models/Treatment'
 import HeaderButton from './HeaderButton'
 import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
+import DeleteButton from './DeleteButton'
 
 type Props = {
   appointmentId?: number
@@ -98,10 +97,12 @@ export default function Appointment(props: Props) {
     useEffect(() => {
       const treatmentSelectedListener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
       const treatmentCreatedListener = DeviceEventEmitter.addListener('treatmentCreated', handleTreatmentSelect)
+      const treatmentDeleteListener = DeviceEventEmitter.addListener('entityDeleted', handleDelete)
 
       return () => {
         treatmentSelectedListener.remove()
         treatmentCreatedListener.remove()
+        treatmentDeleteListener.remove()
       }
     }, [])
   }
@@ -157,23 +158,7 @@ export default function Appointment(props: Props) {
         editable={false}
         showError={showTreatmentInputError}
       />
-      {props.mode === Mode.EDIT && (
-        <SafeAreaView style={styles.buttonView}>
-          <Button color='red' style={styles.button} onPress={handleDelete}>
-            Delete
-          </Button>
-        </SafeAreaView>
-      )}
+      {props.mode === Mode.EDIT && <DeleteButton />}
     </MainView>
   )
 }
-
-const styles = StyleSheet.create({
-  buttonView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginHorizontal: 10,
-  },
-})

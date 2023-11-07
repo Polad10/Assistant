@@ -4,9 +4,9 @@ import { useCallback, useContext, useEffect } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
 import { DataContext } from '../contexts/DataContext'
 import { TreatmentRequest } from '@polad10/assistant-models/Treatment'
-import { DeviceEventEmitter, SafeAreaView, StyleSheet } from 'react-native'
+import { DeviceEventEmitter } from 'react-native'
 import MainView from './MainView'
-import { Button } from '@rneui/themed'
+import DeleteButton from './DeleteButton'
 
 export default function EditTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'EditTreatment'>['navigation']>()
@@ -28,10 +28,12 @@ export default function EditTreatment() {
   }, [])
 
   useEffect(() => {
-    const listener = DeviceEventEmitter.addListener('treatmentSaved', handleTreatmentSave)
+    const treatmentSaveListener = DeviceEventEmitter.addListener('treatmentSaved', handleTreatmentSave)
+    const treatmentDeleteListener = DeviceEventEmitter.addListener('entityDeleted', handleDelete)
 
     return () => {
-      listener.remove()
+      treatmentSaveListener.remove()
+      treatmentDeleteListener.remove()
     }
   }, [])
 
@@ -46,21 +48,7 @@ export default function EditTreatment() {
   return (
     <MainView>
       <TreatmentForm pageName='EditTreatment' patient={patient} treatment={treatment} />
-      <SafeAreaView style={styles.buttonView}>
-        <Button color='red' style={styles.button} onPress={handleDelete}>
-          Delete
-        </Button>
-      </SafeAreaView>
+      <DeleteButton />
     </MainView>
   )
 }
-
-const styles = StyleSheet.create({
-  buttonView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginHorizontal: 10,
-  },
-})
