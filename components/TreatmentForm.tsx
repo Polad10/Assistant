@@ -11,7 +11,8 @@ import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import CustomIcon from './CustomIcon'
 
 type StyleProps = {
   patientEditable: boolean
@@ -25,9 +26,10 @@ type Props = {
 
 export default function TreatmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-
+  const { colors } = useTheme()
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
+  const [showPriceInputError, setShowPriceInputError] = useState(false)
 
   let startDateInitialVal = new Date()
 
@@ -35,9 +37,10 @@ export default function TreatmentForm(props: Props) {
     startDateInitialVal = DateTime.fromISO(props.treatment.start_date).toJSDate()
   }
 
-  const [patient, setPatient] = useState<Patient | undefined>(props.patient)
+  const [patient, setPatient] = useState(props.patient)
   const [startDate, setStartDate] = useState(startDateInitialVal)
-  const [title, setTitle] = useState<string | undefined>(props.treatment?.title)
+  const [title, setTitle] = useState(props.treatment?.title)
+  const [price, setPrice] = useState(props.treatment?.price.toString())
 
   const context = useContext(DataContext)
 
@@ -55,6 +58,7 @@ export default function TreatmentForm(props: Props) {
         start_date: DateTime.fromJSDate(startDate).toISODate()!,
         title: title!,
         patient_id: patient!.id,
+        price: Number(price),
       }
 
       if (props.treatment) {
@@ -63,7 +67,7 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     }
-  }, [patient, startDate, title])
+  }, [patient, startDate, title, price])
 
   function validate() {
     let valid = true
@@ -76,6 +80,11 @@ export default function TreatmentForm(props: Props) {
     if (!title) {
       valid = false
       setShowTitleInputError(true)
+    }
+
+    if (!price || isNaN(Number(price))) {
+      valid = false
+      setShowPriceInputError(true)
     }
 
     return valid
@@ -112,6 +121,11 @@ export default function TreatmentForm(props: Props) {
     setTitle(event.nativeEvent.text)
   }
 
+  function handlePriceChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
+    setShowPriceInputError(false)
+    setPrice(event.nativeEvent.text.replace(',', '.'))
+  }
+
   function handlePatientSelect(patient: Patient) {
     // first navigate, then set patient
     // avoids reseting patient
@@ -131,6 +145,14 @@ export default function TreatmentForm(props: Props) {
     <MainView>
       <DateTimeInput text='Start date' showDatePicker={true} datetime={startDate} onChange={handleStartDateChange} />
       <MyInput placeholder='Title' value={title} showError={showTitleInputError} onChange={handleTitleChange} />
+      <MyInput
+        placeholder='Price'
+        value={price}
+        showError={showPriceInputError}
+        onChange={handlePriceChange}
+        keyboardType='decimal-pad'
+        rightIcon={<CustomIcon name='manat' color={colors.text} size={20} />}
+      />
       <MyInput
         placeholder='Choose patient'
         onPressIn={handlePatientChange}

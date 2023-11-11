@@ -58,6 +58,8 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   const appointments = context.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
   const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
 
+  const totalPayments = payments.reduce((sum, payment) => Number(sum) + Number(payment.amount), 0)
+
   const groupedAppointments = getGroupedAppointments(appointments)
 
   const agendaItems = groupedAppointments
@@ -120,6 +122,8 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         <Text style={styles(styleProps).text}>
           Start date: {DateTime.fromISO(treatment?.start_date || '').toISODate()}
         </Text>
+        <Text style={styles(styleProps).text}>Total price: {treatment.price}</Text>
+        <Text style={styles(styleProps).text}>Paid: {totalPayments}</Text>
       </View>
       <View style={styles(styleProps).additionalInfoView}>
         <ButtonGroup

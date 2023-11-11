@@ -36,7 +36,7 @@ export default function PaymentForm(props: Props) {
   }
 
   const [date, setDate] = useState(dateInitialVal)
-  const [amount, setAmount] = useState(props.payment?.amount)
+  const [amount, setAmount] = useState(props.payment?.amount.toString())
 
   const [showAmountInputError, setShowAmountInputError] = useState(false)
 
@@ -59,7 +59,7 @@ export default function PaymentForm(props: Props) {
   function validate() {
     let valid = true
 
-    if (!amount) {
+    if (!amount || isNaN(Number(amount))) {
       valid = false
       setShowAmountInputError(true)
     }
@@ -81,7 +81,7 @@ export default function PaymentForm(props: Props) {
 
   function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
     setShowAmountInputError(false)
-    setAmount(Number(event.nativeEvent.text.replace(',', '.')))
+    setAmount(event.nativeEvent.text.replace(',', '.'))
   }
 
   return (
@@ -89,7 +89,7 @@ export default function PaymentForm(props: Props) {
       <DateTimeInput text='Date' showDatePicker={true} datetime={date} onChange={handleDateChange} />
       <MyInput
         placeholder='Amount'
-        value={amount?.toString()}
+        value={amount}
         showError={showAmountInputError}
         onChange={handleAmountChange}
         keyboardType='decimal-pad'
