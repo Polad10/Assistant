@@ -13,9 +13,12 @@ import { DataContext } from '../contexts/DataContext'
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
+import { CheckBox } from '@rneui/themed'
+import { Colors } from '../types/Colors'
 
 type StyleProps = {
   patientEditable: boolean
+  colors: Colors
 }
 
 type Props = {
@@ -41,6 +44,7 @@ export default function TreatmentForm(props: Props) {
   const [startDate, setStartDate] = useState(startDateInitialVal)
   const [title, setTitle] = useState(props.treatment?.title)
   const [price, setPrice] = useState(props.treatment?.price.toString())
+  const [finished, setFinished] = useState(props.treatment?.finished)
 
   const context = useContext(DataContext)
 
@@ -50,6 +54,7 @@ export default function TreatmentForm(props: Props) {
 
   let styleProps: StyleProps = {
     patientEditable: true,
+    colors: colors,
   }
 
   const handleSave = useCallback(async () => {
@@ -59,6 +64,7 @@ export default function TreatmentForm(props: Props) {
         title: title!,
         patient_id: patient!.id,
         price: Number(price),
+        finished: finished,
       }
 
       if (props.treatment) {
@@ -67,7 +73,7 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     }
-  }, [patient, startDate, title, price])
+  }, [patient, startDate, title, price, finished])
 
   function validate() {
     let valid = true
@@ -141,6 +147,10 @@ export default function TreatmentForm(props: Props) {
     }
   }
 
+  function handleFinishedChange() {
+    setFinished(!finished)
+  }
+
   return (
     <MainView>
       <DateTimeInput text='Start date' showDatePicker={true} datetime={startDate} onChange={handleStartDateChange} />
@@ -161,6 +171,14 @@ export default function TreatmentForm(props: Props) {
         style={styles(styleProps).patient}
         showError={showPatientInputError}
       />
+      <CheckBox
+        checked={finished ?? false}
+        onPress={handleFinishedChange}
+        title='Finished'
+        checkedColor='green'
+        containerStyle={styles(styleProps).checkbox}
+        textStyle={styles(styleProps).checkboxText}
+      />
     </MainView>
   )
 }
@@ -169,5 +187,16 @@ const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
     patient: {
       opacity: styleProps.patientEditable ? 1 : 0.5,
+    },
+    checkbox: {
+      backgroundColor: styleProps.colors.background,
+      margin: 0,
+      paddingLeft: 0,
+      borderBottomWidth: 1,
+      borderBottomColor: styleProps.colors.border,
+    },
+    checkboxText: {
+      fontSize: 18,
+      fontWeight: 'normal',
     },
   })
