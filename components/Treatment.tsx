@@ -15,6 +15,7 @@ import { Status } from '../enums/Status'
 import MainView from './MainView'
 import MyAgendaList from './MyAgendaList'
 import HeaderButton from './HeaderButton'
+import CustomIcon from './CustomIcon'
 
 type StyleProps = {
   colors: Colors
@@ -122,8 +123,14 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         <Text style={styles(styleProps).text}>
           Start date: {DateTime.fromISO(treatment?.start_date || '').toISODate()}
         </Text>
-        <Text style={styles(styleProps).text}>Total price: {treatment.price}</Text>
-        <Text style={styles(styleProps).text}>Paid: {totalPayments}</Text>
+        <View style={styles(styleProps).priceView}>
+          <Text style={styles(styleProps).text}>Total price: {treatment.price} </Text>
+          <CustomIcon name='manat' color={colors.text} size={15} style={{ paddingTop: 5 }} />
+        </View>
+        <View style={styles(styleProps).priceView}>
+          <Text style={styles(styleProps).text}>Paid: {totalPayments} </Text>
+          <CustomIcon name='manat' color={colors.text} size={15} style={{ paddingTop: 5 }} />
+        </View>
       </View>
       <View style={styles(styleProps).additionalInfoView}>
         <ButtonGroup
@@ -173,5 +180,9 @@ const styles = (styleProps: StyleProps) =>
     },
     status: {
       color: styleProps.treatmentFinished ? 'lightgreen' : 'orange',
+    },
+    priceView: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
   })
