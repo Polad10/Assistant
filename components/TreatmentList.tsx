@@ -48,7 +48,7 @@ export default function TreatmentList(props: Props) {
   function getTreatmentsContentView() {
     if (treatmentElements.length > 0) {
       return (
-        <ScrollView>
+        <ScrollView keyboardDismissMode='on-drag'>
           <MainView>{treatmentElements}</MainView>
         </ScrollView>
       )

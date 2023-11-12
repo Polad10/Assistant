@@ -34,7 +34,7 @@ export default function PatientList(props: Props) {
   })
 
   return (
-    <ScrollView>
+    <ScrollView keyboardDismissMode='on-drag'>
       <MainView>{patientListSections}</MainView>
     </ScrollView>
   )

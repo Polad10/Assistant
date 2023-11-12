@@ -30,7 +30,7 @@ export default function PaymentList(props: Props) {
   function getPaymentsContentView() {
     if (paymentElements.length > 0) {
       return (
-        <ScrollView>
+        <ScrollView keyboardDismissMode='on-drag'>
           <MainView>{paymentElements}</MainView>
         </ScrollView>
       )
