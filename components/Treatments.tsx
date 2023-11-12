@@ -3,25 +3,41 @@ import TreatmentList from './TreatmentList'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
-import { DataContext, TreatmentsType } from '../contexts/DataContext'
+import { DataContext } from '../contexts/DataContext'
 import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
+import { Treatment } from '@polad10/assistant-models/Treatment'
+
+interface TreatmentWithPatientName extends Treatment {
+  patientFirstName?: string
+  patientLastName?: string
+}
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
   const context = useContext(DataContext)
 
-  const [treatments, setTreatments] = useState<TreatmentsType>([])
-  const [treatmentsInitial, setTreatmentsInitial] = useState<TreatmentsType>([])
+  const [treatments, setTreatments] = useState<TreatmentWithPatientName[]>([])
+  const [treatmentsInitial, setTreatmentsInitial] = useState<TreatmentWithPatientName[]>([])
 
   if (!context) {
     return
   }
 
   const searchOptions = {
-    keys: ['first_name', 'last_name'],
+    keys: [
+      {
+        name: 'patientFirstName',
+        weight: 2,
+      },
+      {
+        name: 'patientLastName',
+        weight: 1,
+      },
+    ],
+    threshold: 0.5,
   }
 
-  const fuse = new Fuse(context.patients ?? [], searchOptions)
+  const fuse = new Fuse(treatments, searchOptions)
 
   const handleSearch = useCallback(
     (search: string) => {
@@ -30,8 +46,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
         return
       }
 
-      const foundPatients = fuse.search(search).map((s) => s.item)
-      const foundTreatments = treatments?.filter((t) => foundPatients.some((p) => t.patient_id === p.id)) ?? []
+      const foundTreatments = fuse.search(search).map((s) => s.item)
 
       setTreatments(foundTreatments)
     },
@@ -42,11 +57,22 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
     context.fetchTreatments()
     context.fetchPatients()
 
-    let ongoingTreatments = context?.treatments?.filter((t) => !t.finished)
+    const ongoingTreatments = context?.treatments?.filter((t) => !t.finished)
     ongoingTreatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
 
-    setTreatments(ongoingTreatments ?? [])
-    setTreatmentsInitial(ongoingTreatments ?? [])
+    const treatmentsWithPatientName: TreatmentWithPatientName[] =
+      ongoingTreatments?.map((t) => {
+        const patient = context.patients?.find((p) => p.id === t.patient_id)
+
+        return {
+          patientFirstName: patient?.first_name,
+          patientLastName: patient?.last_name,
+          ...t,
+        }
+      }) ?? []
+
+    setTreatments(treatmentsWithPatientName)
+    setTreatmentsInitial(treatmentsWithPatientName)
   }, [])
 
   useEffect(() => {
