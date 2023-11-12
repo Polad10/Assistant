@@ -1,15 +1,17 @@
-import { SetStateAction, useState } from 'react';
-import { useTheme } from '@react-navigation/native';
-import { Platform, StyleSheet } from 'react-native';
-import { SearchBar } from '@rneui/themed';
-import { Colors } from '../types/Colors';
+import { SetStateAction, useState } from 'react'
+import { useTheme } from '@react-navigation/native'
+import { DeviceEventEmitter, Platform, StyleSheet } from 'react-native'
+import { SearchBar } from '@rneui/themed'
+import { Colors } from '../types/Colors'
 
 export default function MySearchBar() {
-  const { colors } = useTheme();
-  const [search, setSearch] = useState('');
+  const { colors } = useTheme()
+  const [search, setSearch] = useState('')
 
   function updateSearch(value: SetStateAction<string>) {
-    setSearch(value);
+    setSearch(value)
+
+    DeviceEventEmitter.emit('search', value)
   }
 
   return (
@@ -23,7 +25,7 @@ export default function MySearchBar() {
       value={search}
       onChangeText={updateSearch}
     />
-  );
+  )
 }
 
 const styles = (colors: Colors) =>
@@ -37,4 +39,4 @@ const styles = (colors: Colors) =>
     searchBarInput: {
       color: colors.text,
     },
-  });
+  })

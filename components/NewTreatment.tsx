@@ -19,7 +19,6 @@ export default function NewTreatment() {
     const newTreatment = await context.createTreatment(treatment)
 
     if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
-      console.log('emit')
       DeviceEventEmitter.emit('treatmentCreated', newTreatment)
     } else {
       navigation.goBack()
