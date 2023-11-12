@@ -8,18 +8,15 @@ import { Patient } from '@polad10/assistant-models/Patient'
 
 type Props = {
   pageName: keyof RootStackParamList
+  patients: Patient[]
 }
 
 export default function PatientList(props: Props) {
   const context = useContext(DataContext)
 
-  useEffect(() => {
-    context!.fetchPatients()
-  }, [])
-
   const groupedPatients = new Map<string, Patient[]>()
 
-  for (const patient of context?.patients ?? []) {
+  for (const patient of props.patients) {
     const firstChar = patient.first_name.charAt(0).toUpperCase()
 
     if (!groupedPatients.has(firstChar)) {

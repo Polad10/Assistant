@@ -4,14 +4,18 @@ import { DeviceEventEmitter, Platform, StyleSheet } from 'react-native'
 import { SearchBar } from '@rneui/themed'
 import { Colors } from '../types/Colors'
 
-export default function MySearchBar() {
+type Props = {
+  searchEventName: string
+}
+
+export default function MySearchBar(props: Props) {
   const { colors } = useTheme()
   const [search, setSearch] = useState('')
 
   function updateSearch(value: SetStateAction<string>) {
     setSearch(value)
 
-    DeviceEventEmitter.emit('search', value)
+    DeviceEventEmitter.emit(props.searchEventName, value)
   }
 
   return (

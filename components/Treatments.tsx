@@ -15,6 +15,7 @@ interface TreatmentWithPatientName extends Treatment {
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
   const context = useContext(DataContext)
+  const searchEventName = 'searchTreatment'
 
   const [treatments, setTreatments] = useState<TreatmentWithPatientName[]>([])
   const [treatmentsInitial, setTreatmentsInitial] = useState<TreatmentWithPatientName[]>([])
@@ -34,10 +35,9 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
         weight: 1,
       },
     ],
-    threshold: 0.5,
   }
 
-  const fuse = new Fuse(treatments, searchOptions)
+  const fuse = new Fuse(treatmentsInitial, searchOptions)
 
   const handleSearch = useCallback(
     (search: string) => {
@@ -50,7 +50,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
 
       setTreatments(foundTreatments)
     },
-    [treatments, treatmentsInitial]
+    [treatmentsInitial]
   )
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   }, [])
 
   useEffect(() => {
-    const listener = DeviceEventEmitter.addListener('search', handleSearch)
+    const listener = DeviceEventEmitter.addListener(searchEventName, handleSearch)
 
     return () => {
       listener.remove()
@@ -85,7 +85,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
 
   return (
     <MainView>
-      <MySearchBar />
+      <MySearchBar searchEventName={searchEventName} />
       <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
     </MainView>
   )
