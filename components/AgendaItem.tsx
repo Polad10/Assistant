@@ -18,8 +18,12 @@ const AgendaItem = (props: ItemProps) => {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
   const context = useContext(DataContext)
 
-  const treatment = context?.treatments?.find((t) => t.id === appointment.treatment_id)
-  const patient = context?.patients?.find((p) => p.id === treatment?.patient_id)
+  if (!context) {
+    return
+  }
+
+  const treatment = context.treatments?.find((t) => t.id === appointment.treatment_id)
+  const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
 
   const itemPressed = useCallback(() => {
     navigation.navigate('EditAppointment', { appointmentId: appointment.id })

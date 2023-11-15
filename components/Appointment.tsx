@@ -93,19 +93,23 @@ export default function Appointment(props: Props) {
     })
   }, [navigation, handleSave])
 
-  if (props.mode === Mode.NEW) {
-    useEffect(() => {
+  useEffect(() => {
+    if (props.mode === Mode.NEW) {
       const treatmentSelectedListener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
       const treatmentCreatedListener = DeviceEventEmitter.addListener('treatmentCreated', handleTreatmentSelect)
-      const treatmentDeleteListener = DeviceEventEmitter.addListener('entityDeleted', handleDelete)
 
       return () => {
         treatmentSelectedListener.remove()
         treatmentCreatedListener.remove()
+      }
+    } else {
+      const treatmentDeleteListener = DeviceEventEmitter.addListener('entityDeleted', handleDelete)
+
+      return () => {
         treatmentDeleteListener.remove()
       }
-    }, [])
-  }
+    }
+  }, [])
 
   function handleDateTimeChange(event: DateTimePickerEvent, dateTime: Date | undefined) {
     if (dateTime) {
