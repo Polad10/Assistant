@@ -11,6 +11,7 @@ import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '@polad10/assistant-models/Appointment'
 import NoDataFound from './NoDataView'
+import { DateTime } from 'luxon'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
@@ -44,6 +45,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
         renderItem={renderItem}
         renderEmptyData={renderEmptyData}
         showOnlySelectedDayItems={true}
+        selected={DateTime.local().toISO() ?? undefined}
         theme={{
           calendarBackground: colors.background,
           monthTextColor: colors.text,
