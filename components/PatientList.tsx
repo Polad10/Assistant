@@ -1,34 +1,38 @@
-import { RootStackParamList } from '../types/Navigation'
-import PatientListSection from './PatientListSection'
+import { ScrollView } from 'react-native-gesture-handler'
 import MainView from './MainView'
-import { ScrollView } from 'react-native'
 import { Patient } from '@polad10/assistant-models/Patient'
+import { StyleSheet, View } from 'react-native'
+import PatientItem from './PatientItem'
+import { Divider } from '@rneui/themed'
+import { useTheme } from '@react-navigation/native'
+import { RootStackParamList } from '../types/Navigation'
 
 type Props = {
-  pageName: keyof RootStackParamList
   patients: Patient[]
+  pageName: keyof RootStackParamList
 }
 
 export default function PatientList(props: Props) {
-  const groupedPatients = new Map<string, Patient[]>()
+  const { colors } = useTheme()
 
-  for (const patient of props.patients) {
-    const firstChar = patient.first_name.charAt(0).toUpperCase()
-
-    if (!groupedPatients.has(firstChar)) {
-      groupedPatients.set(firstChar, [])
-    }
-
-    groupedPatients.get(firstChar)?.push(patient)
+  function getPatientElements() {
+    return props.patients.map((p) => (
+      <View key={p.id}>
+        <PatientItem patient={p} pageName={props.pageName} />
+        <Divider color={colors.border} style={styles.divider} />
+      </View>
+    ))
   }
-
-  const patientListSections = [...groupedPatients].sort().map(([key, value]) => {
-    return <PatientListSection key={key} sectionTiTle={key} patients={value} pageName={props.pageName} />
-  })
 
   return (
     <ScrollView keyboardDismissMode='on-drag'>
-      <MainView>{patientListSections}</MainView>
+      <MainView>{getPatientElements()}</MainView>
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  divider: {
+    marginHorizontal: 13,
+  },
+})

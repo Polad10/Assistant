@@ -2,9 +2,9 @@ import { useTheme } from '@react-navigation/native'
 import { Divider, ListItem } from '@rneui/themed'
 import { View, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
-import PatientItem from './PatientItem'
 import { RootStackParamList } from '../types/Navigation'
 import { Patient } from '@polad10/assistant-models/Patient'
+import PatientList from './PatientList'
 
 interface Props {
   sectionTiTle: string
@@ -15,13 +15,6 @@ interface Props {
 export default function PatientListSection(props: Props) {
   const { colors } = useTheme()
 
-  const patientElements = props.patients.map((p) => (
-    <View key={p.id}>
-      <PatientItem patient={p} pageName={props.pageName} />
-      <Divider color={colors.border} style={styles(colors).divider} />
-    </View>
-  ))
-
   return (
     <View>
       <ListItem containerStyle={styles(colors).listItemContainer}>
@@ -30,7 +23,7 @@ export default function PatientListSection(props: Props) {
         </ListItem.Content>
       </ListItem>
       <Divider color={colors.border} style={styles(colors).divider} />
-      {patientElements}
+      <PatientList pageName={props.pageName} patients={props.patients} />
     </View>
   )
 }
