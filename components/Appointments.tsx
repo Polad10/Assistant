@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import { Colors } from '../types/Colors'
 import MyFAB from './MyFAB'
@@ -16,6 +16,7 @@ import { DateTime } from 'luxon'
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
   const context = useContext(DataContext)
+  const [agendaItems, setAgendaItems] = useState({})
 
   if (!context) {
     return
@@ -27,6 +28,11 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     context.fetchPatients()
   }, [])
 
+  useEffect(() => {
+    const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
+    setAgendaItems(groupedAppointments ? Object.fromEntries(groupedAppointments) : {})
+  }, [context.appointments])
+
   const renderItem = (item: Appointment) => {
     return <AgendaItem appointment={item} />
   }
@@ -35,12 +41,10 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     return <NoDataFound text='No appointments found' />
   }
 
-  const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
-  const agendaItems = groupedAppointments ? Object.fromEntries(groupedAppointments) : {}
-
   return (
     <MainView>
       <Agenda
+        key={Math.random()} // Workaround for Agenda's bug, where the item list not updated correctly
         items={agendaItems}
         renderItem={renderItem}
         renderEmptyData={renderEmptyData}
