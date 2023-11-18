@@ -1,10 +1,10 @@
 import PatientListSections from './PatientListSections'
 import MyFAB from './MyFAB'
-import MySearchBar from './MySearchBar'
+import MySearchBar, { SearchBarRefType } from './MySearchBar'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Patient } from '@polad10/assistant-models/Patient'
 import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
@@ -21,6 +21,8 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   if (!context) {
     return
   }
+
+  const ref = useRef<SearchBarRefType>()
 
   const searchOptions = {
     keys: [
@@ -59,6 +61,8 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   }
 
   useEffect(() => {
+    ref.current?.clear()
+    setSearching(false)
     setPatients(context.patients ?? [])
   }, [context.patients])
 
@@ -72,7 +76,7 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
 
   return (
     <MainView>
-      <MySearchBar searchEventName={searchEventName} />
+      <MySearchBar searchEventName={searchEventName} ref={ref} />
       {getPatientsContentView()}
       <MyFAB onPress={() => navigation.navigate('NewPatient')} />
     </MainView>

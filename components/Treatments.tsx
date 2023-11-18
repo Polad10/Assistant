@@ -1,8 +1,8 @@
-import MySearchBar from './MySearchBar'
+import MySearchBar, { SearchBarRefType } from './MySearchBar'
 import TreatmentList from './TreatmentList'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
@@ -23,6 +23,8 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   if (!context) {
     return
   }
+
+  const ref = useRef<SearchBarRefType>()
 
   const searchOptions = {
     keys: [
@@ -56,8 +58,12 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   useEffect(() => {
     context.fetchTreatments()
     context.fetchPatients()
+  }, [])
 
-    const ongoingTreatments = context?.treatments?.filter((t) => !t.finished)
+  useEffect(() => {
+    ref.current?.clear()
+
+    const ongoingTreatments = context.treatments?.filter((t) => !t.finished)
     ongoingTreatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
 
     const treatmentsWithPatientName: TreatmentWithPatientName[] =
@@ -73,7 +79,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
 
     setTreatments(treatmentsWithPatientName)
     setTreatmentsInitial(treatmentsWithPatientName)
-  }, [])
+  }, [context.treatments])
 
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener(searchEventName, handleSearch)
@@ -85,7 +91,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
 
   return (
     <MainView>
-      <MySearchBar searchEventName={searchEventName} />
+      <MySearchBar searchEventName={searchEventName} ref={ref} />
       <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
     </MainView>
   )

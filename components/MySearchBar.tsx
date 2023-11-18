@@ -1,16 +1,33 @@
-import { SetStateAction, useState } from 'react'
+import { PropsWithChildren, SetStateAction, forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useTheme } from '@react-navigation/native'
-import { DeviceEventEmitter, Platform, StyleSheet } from 'react-native'
+import { DeviceEventEmitter, Platform, StyleSheet, TextInput } from 'react-native'
 import { SearchBar } from '@rneui/themed'
+import { SearchBar as BaseSearchBar } from '@rneui/base'
 import { Colors } from '../types/Colors'
 
 type Props = {
   searchEventName: string
 }
 
-export default function MySearchBar(props: Props) {
+type SearchBarRefType = {
+  clear: () => void
+}
+
+const MySearchBar = forwardRef((props: Props, ref) => {
   const { colors } = useTheme()
   const [search, setSearch] = useState('')
+
+  const searchBarRef = useRef<TextInput & PropsWithChildren<BaseSearchBar>>(null)
+
+  useImperativeHandle(ref, () => {
+    return {
+      clear() {
+        if (searchBarRef.current) {
+          searchBarRef.current.clear()
+        }
+      },
+    }
+  })
 
   function updateSearch(value: SetStateAction<string>) {
     setSearch(value)
@@ -20,6 +37,7 @@ export default function MySearchBar(props: Props) {
 
   return (
     <SearchBar
+      ref={searchBarRef}
       placeholder='Search...'
       platform={Platform.OS === 'ios' || Platform.OS === 'android' ? Platform.OS : 'default'}
       lightTheme={false}
@@ -30,7 +48,7 @@ export default function MySearchBar(props: Props) {
       onChangeText={updateSearch}
     />
   )
-}
+})
 
 const styles = (colors: Colors) =>
   StyleSheet.create({
@@ -44,3 +62,6 @@ const styles = (colors: Colors) =>
       color: colors.text,
     },
   })
+
+export default MySearchBar
+export { SearchBarRefType }
