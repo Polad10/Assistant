@@ -2,8 +2,6 @@ import { RootStackParamList } from '../types/Navigation'
 import PatientListSection from './PatientListSection'
 import MainView from './MainView'
 import { ScrollView } from 'react-native'
-import { useContext, useEffect } from 'react'
-import { DataContext } from '../contexts/DataContext'
 import { Patient } from '@polad10/assistant-models/Patient'
 
 type Props = {
@@ -12,8 +10,6 @@ type Props = {
 }
 
 export default function PatientList(props: Props) {
-  const context = useContext(DataContext)
-
   const groupedPatients = new Map<string, Patient[]>()
 
   for (const patient of props.patients) {
