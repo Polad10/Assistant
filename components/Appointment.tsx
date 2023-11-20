@@ -1,4 +1,10 @@
-import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
+import {
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  DeviceEventEmitter,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native'
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
@@ -8,12 +14,13 @@ import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '@polad10/assistant-models/Treatment'
-import HeaderButton from './HeaderButton'
 import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
 import DeleteButton from './DeleteButton'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import IonIcons from '@expo/vector-icons/Ionicons'
+import { Button } from '@rneui/themed'
+import HeaderButton from './HeaderButton'
 
 type Props = {
   appointmentId?: number
@@ -159,9 +166,11 @@ export default function Appointment(props: Props) {
   }
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
-    })
+    if (props.mode === Mode.EDIT) {
+      navigation.setOptions({
+        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+      })
+    }
   }, [navigation, handleSave])
 
   useEffect(() => {
@@ -218,7 +227,31 @@ export default function Appointment(props: Props) {
           disabled={props.treatment != null || props.mode === Mode.EDIT}
         />
       </TouchableOpacity>
+
+      {props.mode === Mode.NEW && (
+        <SafeAreaView style={styles.buttonView}>
+          <Button
+            color={colors.primary}
+            style={styles.button}
+            buttonStyle={{ padding: 10, borderRadius: 10 }}
+            onPress={handleSave}
+          >
+            Create Appointment
+          </Button>
+        </SafeAreaView>
+      )}
+
       {props.mode === Mode.EDIT && <DeleteButton />}
     </MainView>
   )
 }
+
+const styles = StyleSheet.create({
+  buttonView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginHorizontal: 10,
+  },
+})
