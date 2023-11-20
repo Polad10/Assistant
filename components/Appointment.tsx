@@ -1,7 +1,7 @@
 import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
 import { Mode } from '../enums/Mode'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
@@ -13,6 +13,8 @@ import HeaderButton from './HeaderButton'
 import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
 import DeleteButton from './DeleteButton'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import IonIcons from '@expo/vector-icons/Ionicons'
 
 type Props = {
   appointmentId?: number
@@ -23,6 +25,7 @@ type Props = {
 export default function Appointment(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
   const context = useContext(DataContext)
+  const { colors } = useTheme()
 
   if (!context) {
     return
@@ -35,19 +38,19 @@ export default function Appointment(props: Props) {
     treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
   }
 
-  const initialDateTime = appointment ? new Date(appointment.datetime) : new Date()
+  const initialDateTime = appointment ? new Date(appointment.datetime) : undefined
 
   const [showActionsInputError, setShowActionsInputError] = useState(false)
   const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
 
-  const [dateTime, setDateTime] = useState(initialDateTime)
+  const [dateTime, setDateTime] = useState<Date | undefined>(initialDateTime)
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
   const handleSave = useCallback(async () => {
     if (validate()) {
       const newAppointment: AppointmentRequest = {
-        datetime: DateTime.fromJSDate(dateTime).toISO()!,
+        datetime: DateTime.fromJSDate(dateTime!).toISO()!,
         actions: actions,
         treatment_id: selectedTreatment!.id,
       }
@@ -84,6 +87,8 @@ export default function Appointment(props: Props) {
       setShowTreatmentInputError(true)
     }
 
+    //validate datetime
+
     return valid
   }
 
@@ -111,12 +116,6 @@ export default function Appointment(props: Props) {
     }
   }, [])
 
-  function handleDateTimeChange(event: DateTimePickerEvent, dateTime: Date | undefined) {
-    if (dateTime) {
-      setDateTime(dateTime)
-    }
-  }
-
   function handleActionsChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
     setShowActionsInputError(false)
     setActions(event.nativeEvent.text)
@@ -140,28 +139,33 @@ export default function Appointment(props: Props) {
   }
 
   return (
-    <MainView>
+    <MainView style={{ paddingTop: 20 }}>
       <DateTimeInput
         text='Date and time'
         datetime={dateTime}
         showDatePicker={true}
         showTimePicker={true}
-        onChange={handleDateTimeChange}
+        onChange={setDateTime}
       />
       <MyInput
-        placeholder='Actions'
+        label='Actions'
+        placeholder='Type something...'
         multiline={true}
         value={actions}
         onChange={handleActionsChange}
         showError={showActionsInputError}
+        style={{ minHeight: 100 }}
       />
-      <MyInput
-        placeholder='Select treatment'
-        onPressIn={handleTreatmentChange}
-        value={selectedTreatment?.title}
-        editable={false}
-        showError={showTreatmentInputError}
-      />
+      <TouchableOpacity onPress={handleTreatmentChange}>
+        <MyInput
+          pointerEvents='none'
+          label='Treatment'
+          placeholder='Select'
+          value={selectedTreatment?.title}
+          showError={showTreatmentInputError}
+          rightIcon={<IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />}
+        />
+      </TouchableOpacity>
       {props.mode === Mode.EDIT && <DeleteButton />}
     </MainView>
   )

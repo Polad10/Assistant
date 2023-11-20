@@ -1,14 +1,21 @@
-import { View, Text, StyleSheet } from 'react-native'
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
+import MyInput from './MyInput'
+import { useState } from 'react'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import { DateTime } from 'luxon'
+import IonIcons from '@expo/vector-icons/Ionicons'
 
 type Props = {
   text: string
   datetime?: Date
   showDatePicker?: boolean
   showTimePicker?: boolean
-  onChange?: (event: DateTimePickerEvent, dateTime: Date | undefined) => void
+  showDatePickerError?: boolean
+  showTimePickerError?: boolean
+  onChange?: (dateTime: Date) => void
 }
 
 type StyleProps = {
@@ -17,10 +24,14 @@ type StyleProps = {
   showTimePicker?: boolean
 }
 
+type Mode = 'date' | 'time'
+
 export default function DateTimeInput(props: Props) {
   const { colors } = useTheme()
-
-  const datetime = props.datetime ?? new Date()
+  const [mode, setMode] = useState<Mode>('date')
+  const [date, setDate] = useState<Date | undefined>(props.datetime)
+  const [time, setTime] = useState<Date | undefined>(props.datetime)
+  const [showDateTimePicker, setShowDateTimePicker] = useState(false)
 
   const styleProps: StyleProps = {
     colors: colors,
@@ -28,13 +39,48 @@ export default function DateTimeInput(props: Props) {
     showTimePicker: props.showTimePicker,
   }
 
+  function showMode(mode: Mode) {
+    setMode(mode)
+    setShowDateTimePicker(true)
+  }
+
+  function handleConfirm(dateTime: Date) {
+    mode === 'date' ? setDate(dateTime) : setTime(dateTime)
+    setShowDateTimePicker(false)
+    props.onChange?.(dateTime)
+  }
+
   return (
-    <View style={styles(styleProps).dateTimeContainer}>
-      <Text style={styles(styleProps).text}>{props.text}</Text>
-      <View style={styles(styleProps).dateTime}>
-        <DateTimePicker mode='date' value={datetime} style={styles(styleProps).datePicker} onChange={props.onChange} />
-        <DateTimePicker mode='time' value={datetime} style={styles(styleProps).timePicker} onChange={props.onChange} />
+    <View>
+      <View style={styles(styleProps).dateTimeContainer}>
+        <TouchableOpacity style={styles(styleProps).datePicker} onPress={() => showMode('date')}>
+          <MyInput
+            pointerEvents='none'
+            placeholder='Date'
+            value={date ? DateTime.fromJSDate(date).toISODate() ?? undefined : undefined}
+            rightIcon={<IonIcons name='calendar-outline' size={25} color={colors.notification} />}
+            showError={props.showDatePickerError}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles(styleProps).timePicker} onPress={() => showMode('time')}>
+          <MyInput
+            pointerEvents='none'
+            placeholder='Time'
+            value={time ? DateTime.fromJSDate(time).toLocaleString(DateTime.TIME_24_SIMPLE) ?? undefined : undefined}
+            containerStyle={styles(styleProps).datePicker}
+            rightIcon={<IonIcons name='time-outline' size={25} color={colors.notification} />}
+            showError={props.showTimePickerError}
+          />
+        </TouchableOpacity>
       </View>
+      <DateTimePickerModal
+        isVisible={showDateTimePicker}
+        mode={mode}
+        date={mode === 'date' ? date : time}
+        onConfirm={handleConfirm}
+        onCancel={() => setShowDateTimePicker(false)}
+        display={mode === 'date' ? 'inline' : 'spinner'}
+      />
     </View>
   )
 }
@@ -43,26 +89,13 @@ const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
     dateTimeContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderBottomColor: styleProps.colors.border,
-      borderBottomWidth: 1,
-      marginHorizontal: 10,
-      paddingVertical: 10,
-      marginBottom: 15,
-    },
-    text: {
-      color: styleProps.colors.text,
-      fontSize: 18,
     },
     datePicker: {
+      flex: 1,
       display: styleProps.showDatePicker ? 'flex' : 'none',
     },
     timePicker: {
-      marginLeft: 5,
+      flex: 1,
       display: styleProps.showTimePicker ? 'flex' : 'none',
-    },
-    dateTime: {
-      flexDirection: 'row',
     },
   })

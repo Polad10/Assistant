@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Colors } from '../types/Colors'
 import { Input, InputProps } from '@rneui/themed'
+import { useState } from 'react'
 
 type StyleProps = {
   colors: Colors
@@ -14,6 +15,7 @@ type Props = InputProps & {
 
 export default function MyInput(props: Props) {
   const { colors } = useTheme()
+  const [focused, setFocused] = useState(false)
 
   const styleProps: StyleProps = {
     colors: colors,
@@ -21,7 +23,15 @@ export default function MyInput(props: Props) {
   }
 
   return (
-    <Input {...props} inputStyle={styles(styleProps).input} inputContainerStyle={styles(styleProps).inputContainer} />
+    <Input
+      {...props}
+      inputStyle={styles(styleProps).input}
+      labelStyle={styles(styleProps).label}
+      inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
+      selectionColor={colors.notification}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+    />
   )
 }
 
@@ -30,7 +40,17 @@ const styles = (styleProps: StyleProps) =>
     input: {
       color: styleProps.colors.text,
     },
+    label: {
+      marginBottom: 5,
+      color: styleProps.colors.notification,
+    },
     inputContainer: {
+      borderWidth: 1,
+      padding: 10,
+      borderRadius: 10,
       borderColor: styleProps.showError ? 'red' : styleProps.colors.border,
+    },
+    focused: {
+      borderColor: styleProps.colors.notification,
     },
   })
