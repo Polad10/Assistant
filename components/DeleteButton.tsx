@@ -18,7 +18,7 @@ export default function DeleteButton() {
 
   return (
     <SafeAreaView style={styles.buttonView}>
-      <Button color='red' style={styles.button} onPress={toggleConfirmDialogVisible}>
+      <Button titleStyle={{ color: 'red' }} style={styles.button} type='clear' onPress={toggleConfirmDialogVisible}>
         Delete
       </Button>
       <Dialog
