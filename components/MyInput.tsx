@@ -51,6 +51,6 @@ const styles = (styleProps: StyleProps) =>
       borderColor: styleProps.showError ? 'red' : styleProps.colors.border,
     },
     focused: {
-      borderColor: styleProps.colors.notification,
+      borderColor: 'grey',
     },
   })

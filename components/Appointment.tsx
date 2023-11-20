@@ -7,7 +7,6 @@ import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { Treatment } from '@polad10/assistant-models/Treatment'
 import HeaderButton from './HeaderButton'
 import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
@@ -42,6 +41,11 @@ export default function Appointment(props: Props) {
 
   const [showActionsInputError, setShowActionsInputError] = useState(false)
   const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
+  const [showDatePickerError, setShowDatePickerError] = useState(false)
+  const [showTimePickerError, setShowTimePickerError] = useState(false)
+
+  const [dateFilled, setDateFilled] = useState(false)
+  const [timeFilled, setTimeFilled] = useState(false)
 
   const [dateTime, setDateTime] = useState<Date | undefined>(initialDateTime)
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
@@ -87,9 +91,71 @@ export default function Appointment(props: Props) {
       setShowTreatmentInputError(true)
     }
 
-    //validate datetime
+    if (!dateFilled) {
+      valid = false
+      setShowDatePickerError(true)
+    }
+
+    if (!timeFilled) {
+      valid = false
+      setShowTimePickerError(true)
+    }
 
     return valid
+  }
+
+  function handleActionsChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
+    setShowActionsInputError(false)
+    setActions(event.nativeEvent.text)
+  }
+
+  function handleTreatmentSelect(treatment: Treatment) {
+    // first navigate, then set appointment
+    // avoids reseting appointment
+    navigation.navigate('NewAppointment')
+
+    setShowTreatmentInputError(false)
+    setSelectedTreatment(treatment)
+  }
+
+  function handleTreatmentChange() {
+    if (props.treatment || props.mode === Mode.EDIT) {
+      return
+    }
+
+    navigation.navigate('Treatments')
+  }
+
+  function handleDateChange(date: Date) {
+    if (!dateTime) {
+      setDateTime(date)
+    } else {
+      const currentDateTime = DateTime.fromJSDate(dateTime)
+      const newDateTime = DateTime.fromJSDate(date).set({ hour: currentDateTime.hour, minute: currentDateTime.minute })
+
+      setDateTime(newDateTime.toJSDate())
+    }
+
+    setShowDatePickerError(false)
+    setDateFilled(true)
+  }
+
+  function handleTimeChange(time: Date) {
+    if (!dateTime) {
+      setDateTime(time)
+    } else {
+      const currentDateTime = DateTime.fromJSDate(dateTime)
+      const newDateTime = DateTime.fromJSDate(time).set({
+        year: currentDateTime.year,
+        month: currentDateTime.month,
+        day: currentDateTime.day,
+      })
+
+      setDateTime(newDateTime.toJSDate())
+    }
+
+    setShowTimePickerError(false)
+    setTimeFilled(true)
   }
 
   useEffect(() => {
@@ -116,28 +182,6 @@ export default function Appointment(props: Props) {
     }
   }, [])
 
-  function handleActionsChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
-    setShowActionsInputError(false)
-    setActions(event.nativeEvent.text)
-  }
-
-  function handleTreatmentSelect(treatment: Treatment) {
-    // first navigate, then set appointment
-    // avoids reseting appointment
-    navigation.navigate('NewAppointment')
-
-    setShowTreatmentInputError(false)
-    setSelectedTreatment(treatment)
-  }
-
-  function handleTreatmentChange() {
-    if (props.treatment || props.mode === Mode.EDIT) {
-      return
-    }
-
-    navigation.navigate('Treatments')
-  }
-
   return (
     <MainView style={{ paddingTop: 20 }}>
       <DateTimeInput
@@ -145,7 +189,10 @@ export default function Appointment(props: Props) {
         datetime={dateTime}
         showDatePicker={true}
         showTimePicker={true}
-        onChange={setDateTime}
+        showDatePickerError={showDatePickerError}
+        showTimePickerError={showTimePickerError}
+        onDateChange={handleDateChange}
+        onTimeChange={handleTimeChange}
       />
       <MyInput
         label='Actions'

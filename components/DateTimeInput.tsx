@@ -15,7 +15,8 @@ type Props = {
   showTimePicker?: boolean
   showDatePickerError?: boolean
   showTimePickerError?: boolean
-  onChange?: (dateTime: Date) => void
+  onDateChange?: (dateTime: Date) => void
+  onTimeChange?: (dateTime: Date) => void
 }
 
 type StyleProps = {
@@ -45,9 +46,15 @@ export default function DateTimeInput(props: Props) {
   }
 
   function handleConfirm(dateTime: Date) {
-    mode === 'date' ? setDate(dateTime) : setTime(dateTime)
+    if (mode === 'date') {
+      setDate(dateTime)
+      props.onDateChange?.(dateTime)
+    } else {
+      setTime(dateTime)
+      props.onTimeChange?.(dateTime)
+    }
+
     setShowDateTimePicker(false)
-    props.onChange?.(dateTime)
   }
 
   return (
