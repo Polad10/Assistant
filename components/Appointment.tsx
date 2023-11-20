@@ -17,7 +17,7 @@ import { Treatment } from '@polad10/assistant-models/Treatment'
 import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
 import DeleteButton from './DeleteButton'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import { Button } from '@rneui/themed'
 import HeaderButton from './HeaderButton'
@@ -165,6 +165,24 @@ export default function Appointment(props: Props) {
     setTimeFilled(true)
   }
 
+  function getTreatmentInput() {
+    return (
+      <MyInput
+        pointerEvents='none'
+        label='Treatment'
+        placeholder='Select'
+        value={selectedTreatment?.title}
+        showError={showTreatmentInputError}
+        rightIcon={
+          props.mode === Mode.NEW ? (
+            <IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />
+          ) : undefined
+        }
+        disabled={props.treatment != null || props.mode === Mode.EDIT}
+      />
+    )
+  }
+
   useEffect(() => {
     if (props.mode === Mode.EDIT) {
       navigation.setOptions({
@@ -212,21 +230,12 @@ export default function Appointment(props: Props) {
         showError={showActionsInputError}
         style={{ minHeight: 100 }}
       />
-      <TouchableOpacity onPress={handleTreatmentChange} disabled={props.treatment != null || props.mode === Mode.EDIT}>
-        <MyInput
-          pointerEvents='none'
-          label='Treatment'
-          placeholder='Select'
-          value={selectedTreatment?.title}
-          showError={showTreatmentInputError}
-          rightIcon={
-            props.mode === Mode.NEW ? (
-              <IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />
-            ) : undefined
-          }
-          disabled={props.treatment != null || props.mode === Mode.EDIT}
-        />
-      </TouchableOpacity>
+
+      {props.treatment != null || props.mode === Mode.EDIT ? (
+        <TouchableWithoutFeedback>{getTreatmentInput()}</TouchableWithoutFeedback>
+      ) : (
+        <TouchableOpacity onPress={handleTreatmentChange}>{getTreatmentInput()}</TouchableOpacity>
+      )}
 
       {props.mode === Mode.NEW && (
         <SafeAreaView style={styles.buttonView}>
