@@ -203,14 +203,19 @@ export default function Appointment(props: Props) {
         showError={showActionsInputError}
         style={{ minHeight: 100 }}
       />
-      <TouchableOpacity onPress={handleTreatmentChange}>
+      <TouchableOpacity onPress={handleTreatmentChange} disabled={props.treatment != null || props.mode === Mode.EDIT}>
         <MyInput
           pointerEvents='none'
           label='Treatment'
           placeholder='Select'
           value={selectedTreatment?.title}
           showError={showTreatmentInputError}
-          rightIcon={<IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />}
+          rightIcon={
+            props.mode === Mode.NEW ? (
+              <IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />
+            ) : undefined
+          }
+          disabled={props.treatment != null || props.mode === Mode.EDIT}
         />
       </TouchableOpacity>
       {props.mode === Mode.EDIT && <DeleteButton />}
