@@ -1,9 +1,51 @@
-import { Mode } from '../enums/Mode'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
-import Appointment from './Appointment'
+import AppointmentForm from './AppointmentForm'
+import { useCallback, useContext, useEffect } from 'react'
+import { DataContext } from '../contexts/DataContext'
+import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
+import { DeviceEventEmitter } from 'react-native'
+import MainView from './MainView'
+import DeleteButton from './DeleteButton'
 
-export default function EditAppointment({ route }: RootStackScreenProps<'EditAppointment'>) {
+export default function EditAppointment() {
+  const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
+  const route = useRoute<RootStackScreenProps<'EditAppointment'>['route']>()
+  const context = useContext(DataContext)
+
+  if (!context) {
+    return
+  }
+
   const { appointmentId } = route.params
+  const appointment = context.appointments?.find((a) => a.id === appointmentId)
 
-  return <Appointment mode={Mode.EDIT} appointmentId={appointmentId} />
+  const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
+    await context.updateAppointment(appointment)
+
+    navigation.goBack()
+  }, [])
+
+  const handleDelete = useCallback(async () => {
+    await context.deleteAppointment(appointmentId)
+
+    navigation.goBack()
+  }, [])
+
+  useEffect(() => {
+    const appointmentSaveListener = DeviceEventEmitter.addListener('appointmentSaved', handleAppointmentSave)
+    const appointmentDeleteListener = DeviceEventEmitter.addListener('entityDeleted', handleDelete)
+
+    return () => {
+      appointmentSaveListener.remove()
+      appointmentDeleteListener.remove()
+    }
+  }, [])
+
+  return (
+    <MainView>
+      <AppointmentForm pageName='EditAppointment' appointment={appointment} />
+      <DeleteButton />
+    </MainView>
+  )
 }

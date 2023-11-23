@@ -8,28 +8,26 @@ import {
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import { Mode } from '../enums/Mode'
-import { RootStackScreenProps } from '../types/Navigation'
+import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '@polad10/assistant-models/Treatment'
-import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
+import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
-import DeleteButton from './DeleteButton'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import { Button } from '@rneui/themed'
 import HeaderButton from './HeaderButton'
 
 type Props = {
-  appointmentId?: number
+  pageName: keyof RootStackParamList
+  appointment?: Appointment
   treatment?: Treatment
-  mode: Mode
 }
 
-export default function Appointment(props: Props) {
-  const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
+export default function AppointmentForm(props: Props) {
+  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const context = useContext(DataContext)
   const { colors } = useTheme()
 
@@ -37,12 +35,14 @@ export default function Appointment(props: Props) {
     return
   }
 
-  const appointment = context.appointments?.find((a) => a.id === props.appointmentId)
   let treatment = props.treatment
+  let appointment = props.appointment
 
   if (appointment) {
     treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
   }
+
+  const treatmentEditable = !treatment
 
   const initialDateTime = appointment ? new Date(appointment.datetime) : undefined
 
@@ -60,30 +60,19 @@ export default function Appointment(props: Props) {
 
   const handleSave = useCallback(async () => {
     if (validate()) {
-      const newAppointment: AppointmentRequest = {
+      const newAppointmentRequest: AppointmentRequest = {
         datetime: DateTime.fromJSDate(dateTime!).toISO()!,
         actions: actions,
         treatment_id: selectedTreatment!.id,
       }
 
-      if (props.mode === Mode.EDIT) {
-        newAppointment.id = appointment?.id
-        await context.updateAppointment(newAppointment)
-      } else {
-        await context.createAppointment(newAppointment)
+      if (appointment) {
+        newAppointmentRequest.id = appointment.id
       }
 
-      navigation.goBack()
+      DeviceEventEmitter.emit('appointmentSaved', newAppointmentRequest)
     }
   }, [dateTime, actions, selectedTreatment])
-
-  const handleDelete = useCallback(async () => {
-    if (appointment) {
-      await context.deleteAppointment(appointment.id)
-
-      navigation.goBack()
-    }
-  }, [])
 
   function validate() {
     let valid = true
@@ -126,11 +115,9 @@ export default function Appointment(props: Props) {
   }
 
   function handleTreatmentChange() {
-    if (props.treatment || props.mode === Mode.EDIT) {
-      return
+    if (treatmentEditable) {
+      navigation.navigate('Treatments')
     }
-
-    navigation.navigate('Treatments')
   }
 
   function handleDateChange(date: Date) {
@@ -174,17 +161,17 @@ export default function Appointment(props: Props) {
         value={selectedTreatment?.title}
         showError={showTreatmentInputError}
         rightIcon={
-          props.mode === Mode.NEW ? (
+          treatmentEditable ? (
             <IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />
           ) : undefined
         }
-        disabled={props.treatment != null || props.mode === Mode.EDIT}
+        disabled={!treatmentEditable}
       />
     )
   }
 
   useEffect(() => {
-    if (props.mode === Mode.EDIT) {
+    if (appointment) {
       navigation.setOptions({
         headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
       })
@@ -192,20 +179,12 @@ export default function Appointment(props: Props) {
   }, [navigation, handleSave])
 
   useEffect(() => {
-    if (props.mode === Mode.NEW) {
-      const treatmentSelectedListener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
-      const treatmentCreatedListener = DeviceEventEmitter.addListener('treatmentCreated', handleTreatmentSelect)
+    const treatmentSelectedListener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
+    const treatmentCreatedListener = DeviceEventEmitter.addListener('treatmentCreated', handleTreatmentSelect)
 
-      return () => {
-        treatmentSelectedListener.remove()
-        treatmentCreatedListener.remove()
-      }
-    } else {
-      const treatmentDeleteListener = DeviceEventEmitter.addListener('entityDeleted', handleDelete)
-
-      return () => {
-        treatmentDeleteListener.remove()
-      }
+    return () => {
+      treatmentSelectedListener.remove()
+      treatmentCreatedListener.remove()
     }
   }, [])
 
@@ -231,13 +210,13 @@ export default function Appointment(props: Props) {
         style={{ minHeight: 100 }}
       />
 
-      {props.treatment != null || props.mode === Mode.EDIT ? (
-        <TouchableWithoutFeedback>{getTreatmentInput()}</TouchableWithoutFeedback>
-      ) : (
+      {treatmentEditable ? (
         <TouchableOpacity onPress={handleTreatmentChange}>{getTreatmentInput()}</TouchableOpacity>
+      ) : (
+        <TouchableWithoutFeedback>{getTreatmentInput()}</TouchableWithoutFeedback>
       )}
 
-      {props.mode === Mode.NEW && (
+      {!appointment && (
         <SafeAreaView style={styles.buttonView}>
           <Button
             color={colors.primary}
@@ -249,8 +228,6 @@ export default function Appointment(props: Props) {
           </Button>
         </SafeAreaView>
       )}
-
-      {props.mode === Mode.EDIT && <DeleteButton />}
     </MainView>
   )
 }

@@ -47,7 +47,7 @@ export default function EditTreatment() {
 
   return (
     <MainView>
-      <TreatmentForm pageName='EditTreatment' patient={patient} treatment={treatment} />
+      <TreatmentForm pageName='EditTreatment' treatment={treatment} />
       <DeleteButton />
     </MainView>
   )

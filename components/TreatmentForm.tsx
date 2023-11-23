@@ -29,7 +29,13 @@ type Props = {
 
 export default function TreatmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
+  const context = useContext(DataContext)
   const { colors } = useTheme()
+
+  if (!context) {
+    return
+  }
+
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
   const [showPriceInputError, setShowPriceInputError] = useState(false)
@@ -40,20 +46,20 @@ export default function TreatmentForm(props: Props) {
     startDateInitialVal = DateTime.fromISO(props.treatment.start_date).toJSDate()
   }
 
-  const [patient, setPatient] = useState(props.patient)
+  let patient = props.patient
+
+  if (props.treatment) {
+    patient = context.patients?.find((p) => p.id === props.treatment?.patient_id)
+  }
+
+  const [selectedPatient, setSelectedPatient] = useState(patient)
   const [startDate, setStartDate] = useState(startDateInitialVal)
   const [title, setTitle] = useState(props.treatment?.title)
   const [price, setPrice] = useState(props.treatment?.price.toString())
   const [finished, setFinished] = useState(props.treatment?.finished)
 
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
-
   let styleProps: StyleProps = {
-    patientEditable: true,
+    patientEditable: !patient,
     colors: colors,
   }
 
@@ -62,7 +68,7 @@ export default function TreatmentForm(props: Props) {
       const newTreatmentRequest: TreatmentRequest = {
         start_date: DateTime.fromJSDate(startDate).toISODate()!,
         title: title!,
-        patient_id: patient!.id,
+        patient_id: selectedPatient!.id,
         price: Number(price),
         finished: finished,
       }
@@ -73,12 +79,12 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     }
-  }, [patient, startDate, title, price, finished])
+  }, [selectedPatient, startDate, title, price, finished])
 
   function validate() {
     let valid = true
 
-    if (!patient) {
+    if (!selectedPatient) {
       valid = false
       setShowPatientInputError(true)
     }
@@ -104,8 +110,6 @@ export default function TreatmentForm(props: Props) {
     const patientSelectListener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
     const patientCreatedListener = DeviceEventEmitter.addListener('patientCreated', handlePatientSelect)
 
-    styleProps.patientEditable = patient == null
-
     return () => {
       patientSelectListener.remove()
       patientCreatedListener.remove()
@@ -113,7 +117,7 @@ export default function TreatmentForm(props: Props) {
   }, [navigation, handleSave])
 
   function getSelectedPatientFullName() {
-    return patient ? getPatientFullName(patient) : ''
+    return selectedPatient ? getPatientFullName(selectedPatient) : ''
   }
 
   function handleStartDateChange(event: DateTimePickerEvent, startDate: Date | undefined) {
@@ -138,7 +142,7 @@ export default function TreatmentForm(props: Props) {
     navigation.navigate('NewTreatment')
 
     setShowPatientInputError(false)
-    setPatient(patient)
+    setSelectedPatient(patient)
   }
 
   function handlePatientChange() {
