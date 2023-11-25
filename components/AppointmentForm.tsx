@@ -51,8 +51,8 @@ export default function AppointmentForm(props: Props) {
   const [showDatePickerError, setShowDatePickerError] = useState(false)
   const [showTimePickerError, setShowTimePickerError] = useState(false)
 
-  const [dateFilled, setDateFilled] = useState(false)
-  const [timeFilled, setTimeFilled] = useState(false)
+  const [dateFilled, setDateFilled] = useState(!!initialDateTime)
+  const [timeFilled, setTimeFilled] = useState(!!initialDateTime)
 
   const [dateTime, setDateTime] = useState<Date | undefined>(initialDateTime)
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
