@@ -1,10 +1,4 @@
-import {
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
-  DeviceEventEmitter,
-  SafeAreaView,
-  StyleSheet,
-} from 'react-native'
+import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
@@ -17,8 +11,8 @@ import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appoi
 import { DateTime } from 'luxon'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import IonIcons from '@expo/vector-icons/Ionicons'
-import { Button } from '@rneui/themed'
 import HeaderButton from './HeaderButton'
+import CreateButton from './CreateButton'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -216,28 +210,7 @@ export default function AppointmentForm(props: Props) {
         <TouchableWithoutFeedback>{getTreatmentInput()}</TouchableWithoutFeedback>
       )}
 
-      {!appointment && (
-        <SafeAreaView style={styles.buttonView}>
-          <Button
-            color={colors.primary}
-            style={styles.button}
-            buttonStyle={{ padding: 10, borderRadius: 10 }}
-            onPress={handleSave}
-          >
-            Create Appointment
-          </Button>
-        </SafeAreaView>
-      )}
+      {!appointment && <CreateButton onPress={handleSave} />}
     </MainView>
   )
 }
-
-const styles = StyleSheet.create({
-  buttonView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginHorizontal: 10,
-  },
-})
