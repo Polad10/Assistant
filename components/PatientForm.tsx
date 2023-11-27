@@ -95,20 +95,35 @@ export default function PatientForm(props: Props) {
   return (
     <MainView style={styles.mainView}>
       <MyInput
-        placeholder='First name'
+        label='First Name'
+        placeholder='Enter first name'
         value={firstName}
         showError={showFirstNameInputError}
         onChange={handleFirstNameChange}
       />
       <MyInput
-        placeholder='Last name'
+        label='Last Name'
+        placeholder='Enter last name'
         value={lastName}
         showError={showLastNameInputError}
         onChange={handleLastNameChange}
       />
-      <MyInput placeholder='City' value={city} onChange={handleCityChange} />
-      <MyInput placeholder='Phone number' keyboardType='phone-pad' value={phoneNr} onChange={handlePhoneNrChange} />
-      <MyInput placeholder='Extra info' multiline={true} value={extraInfo} onChange={handleExtraInfoChange} />
+      <MyInput label='City' placeholder='Enter city' value={city} onChange={handleCityChange} />
+      <MyInput
+        label='Phone Number'
+        placeholder='Enter phone number'
+        keyboardType='phone-pad'
+        value={phoneNr}
+        onChange={handlePhoneNrChange}
+      />
+      <MyInput
+        label='Extra Info'
+        placeholder='Enter extra info...'
+        multiline={true}
+        value={extraInfo}
+        onChange={handleExtraInfoChange}
+        style={{ minHeight: 100 }}
+      />
     </MainView>
   )
 }

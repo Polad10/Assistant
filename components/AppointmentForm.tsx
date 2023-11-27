@@ -202,7 +202,7 @@ export default function AppointmentForm(props: Props) {
       />
       <MyInput
         label='Actions'
-        placeholder='Type something...'
+        placeholder='Enter actions...'
         multiline={true}
         value={actions}
         onChange={handleActionsChange}
