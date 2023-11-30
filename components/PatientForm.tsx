@@ -7,6 +7,7 @@ import { DataContext } from '../contexts/DataContext'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import HeaderButton from './HeaderButton'
 import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
+import CreateButton from './CreateButton'
 
 type Props = {
   patient?: Patient
@@ -65,9 +66,11 @@ export default function PatientForm(props: Props) {
   }
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
-    })
+    if (props.patient) {
+      navigation.setOptions({
+        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+      })
+    }
   }, [navigation, handleSave])
 
   function handleFirstNameChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
@@ -124,6 +127,7 @@ export default function PatientForm(props: Props) {
         onChange={handleExtraInfoChange}
         style={{ minHeight: 100 }}
       />
+      {!props.patient && <CreateButton onPress={handleSave} />}
     </MainView>
   )
 }
