@@ -1,7 +1,7 @@
 import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
 import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useState } from 'react'
@@ -9,10 +9,10 @@ import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '@polad10/assistant-models/Treatment'
 import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
 import { DateTime } from 'luxon'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import IonIcons from '@expo/vector-icons/Ionicons'
 import HeaderButton from './HeaderButton'
 import CreateButton from './CreateButton'
+import TouchableInput from './TouchableInput'
+import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -23,7 +23,6 @@ type Props = {
 export default function AppointmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const context = useContext(DataContext)
-  const { colors } = useTheme()
 
   if (!context) {
     return
@@ -146,24 +145,6 @@ export default function AppointmentForm(props: Props) {
     setTimeFilled(true)
   }
 
-  function getTreatmentInput() {
-    return (
-      <MyInput
-        pointerEvents='none'
-        label='Treatment'
-        placeholder='Select'
-        value={selectedTreatment?.title}
-        showError={showTreatmentInputError}
-        rightIcon={
-          treatmentEditable ? (
-            <IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />
-          ) : undefined
-        }
-        disabled={!treatmentEditable}
-      />
-    )
-  }
-
   useEffect(() => {
     if (appointment) {
       navigation.setOptions({
@@ -205,9 +186,20 @@ export default function AppointmentForm(props: Props) {
       />
 
       {treatmentEditable ? (
-        <TouchableOpacity onPress={handleTreatmentChange}>{getTreatmentInput()}</TouchableOpacity>
+        <TouchableInput
+          onPress={handleTreatmentChange}
+          label='Treatment'
+          placeholder='Select'
+          value={selectedTreatment?.title}
+          showError={showTreatmentInputError}
+        />
       ) : (
-        <TouchableWithoutFeedback>{getTreatmentInput()}</TouchableWithoutFeedback>
+        <TouchableWithoutFeedbackInput
+          label='Treatment'
+          placeholder='Select'
+          value={selectedTreatment?.title}
+          showError={showTreatmentInputError}
+        />
       )}
 
       {!appointment && <CreateButton onPress={handleSave} />}
