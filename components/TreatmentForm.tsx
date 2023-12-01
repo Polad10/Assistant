@@ -15,6 +15,8 @@ import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
 import { CheckBox } from '@rneui/themed'
 import { Colors } from '../types/Colors'
+import TouchableInput from './TouchableInput'
+import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 
 type StyleProps = {
   patientEditable: boolean
@@ -167,14 +169,22 @@ export default function TreatmentForm(props: Props) {
         keyboardType='decimal-pad'
         rightIcon={<CustomIcon name='manat' color={colors.text} size={20} />}
       />
-      <MyInput
-        placeholder='Choose patient'
-        onPressIn={handlePatientChange}
-        value={getSelectedPatientFullName()}
-        editable={false}
-        style={styles(styleProps).patient}
-        showError={showPatientInputError}
-      />
+      {styleProps.patientEditable ? (
+        <TouchableInput
+          onPress={handlePatientChange}
+          label='Patient'
+          placeholder='Select'
+          value={getSelectedPatientFullName()}
+          showError={showPatientInputError}
+        />
+      ) : (
+        <TouchableWithoutFeedbackInput
+          label='Patient'
+          placeholder='Select'
+          value={getSelectedPatientFullName()}
+          showError={showPatientInputError}
+        />
+      )}
       <CheckBox
         checked={finished ?? false}
         onPress={handleFinishedChange}
