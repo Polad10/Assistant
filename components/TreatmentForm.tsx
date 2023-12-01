@@ -158,16 +158,23 @@ export default function TreatmentForm(props: Props) {
   }
 
   return (
-    <MainView>
+    <MainView style={{ paddingTop: 20 }}>
       <DateTimeInput text='Start date' showDatePicker={true} datetime={startDate} onChange={handleStartDateChange} />
-      <MyInput placeholder='Title' value={title} showError={showTitleInputError} onChange={handleTitleChange} />
       <MyInput
-        placeholder='Price'
+        label='Title'
+        placeholder='Enter title'
+        value={title}
+        showError={showTitleInputError}
+        onChange={handleTitleChange}
+      />
+      <MyInput
+        label='Price'
+        placeholder='Enter price'
         value={price}
         showError={showPriceInputError}
         onChange={handlePriceChange}
         keyboardType='decimal-pad'
-        rightIcon={<CustomIcon name='manat' color={colors.text} size={20} />}
+        rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
       />
       {styleProps.patientEditable ? (
         <TouchableInput
