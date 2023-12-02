@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { Patient } from '@polad10/assistant-models/Patient'
-import { Treatment } from '@polad10/assistant-models/Treatment'
+import { Patient } from '../modals/Patient'
+import { Treatment } from '../modals/Treatment'
 
 export type RootStackParamList = {
   Home: undefined

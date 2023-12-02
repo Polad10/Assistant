@@ -2,7 +2,7 @@ import { RootStackParamList } from '../types/Navigation'
 import PatientListSection from './PatientListSection'
 import MainView from './MainView'
 import { ScrollView } from 'react-native'
-import { Patient } from '@polad10/assistant-models/Patient'
+import { Patient } from '../modals/Patient'
 
 type Props = {
   pageName: keyof RootStackParamList

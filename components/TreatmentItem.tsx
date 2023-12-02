@@ -8,7 +8,7 @@ import { getPatientFullName } from '../helpers/PatientHelper'
 import { DateTime } from 'luxon'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { Treatment } from '@polad10/assistant-models/Treatment'
+import { Treatment } from '../modals/Treatment'
 
 export type TreatmentItemProps = {
   treatment: Treatment

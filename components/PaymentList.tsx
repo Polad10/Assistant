@@ -4,7 +4,7 @@ import PaymentItem from './PaymentItem'
 import { useTheme } from '@react-navigation/native'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
-import { Payment } from '@polad10/assistant-models/Payment'
+import { Payment } from '../modals/Payment'
 import MainView from './MainView'
 import NoDataFound from './NoDataView'
 

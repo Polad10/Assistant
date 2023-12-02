@@ -1,5 +1,4 @@
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
 import MyInput from './MyInput'

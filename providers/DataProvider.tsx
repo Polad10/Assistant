@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
 import { ReactNode, useState } from 'react'
-import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
-import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
-import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
-import { Payment, PaymentRequest } from '@polad10/assistant-models/Payment'
+import { Patient, PatientRequest } from '../modals/Patient'
+import { Appointment, AppointmentRequest } from '../modals/Appointment'
+import { Treatment, TreatmentRequest } from '../modals/Treatment'
+import { Payment, PaymentRequest } from '../modals/Payment'
 
 interface DataProviderProps {
   children: ReactNode

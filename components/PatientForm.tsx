@@ -6,7 +6,7 @@ import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { DataContext } from '../contexts/DataContext'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import HeaderButton from './HeaderButton'
-import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
+import { Patient, PatientRequest } from '../modals/Patient'
 import CreateButton from './CreateButton'
 
 type Props = {

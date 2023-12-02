@@ -3,7 +3,7 @@ import PaymentForm from './PaymentForm'
 import { RootStackScreenProps } from '../types/Navigation'
 import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { PaymentRequest } from '@polad10/assistant-models/Payment'
+import { PaymentRequest } from '../modals/Payment'
 import { DeviceEventEmitter } from 'react-native'
 
 export default function NewPayment() {

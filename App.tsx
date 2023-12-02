@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native'
-import { useColorScheme, Button, StyleSheet } from 'react-native'
+import { useColorScheme, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'

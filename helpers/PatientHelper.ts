@@ -1,4 +1,4 @@
-import { Patient } from '@polad10/assistant-models/Patient'
+import { Patient } from '../modals/Patient'
 
 export function getPatientFullName(patient: Patient | undefined) {
   if (patient) {

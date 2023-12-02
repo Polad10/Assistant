@@ -3,7 +3,7 @@ import { Divider, ListItem } from '@rneui/themed'
 import { View, StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 import { RootStackParamList } from '../types/Navigation'
-import { Patient } from '@polad10/assistant-models/Patient'
+import { Patient } from '../modals/Patient'
 import PatientList from './PatientList'
 
 interface Props {

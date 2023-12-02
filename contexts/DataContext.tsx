@@ -1,7 +1,7 @@
-import { Appointment, AppointmentRequest } from '@polad10/assistant-models/Appointment'
-import { Patient, PatientRequest } from '@polad10/assistant-models/Patient'
-import { Payment, PaymentRequest } from '@polad10/assistant-models/Payment'
-import { Treatment, TreatmentRequest } from '@polad10/assistant-models/Treatment'
+import { Appointment, AppointmentRequest } from '../modals/Appointment'
+import { Patient, PatientRequest } from '../modals/Patient'
+import { Payment, PaymentRequest } from '../modals/Payment'
+import { Treatment, TreatmentRequest } from '../modals/Treatment'
 import { createContext } from 'react'
 
 export type PatientsType = Patient[] | null

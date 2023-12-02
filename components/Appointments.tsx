@@ -9,7 +9,7 @@ import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
-import { Appointment } from '@polad10/assistant-models/Appointment'
+import { Appointment } from '../modals/Appointment'
 import NoDataFound from './NoDataView'
 import { DateTime } from 'luxon'
 

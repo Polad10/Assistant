@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
-    "@polad10/assistant-models": "^1.0.0",
     "@react-native-community/datetimepicker": "7.2.0",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",

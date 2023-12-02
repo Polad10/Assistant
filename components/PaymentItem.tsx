@@ -4,7 +4,7 @@ import { Colors } from '../types/Colors'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
-import { Payment } from '@polad10/assistant-models/Payment'
+import { Payment } from '../modals/Payment'
 import { DateTime } from 'luxon'
 
 type Props = {

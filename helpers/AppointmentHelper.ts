@@ -1,4 +1,4 @@
-import { Appointment } from '@polad10/assistant-models/Appointment'
+import { Appointment } from '../modals/Appointment'
 import { DateTime } from 'luxon'
 
 export function getGroupedAppointments(appointments: Appointment[]) {

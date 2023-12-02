@@ -3,7 +3,7 @@ import { RootStackScreenProps } from '../types/Navigation'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { AppointmentRequest } from '@polad10/assistant-models/Appointment'
+import { AppointmentRequest } from '../modals/Appointment'
 import { DeviceEventEmitter } from 'react-native'
 
 export default function NewAppointment() {

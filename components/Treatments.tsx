@@ -6,7 +6,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
-import { Treatment } from '@polad10/assistant-models/Treatment'
+import { Treatment } from '../modals/Treatment'
 
 interface TreatmentWithPatientName extends Treatment {
   patientFirstName?: string

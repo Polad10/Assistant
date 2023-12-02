@@ -3,7 +3,7 @@ import TreatmentForm from './TreatmentForm'
 import { RootStackScreenProps } from '../types/Navigation'
 import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { TreatmentRequest } from '@polad10/assistant-models/Treatment'
+import { TreatmentRequest } from '../modals/Treatment'
 import { DeviceEventEmitter } from 'react-native'
 
 export default function NewTreatment() {

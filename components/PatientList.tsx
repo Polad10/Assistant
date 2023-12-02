@@ -1,6 +1,6 @@
 import { ScrollView } from 'react-native-gesture-handler'
 import MainView from './MainView'
-import { Patient } from '@polad10/assistant-models/Patient'
+import { Patient } from '../modals/Patient'
 import { StyleSheet, View } from 'react-native'
 import PatientItem from './PatientItem'
 import { Divider } from '@rneui/themed'
