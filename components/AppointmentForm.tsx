@@ -166,7 +166,10 @@ export default function AppointmentForm(props: Props) {
   return (
     <MainView style={{ paddingTop: 20 }}>
       <DateTimeInput
-        text='Date and time'
+        dateLabel='Date'
+        datePlaceholder='Pick a date'
+        timeLabel='Time'
+        timePlaceholder='Pick a time'
         datetime={dateTime}
         showDatePicker={true}
         showTimePicker={true}
