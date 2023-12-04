@@ -1,4 +1,4 @@
-import { StyleSheet, DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
+import { StyleSheet, DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
 import MyInput from './MyInput'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import DateTimeInput from './DateTimeInput'
@@ -41,24 +41,27 @@ export default function TreatmentForm(props: Props) {
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
   const [showPriceInputError, setShowPriceInputError] = useState(false)
+  const [showStartDatePickerError, setShowStartDatePickerError] = useState(false)
 
-  let startDateInitialVal = new Date()
-
-  if (props.treatment?.start_date) {
-    startDateInitialVal = DateTime.fromISO(props.treatment.start_date).toJSDate()
-  }
+  let startDateInitialVal = undefined
+  let endDateInitialVal = undefined
 
   let patient = props.patient
 
   if (props.treatment) {
     patient = context.patients?.find((p) => p.id === props.treatment?.patient_id)
+    startDateInitialVal = new Date(props.treatment.start_date)
+
+    if (props.treatment.end_date) {
+      endDateInitialVal = new Date(props.treatment.end_date)
+    }
   }
 
   const [selectedPatient, setSelectedPatient] = useState(patient)
   const [startDate, setStartDate] = useState(startDateInitialVal)
+  const [endDate, setEndDate] = useState(endDateInitialVal)
   const [title, setTitle] = useState(props.treatment?.title)
   const [price, setPrice] = useState(props.treatment?.price.toString())
-  const [finished, setFinished] = useState(props.treatment?.finished)
 
   let styleProps: StyleProps = {
     patientEditable: !patient,
@@ -68,11 +71,11 @@ export default function TreatmentForm(props: Props) {
   const handleSave = useCallback(async () => {
     if (validate()) {
       const newTreatmentRequest: TreatmentRequest = {
-        start_date: DateTime.fromJSDate(startDate).toISODate()!,
+        start_date: DateTime.fromJSDate(startDate!).toISODate()!,
+        end_date: endDate ? DateTime.fromJSDate(endDate).toISODate() : null,
         title: title!,
         patient_id: selectedPatient!.id,
         price: Number(price),
-        finished: finished,
       }
 
       if (props.treatment) {
@@ -81,10 +84,15 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     }
-  }, [selectedPatient, startDate, title, price, finished])
+  }, [selectedPatient, startDate, endDate, title, price])
 
   function validate() {
     let valid = true
+
+    if (!startDate) {
+      valid = false
+      setShowStartDatePickerError(true)
+    }
 
     if (!selectedPatient) {
       valid = false
@@ -122,10 +130,13 @@ export default function TreatmentForm(props: Props) {
     return selectedPatient ? getPatientFullName(selectedPatient) : ''
   }
 
-  function handleStartDateChange(event: DateTimePickerEvent, startDate: Date | undefined) {
-    if (startDate) {
-      setStartDate(startDate)
-    }
+  function handleStartDateChange(date: Date) {
+    setStartDate(date)
+    setShowStartDatePickerError(false)
+  }
+
+  function handleEndDateChange(date: Date) {
+    setEndDate(date)
   }
 
   function handleTitleChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
@@ -153,13 +164,16 @@ export default function TreatmentForm(props: Props) {
     }
   }
 
-  function handleFinishedChange() {
-    setFinished(!finished)
-  }
-
   return (
     <MainView style={{ paddingTop: 20 }}>
-      <DateTimeInput text='Start date' showDatePicker={true} datetime={startDate} onChange={handleStartDateChange} />
+      <DateTimeInput
+        text='Start date'
+        showDatePicker={true}
+        datetime={startDate}
+        showDatePickerError={showStartDatePickerError}
+        onDateChange={handleStartDateChange}
+      />
+      <DateTimeInput text='End date' showDatePicker={true} datetime={endDate} onDateChange={handleEndDateChange} />
       <MyInput
         label='Title'
         placeholder='Enter title'
@@ -192,14 +206,6 @@ export default function TreatmentForm(props: Props) {
           showError={showPatientInputError}
         />
       )}
-      <CheckBox
-        checked={finished ?? false}
-        onPress={handleFinishedChange}
-        title='Finished'
-        checkedColor='green'
-        containerStyle={styles(styleProps).checkbox}
-        textStyle={styles(styleProps).checkboxText}
-      />
     </MainView>
   )
 }
