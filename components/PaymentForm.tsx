@@ -1,5 +1,4 @@
 import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
-import DateTimeInput from './DateTimeInput'
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
@@ -7,9 +6,9 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import HeaderButton from './HeaderButton'
 import { Payment, PaymentRequest } from '../modals/Payment'
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
+import DateInput from './DateInput'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -73,10 +72,8 @@ export default function PaymentForm(props: Props) {
     })
   }, [navigation, handleSave])
 
-  function handleDateChange(event: DateTimePickerEvent, date: Date | undefined) {
-    if (date) {
-      setDate(date)
-    }
+  function handleDateChange(date: Date) {
+    setDate(date)
   }
 
   function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
@@ -86,7 +83,7 @@ export default function PaymentForm(props: Props) {
 
   return (
     <View>
-      <DateTimeInput text='Date' showDatePicker={true} datetime={date} onChange={handleDateChange} />
+      <DateInput label='Date' placeholder='Pick a date' date={date} onChange={handleDateChange} />
       <MyInput
         placeholder='Amount'
         value={amount}

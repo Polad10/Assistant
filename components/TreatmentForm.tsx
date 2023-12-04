@@ -1,7 +1,6 @@
 import { StyleSheet, DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
 import MyInput from './MyInput'
 import { useCallback, useContext, useEffect, useState } from 'react'
-import DateTimeInput from './DateTimeInput'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { getPatientFullName } from '../helpers/PatientHelper'
@@ -10,13 +9,12 @@ import HeaderButton from './HeaderButton'
 import { Treatment, TreatmentRequest } from '../modals/Treatment'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
-import { CheckBox } from '@rneui/themed'
 import { Colors } from '../types/Colors'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
+import DateInput from './DateInput'
 
 type StyleProps = {
   patientEditable: boolean
@@ -167,21 +165,14 @@ export default function TreatmentForm(props: Props) {
   return (
     <MainView style={{ paddingTop: 20 }}>
       <View style={{ flexDirection: 'row' }}>
-        <DateTimeInput
-          dateLabel='Start date'
-          datePlaceholder='Pick a date'
-          showDatePicker={true}
-          datetime={startDate}
-          showDatePickerError={showStartDatePickerError}
-          onDateChange={handleStartDateChange}
+        <DateInput
+          label='Start date'
+          placeholder='Pick a date'
+          date={startDate}
+          showError={showStartDatePickerError}
+          onChange={handleStartDateChange}
         />
-        <DateTimeInput
-          dateLabel='End date'
-          datePlaceholder='Pick a date'
-          showDatePicker={true}
-          datetime={endDate}
-          onDateChange={handleEndDateChange}
-        />
+        <DateInput label='End date' placeholder='Pick a date' date={endDate} onChange={handleEndDateChange} />
       </View>
       <MyInput
         label='Title'

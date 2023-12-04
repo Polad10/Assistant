@@ -1,5 +1,6 @@
-import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter } from 'react-native'
-import DateTimeInput from './DateTimeInput'
+import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter, View } from 'react-native'
+import DateInput from './DateInput'
+import TimeInput from './TimeInput'
 import MyInput from './MyInput'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
@@ -165,19 +166,22 @@ export default function AppointmentForm(props: Props) {
 
   return (
     <MainView style={{ paddingTop: 20 }}>
-      <DateTimeInput
-        dateLabel='Date'
-        datePlaceholder='Pick a date'
-        timeLabel='Time'
-        timePlaceholder='Pick a time'
-        datetime={dateTime}
-        showDatePicker={true}
-        showTimePicker={true}
-        showDatePickerError={showDatePickerError}
-        showTimePickerError={showTimePickerError}
-        onDateChange={handleDateChange}
-        onTimeChange={handleTimeChange}
-      />
+      <View style={{ flexDirection: 'row' }}>
+        <DateInput
+          label='Date'
+          placeholder='Pick a date'
+          date={dateTime}
+          showError={showDatePickerError}
+          onChange={handleDateChange}
+        />
+        <TimeInput
+          label='Time'
+          placeholder='Pick a time'
+          time={dateTime}
+          showError={showTimePickerError}
+          onChange={handleTimeChange}
+        />
+      </View>
       <MyInput
         label='Actions'
         placeholder='Enter actions...'
