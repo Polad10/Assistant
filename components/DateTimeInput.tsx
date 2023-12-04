@@ -6,10 +6,14 @@ import { useState } from 'react'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { DateTime } from 'luxon'
 import IonIcons from '@expo/vector-icons/Ionicons'
+import MainView from './MainView'
 
 type Props = {
-  text: string
   datetime?: Date
+  dateLabel?: string
+  timeLabel?: string
+  datePlaceholder?: string
+  timePlaceholder?: string
   showDatePicker?: boolean
   showTimePicker?: boolean
   showDatePickerError?: boolean
@@ -57,12 +61,13 @@ export default function DateTimeInput(props: Props) {
   }
 
   return (
-    <View>
+    <MainView>
       <View style={styles(styleProps).dateTimeContainer}>
         <TouchableOpacity style={styles(styleProps).datePicker} onPress={() => showMode('date')}>
           <MyInput
             pointerEvents='none'
-            placeholder='Date'
+            label={props.dateLabel}
+            placeholder={props.datePlaceholder}
             value={date ? DateTime.fromJSDate(date).toISODate() ?? undefined : undefined}
             rightIcon={<IonIcons name='calendar-outline' size={25} color={colors.notification} />}
             showError={props.showDatePickerError}
@@ -71,7 +76,8 @@ export default function DateTimeInput(props: Props) {
         <TouchableOpacity style={styles(styleProps).timePicker} onPress={() => showMode('time')}>
           <MyInput
             pointerEvents='none'
-            placeholder='Time'
+            label={props.timeLabel}
+            placeholder={props.timePlaceholder}
             value={time ? DateTime.fromJSDate(time).toLocaleString(DateTime.TIME_24_SIMPLE) ?? undefined : undefined}
             containerStyle={styles(styleProps).datePicker}
             rightIcon={<IonIcons name='time-outline' size={25} color={colors.notification} />}
@@ -87,7 +93,7 @@ export default function DateTimeInput(props: Props) {
         onCancel={() => setShowDateTimePicker(false)}
         display={mode === 'date' ? 'inline' : 'spinner'}
       />
-    </View>
+    </MainView>
   )
 }
 

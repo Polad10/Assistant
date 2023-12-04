@@ -166,14 +166,23 @@ export default function TreatmentForm(props: Props) {
 
   return (
     <MainView style={{ paddingTop: 20 }}>
-      <DateTimeInput
-        text='Start date'
-        showDatePicker={true}
-        datetime={startDate}
-        showDatePickerError={showStartDatePickerError}
-        onDateChange={handleStartDateChange}
-      />
-      <DateTimeInput text='End date' showDatePicker={true} datetime={endDate} onDateChange={handleEndDateChange} />
+      <View style={{ flexDirection: 'row' }}>
+        <DateTimeInput
+          dateLabel='Start date'
+          datePlaceholder='Pick a date'
+          showDatePicker={true}
+          datetime={startDate}
+          showDatePickerError={showStartDatePickerError}
+          onDateChange={handleStartDateChange}
+        />
+        <DateTimeInput
+          dateLabel='End date'
+          datePlaceholder='Pick a date'
+          showDatePicker={true}
+          datetime={endDate}
+          onDateChange={handleEndDateChange}
+        />
+      </View>
       <MyInput
         label='Title'
         placeholder='Enter title'
