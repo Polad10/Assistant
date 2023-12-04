@@ -1,5 +1,6 @@
 interface BaseTreatment {
   start_date: string
+  end_date: string | null | undefined
   title: string
   patient_id: number
   price: number
