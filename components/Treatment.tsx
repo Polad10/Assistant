@@ -16,6 +16,7 @@ import MainView from './MainView'
 import MyAgendaList from './MyAgendaList'
 import HeaderButton from './HeaderButton'
 import CustomIcon from './CustomIcon'
+import { treatmentFinished } from '../helpers/TreatmentHelper'
 
 type StyleProps = {
   colors: Colors
@@ -74,7 +75,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 
   const styleProps: StyleProps = {
     colors: colors,
-    treatmentFinished: treatment?.finished,
+    treatmentFinished: treatmentFinished(treatment),
   }
 
   const buttons = [
@@ -107,12 +108,12 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
     }
   }
 
-  const status = treatment?.finished ? Status.FINISHED : Status.ONGOING
+  const status = styleProps.treatmentFinished ? Status.FINISHED : Status.ONGOING
 
   return (
     <MainView>
       <View style={[styles(styleProps).headerView, styles(styleProps).card]}>
-        <Text style={styles(styleProps).title}>{treatment?.title}</Text>
+        <Text style={styles(styleProps).title}>{treatment.title}</Text>
       </View>
       <View style={[styles(styleProps).infoView, styles(styleProps).card]}>
         <View style={styles(styleProps).statusView}>
@@ -120,8 +121,9 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
           <Text style={[styles(styleProps).text, styles(styleProps).status]}>{status}</Text>
         </View>
         <Text style={styles(styleProps).text}>Patient: {getPatientFullName(patient)}</Text>
+        <Text style={styles(styleProps).text}>Start date: {DateTime.fromISO(treatment.start_date).toISODate()}</Text>
         <Text style={styles(styleProps).text}>
-          Start date: {DateTime.fromISO(treatment?.start_date || '').toISODate()}
+          End date: {treatment.end_date ? DateTime.fromISO(treatment.end_date).toISODate() : '-'}
         </Text>
         <View style={styles(styleProps).priceView}>
           <Text style={styles(styleProps).text}>Total price: {treatment.price} </Text>
@@ -160,7 +162,7 @@ const styles = (styleProps: StyleProps) =>
       paddingLeft: 5,
     },
     additionalInfoView: {
-      flex: 3,
+      flex: 2,
     },
     title: {
       color: styleProps.colors.text,

@@ -7,6 +7,7 @@ import { DataContext } from '../contexts/DataContext'
 import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
 import { Treatment } from '../modals/Treatment'
+import { treatmentFinished } from '../helpers/TreatmentHelper'
 
 interface TreatmentWithPatientName extends Treatment {
   patientFirstName?: string
@@ -63,7 +64,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   useEffect(() => {
     ref.current?.clear()
 
-    const ongoingTreatments = context.treatments?.filter((t) => !t.finished)
+    const ongoingTreatments = context.treatments?.filter((t) => !treatmentFinished(t))
     ongoingTreatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
 
     const treatmentsWithPatientName: TreatmentWithPatientName[] =

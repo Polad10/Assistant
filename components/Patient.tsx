@@ -14,6 +14,7 @@ import { DateTime } from 'luxon'
 import MyAgendaList from './MyAgendaList'
 import MainView from './MainView'
 import HeaderButton from './HeaderButton'
+import { treatmentFinished } from '../helpers/TreatmentHelper'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -43,7 +44,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   const today = DateTime.local().toISODate()
 
   const patient = context.patients?.find((p) => p.id === patientId)
-  const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !t.finished)
+  const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !treatmentFinished(t))
   const payments = context.payments?.filter((p) => treatments?.some((t) => t.id === p.treatment_id)) ?? []
 
   const appointments = context.appointments?.filter((a) => {

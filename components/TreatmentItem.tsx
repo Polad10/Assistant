@@ -9,6 +9,7 @@ import { DateTime } from 'luxon'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '../modals/Treatment'
+import { treatmentFinished } from '../helpers/TreatmentHelper'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -27,7 +28,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
 
   const styleProps: StyleProps = {
     colors: colors,
-    finished: props.treatment.finished,
+    finished: treatmentFinished(props.treatment),
   }
 
   const patient = context?.patients?.find((p) => p.id === props.treatment.patient_id)
@@ -47,7 +48,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
             <View style={styles(styleProps).listItemRow}>
               <ListItem.Subtitle style={styles(styleProps).listItemSubtitle}>Status: </ListItem.Subtitle>
               <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).statusColor]}>
-                {props.treatment.finished ? 'Finished' : 'Ongoing'}
+                {styleProps.finished ? 'Finished' : 'Ongoing'}
               </ListItem.Subtitle>
             </View>
           </View>
