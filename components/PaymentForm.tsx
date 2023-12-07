@@ -9,6 +9,8 @@ import { Payment, PaymentRequest } from '../modals/Payment'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
 import DateInput from './DateInput'
+import CreateButton from './CreateButton'
+import MainView from './MainView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -28,21 +30,18 @@ export default function PaymentForm(props: Props) {
 
   const treatmentId = props.payment?.treatment_id || props.treatmentId
 
-  let dateInitialVal = new Date()
-
-  if (props.payment?.date) {
-    dateInitialVal = DateTime.fromISO(props.payment.date).toJSDate()
-  }
+  let dateInitialVal = props.payment ? new Date(props.payment.date) : undefined
 
   const [date, setDate] = useState(dateInitialVal)
   const [amount, setAmount] = useState(props.payment?.amount.toString())
 
   const [showAmountInputError, setShowAmountInputError] = useState(false)
+  const [showDatePickerError, setShowDatePickerError] = useState(false)
 
   const handleSave = useCallback(async () => {
     if (validate()) {
       const newPaymentRequest: PaymentRequest = {
-        date: DateTime.fromJSDate(date).toISODate()!,
+        date: DateTime.fromJSDate(date!).toISODate()!,
         amount: Number(amount),
         treatment_id: treatmentId!,
       }
@@ -58,6 +57,11 @@ export default function PaymentForm(props: Props) {
   function validate() {
     let valid = true
 
+    if (!date) {
+      valid = false
+      setShowDatePickerError(true)
+    }
+
     if (!amount || isNaN(Number(amount))) {
       valid = false
       setShowAmountInputError(true)
@@ -67,13 +71,16 @@ export default function PaymentForm(props: Props) {
   }
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
-    })
+    if (props.payment) {
+      navigation.setOptions({
+        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+      })
+    }
   }, [navigation, handleSave])
 
   function handleDateChange(date: Date) {
     setDate(date)
+    setShowDatePickerError(false)
   }
 
   function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
@@ -82,16 +89,25 @@ export default function PaymentForm(props: Props) {
   }
 
   return (
-    <View>
-      <DateInput label='Date' placeholder='Pick a date' date={date} onChange={handleDateChange} />
+    <MainView>
+      <DateInput
+        label='Date'
+        placeholder='Pick a date'
+        date={date}
+        showError={showDatePickerError}
+        onChange={handleDateChange}
+      />
       <MyInput
-        placeholder='Amount'
+        label='Amount'
+        placeholder='Enter amount'
         value={amount}
         showError={showAmountInputError}
         onChange={handleAmountChange}
         keyboardType='decimal-pad'
-        rightIcon={<CustomIcon name='manat' color={colors.text} size={20} />}
+        rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
       />
-    </View>
+
+      {!props.payment && <CreateButton onPress={handleSave} />}
+    </MainView>
   )
 }

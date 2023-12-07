@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from 'react-native'
+import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native'
 import MyInput from './MyInput'
 import { useState } from 'react'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
@@ -12,6 +12,7 @@ type Props = {
   date?: Date
   onChange?: (dateTime: Date) => void
   showError?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
 export default function DateInput(props: Props) {
@@ -28,7 +29,7 @@ export default function DateInput(props: Props) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={props.style}>
       <TouchableOpacity onPress={() => setShowDatePicker(true)}>
         <MyInput
           pointerEvents='none'

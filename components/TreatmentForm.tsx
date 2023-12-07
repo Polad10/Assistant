@@ -171,13 +171,20 @@ export default function TreatmentForm(props: Props) {
     <MainView style={{ paddingTop: 20 }}>
       <View style={{ flexDirection: 'row' }}>
         <DateInput
+          style={{ flex: 1 }}
           label='Start date'
           placeholder='Pick a date'
           date={startDate}
           showError={showStartDatePickerError}
           onChange={handleStartDateChange}
         />
-        <DateInput label='End date' placeholder='Pick a date' date={endDate} onChange={handleEndDateChange} />
+        <DateInput
+          style={{ flex: 1 }}
+          label='End date'
+          placeholder='Pick a date'
+          date={endDate}
+          onChange={handleEndDateChange}
+        />
       </View>
       <MyInput
         label='Title'

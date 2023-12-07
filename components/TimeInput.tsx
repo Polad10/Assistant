@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import MyInput from './MyInput'
 import { useState } from 'react'
@@ -12,6 +12,7 @@ type Props = {
   time?: Date
   onChange?: (dateTime: Date) => void
   showError?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
 type Mode = 'date' | 'time'
@@ -30,7 +31,7 @@ export default function TimeInput(props: Props) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={props.style}>
       <TouchableOpacity onPress={() => setShowTimePicker(true)}>
         <MyInput
           pointerEvents='none'

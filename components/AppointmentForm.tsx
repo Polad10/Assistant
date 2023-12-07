@@ -168,6 +168,7 @@ export default function AppointmentForm(props: Props) {
     <MainView style={{ paddingTop: 20 }}>
       <View style={{ flexDirection: 'row' }}>
         <DateInput
+          style={{ flex: 1 }}
           label='Date'
           placeholder='Pick a date'
           date={dateTime}
@@ -175,6 +176,7 @@ export default function AppointmentForm(props: Props) {
           onChange={handleDateChange}
         />
         <TimeInput
+          style={{ flex: 1 }}
           label='Time'
           placeholder='Pick a time'
           time={dateTime}
