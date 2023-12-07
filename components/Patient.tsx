@@ -121,16 +121,16 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 const styles = (colors: Colors) =>
   StyleSheet.create({
     headerView: {
-      flex: 1,
+      padding: 20,
       justifyContent: 'center',
       alignItems: 'center',
     },
     infoView: {
-      flex: 1,
-      paddingLeft: 5,
+      paddingHorizontal: 10,
+      paddingVertical: 20,
     },
     additionalInfoView: {
-      flex: 3,
+      flex: 1,
     },
     title: {
       color: colors.text,

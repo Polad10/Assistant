@@ -153,16 +153,16 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
     headerView: {
-      flex: 1,
+      padding: 20,
       justifyContent: 'center',
       alignItems: 'center',
     },
     infoView: {
-      flex: 1,
-      paddingLeft: 5,
+      paddingHorizontal: 10,
+      paddingVertical: 20,
     },
     additionalInfoView: {
-      flex: 2,
+      flex: 1,
     },
     title: {
       color: styleProps.colors.text,
