@@ -15,6 +15,7 @@ import { Colors } from '../types/Colors'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import DateInput from './DateInput'
+import CreateButton from './CreateButton'
 
 type StyleProps = {
   patientEditable: boolean
@@ -111,10 +112,14 @@ export default function TreatmentForm(props: Props) {
   }
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
-    })
+    if (props.treatment) {
+      navigation.setOptions({
+        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+      })
+    }
+  }, [navigation, handleSave])
 
+  useEffect(() => {
     const patientSelectListener = DeviceEventEmitter.addListener('patientSelected', handlePatientSelect)
     const patientCreatedListener = DeviceEventEmitter.addListener('patientCreated', handlePatientSelect)
 
@@ -122,7 +127,7 @@ export default function TreatmentForm(props: Props) {
       patientSelectListener.remove()
       patientCreatedListener.remove()
     }
-  }, [navigation, handleSave])
+  }, [])
 
   function getSelectedPatientFullName() {
     return selectedPatient ? getPatientFullName(selectedPatient) : ''
@@ -206,6 +211,8 @@ export default function TreatmentForm(props: Props) {
           showError={showPatientInputError}
         />
       )}
+
+      {!props.treatment && <CreateButton onPress={handleSave} />}
     </MainView>
   )
 }
