@@ -2,10 +2,9 @@ import { View, Text, StyleSheet } from 'react-native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
-import { ButtonGroup } from '@rneui/themed'
+import { ButtonGroup, Icon } from '@rneui/themed'
 import { useContext, useEffect, useState } from 'react'
 import TreatmentList from './TreatmentList'
-import DetailTab from './DetailTab'
 import PaymentList from './PaymentList'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
@@ -15,6 +14,7 @@ import MyAgendaList from './MyAgendaList'
 import MainView from './MainView'
 import HeaderButton from './HeaderButton'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
+import IonIcons from '@expo/vector-icons/Ionicons'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -69,13 +69,13 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 
   const buttons = [
     {
-      element: () => <DetailTab iconName='calendar' index={0} selectedIndex={selectedIndex} />,
+      element: () => <Icon name='calendar' size={25} type='feather' color={colors.text} />,
     },
     {
-      element: () => <DetailTab iconName='tooth' index={1} selectedIndex={selectedIndex} />,
+      element: () => <Icon name='tooth-outline' size={25} type='material-community' color={colors.text} />,
     },
     {
-      element: () => <DetailTab iconName='money-bill-alt' index={2} selectedIndex={selectedIndex} />,
+      element: () => <Icon name='cash-outline' size={25} type='ionicon' color={colors.text} />,
     },
   ]
 
@@ -98,15 +98,29 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
         <Text style={styles(colors).title}>{getPatientFullName(patient)}</Text>
       </View>
       <View style={[styles(colors).infoView, styles(colors).card]}>
-        <Text style={styles(colors).text}>City: {patient?.city}</Text>
-        <Text style={styles(colors).text}>Phone number: {patient?.phone}</Text>
-        <Text style={styles(colors).text}>Extra info: {patient?.extra_info}</Text>
+        <View style={styles(colors).infoField}>
+          <IonIcons name='home-outline' size={22} color='rgb(140, 140, 140)' style={styles(colors).infoIcon} />
+          <Text style={styles(colors).text}>{patient?.city}</Text>
+        </View>
+        <View style={styles(colors).infoField}>
+          <IonIcons name='call-outline' size={22} color='rgb(140, 140, 140)' style={styles(colors).infoIcon} />
+          <Text style={styles(colors).text}>{patient?.phone}</Text>
+        </View>
+        <View style={styles(colors).infoField}>
+          <IonIcons
+            name='information-circle-outline'
+            size={22}
+            color='rgb(140, 140, 140)'
+            style={styles(colors).infoIcon}
+          />
+          <Text style={styles(colors).text}>{patient?.extra_info}</Text>
+        </View>
       </View>
       <View style={styles(colors).additionalInfoView}>
         <ButtonGroup
           buttons={buttons}
           buttonStyle={{ backgroundColor: colors.background }}
-          containerStyle={{ borderColor: colors.border }}
+          containerStyle={{ borderColor: colors.border, borderRadius: 20, marginLeft: 0, marginRight: 0, height: 45 }}
           innerBorderStyle={{ color: colors.border }}
           selectedIndex={selectedIndex}
           onPress={(value) => setSelectedIndex(value)}
@@ -121,13 +135,21 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 const styles = (colors: Colors) =>
   StyleSheet.create({
     headerView: {
-      padding: 20,
+      padding: 22,
       justifyContent: 'center',
       alignItems: 'center',
     },
     infoView: {
       paddingHorizontal: 10,
       paddingVertical: 20,
+    },
+    infoField: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 5,
+    },
+    infoIcon: {
+      marginRight: 10,
     },
     additionalInfoView: {
       flex: 1,
@@ -138,8 +160,7 @@ const styles = (colors: Colors) =>
     },
     text: {
       color: colors.text,
-      fontSize: 18,
-      marginTop: 5,
+      fontSize: 20,
     },
     card: {
       backgroundColor: colors.card,
