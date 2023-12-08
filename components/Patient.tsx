@@ -15,6 +15,7 @@ import MainView from './MainView'
 import HeaderButton from './HeaderButton'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
+import DetailTab from './DetailTab'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -69,13 +70,15 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 
   const buttons = [
     {
-      element: () => <Icon name='calendar' size={25} type='feather' color={colors.text} />,
+      element: () => <DetailTab name='calendar' type='feather' index={0} selectedIndex={selectedIndex} />,
     },
     {
-      element: () => <Icon name='tooth-outline' size={25} type='material-community' color={colors.text} />,
+      element: () => (
+        <DetailTab name='tooth-outline' type='material-community' index={1} selectedIndex={selectedIndex} />
+      ),
     },
     {
-      element: () => <Icon name='cash-outline' size={25} type='ionicon' color={colors.text} />,
+      element: () => <DetailTab name='cash-outline' type='ionicon' index={2} selectedIndex={selectedIndex} />,
     },
   ]
 
