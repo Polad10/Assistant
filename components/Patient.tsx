@@ -2,7 +2,6 @@ import { View, Text, StyleSheet } from 'react-native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
-import { ButtonGroup, Icon } from '@rneui/themed'
 import { useContext, useEffect, useState } from 'react'
 import TreatmentList from './TreatmentList'
 import PaymentList from './PaymentList'
@@ -16,6 +15,7 @@ import HeaderButton from './HeaderButton'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import DetailTab from './DetailTab'
+import MyButtonGroup from './MyButtonGroup'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -120,15 +120,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
         </View>
       </View>
       <View style={styles(colors).additionalInfoView}>
-        <ButtonGroup
-          buttons={buttons}
-          buttonStyle={{ backgroundColor: colors.background }}
-          containerStyle={{ borderColor: colors.border, borderRadius: 20, marginLeft: 0, marginRight: 0, height: 45 }}
-          innerBorderStyle={{ color: colors.border }}
-          selectedIndex={selectedIndex}
-          onPress={(value) => setSelectedIndex(value)}
-          selectedButtonStyle={{ backgroundColor: colors.primary }}
-        />
+        <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
         <TabContent />
       </View>
     </MainView>
