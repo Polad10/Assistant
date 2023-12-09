@@ -6,7 +6,6 @@ import { View, StyleSheet, Text } from 'react-native'
 import MyFAB from './MyFAB'
 import PaymentList from './PaymentList'
 import { Colors } from '../types/Colors'
-import { ButtonGroup } from '@rneui/themed'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { DateTime } from 'luxon'
@@ -17,6 +16,7 @@ import MyAgendaList from './MyAgendaList'
 import HeaderButton from './HeaderButton'
 import CustomIcon from './CustomIcon'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
+import MyButtonGroup from './MyButtonGroup'
 
 type StyleProps = {
   colors: Colors
@@ -80,10 +80,10 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 
   const buttons = [
     {
-      element: () => <DetailTab iconName='calendar' index={0} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab name='calendar' type='feather' index={0} selectedIndex={selectedIndex} />,
     },
     {
-      element: () => <DetailTab iconName='money-bill-alt' index={1} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab name='cash-outline' type='ionicon' index={1} selectedIndex={selectedIndex} />,
     },
   ]
 
@@ -135,15 +135,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         </View>
       </View>
       <View style={styles(styleProps).additionalInfoView}>
-        <ButtonGroup
-          buttons={buttons}
-          buttonStyle={{ backgroundColor: colors.background }}
-          containerStyle={{ borderColor: colors.border }}
-          innerBorderStyle={{ color: colors.border }}
-          selectedIndex={selectedIndex}
-          onPress={(value) => setSelectedIndex(value)}
-          selectedButtonStyle={{ backgroundColor: colors.primary }}
-        />
+        <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
         <TabContent />
       </View>
     </MainView>
