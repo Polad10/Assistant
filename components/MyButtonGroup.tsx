@@ -22,6 +22,8 @@ const styles = (colors: Colors) =>
     container: {
       borderColor: colors.border,
       borderRadius: 20,
+      marginTop: 10,
+      marginBottom: 0,
       marginLeft: 0,
       marginRight: 0,
       height: 45,
