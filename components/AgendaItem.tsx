@@ -32,7 +32,7 @@ const AgendaItem = (props: ItemProps) => {
   return (
     <TouchableOpacity onPress={itemPressed} style={styles(colors).item}>
       <View style={styles(colors).mainView}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={[styles(colors).defaultText, styles(colors).time]}>
             {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
           </Text>
@@ -73,8 +73,7 @@ const styles = (colors: Colors) =>
       fontWeight: 'bold',
     },
     appointmentContent: {
-      flex: 1,
-      marginLeft: 30,
+      flex: 4,
     },
     description: {
       marginTop: 10,
