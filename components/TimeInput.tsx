@@ -45,7 +45,7 @@ export default function TimeInput(props: Props) {
       <DateTimePickerModal
         isVisible={showTimePicker}
         mode='time'
-        date={time}
+        date={time ?? new Date()}
         onConfirm={handleConfirm}
         onCancel={() => setShowTimePicker(false)}
         display='spinner'

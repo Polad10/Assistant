@@ -43,7 +43,7 @@ export default function DateInput(props: Props) {
       <DateTimePickerModal
         isVisible={showDatePicker}
         mode='date'
-        date={date}
+        date={date ?? new Date()}
         onConfirm={handleConfirm}
         onCancel={() => setShowDatePicker(false)}
         display='inline'

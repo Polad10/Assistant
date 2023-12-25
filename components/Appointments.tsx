@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
 import { useContext, useEffect, useState } from 'react'
@@ -47,6 +47,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
         key={Math.random()} // Workaround for Agenda's bug, where the item list not updated correctly
         items={agendaItems}
         renderItem={renderItem}
+        renderDay={() => <View></View>}
         renderEmptyData={renderEmptyData}
         showOnlySelectedDayItems={true}
         selected={DateTime.local().toISO() ?? undefined}

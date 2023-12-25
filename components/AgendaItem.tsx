@@ -32,13 +32,17 @@ const AgendaItem = (props: ItemProps) => {
   return (
     <TouchableOpacity onPress={itemPressed} style={styles(colors).item}>
       <View style={styles(colors).mainView}>
-        <View style={styles(colors).header}>
+        <View>
           <Text style={[styles(colors).defaultText, styles(colors).time]}>
             {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
           </Text>
-          <Text style={styles(colors).defaultText}>{getPatientFullName(patient)}</Text>
         </View>
-        <Text style={[styles(colors).defaultText, styles(colors).description]}>{appointment.actions}</Text>
+        <View style={styles(colors).appointmentContent}>
+          <View>
+            <Text style={[styles(colors).defaultText, styles(colors).patient]}>{getPatientFullName(patient)}</Text>
+          </View>
+          <Text style={[styles(colors).defaultText, styles(colors).description]}>{appointment.actions}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   )
@@ -48,6 +52,7 @@ const styles = (colors: Colors) =>
   StyleSheet.create({
     mainView: {
       flex: 1,
+      flexDirection: 'row',
     },
     item: {
       padding: 10,
@@ -56,20 +61,23 @@ const styles = (colors: Colors) =>
       borderBottomColor: colors.border,
       flexDirection: 'row',
     },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
     defaultText: {
       fontSize: 16,
       color: colors.text,
     },
-    time: {
+    patient: {
       color: colors.notification,
+    },
+    time: {
+      color: colors.text,
       fontWeight: 'bold',
     },
+    appointmentContent: {
+      flex: 1,
+      marginLeft: 30,
+    },
     description: {
-      marginTop: 20,
+      marginTop: 10,
       fontStyle: 'italic',
     },
     emptyItem: {
