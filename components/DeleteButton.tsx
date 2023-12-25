@@ -17,7 +17,7 @@ export default function DeleteButton() {
   }
 
   return (
-    <SafeAreaView style={styles.buttonView}>
+    <SafeAreaView>
       <Button titleStyle={{ color: 'red' }} style={styles.button} type='clear' onPress={toggleConfirmDialogVisible}>
         Delete
       </Button>
@@ -37,10 +37,6 @@ export default function DeleteButton() {
 }
 
 const styles = StyleSheet.create({
-  buttonView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
   button: {
     marginHorizontal: 10,
   },

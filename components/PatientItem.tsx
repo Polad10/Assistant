@@ -20,7 +20,8 @@ export default function PatientItem(props: Props) {
     <TouchableHighlight onPress={() => handlePatientSelect(props.patient)}>
       <ListItem containerStyle={styles(colors).listItemContainer}>
         <ListItem.Content>
-          <ListItem.Title style={styles(colors).listItemTitle}>{getPatientFullName(props.patient)}</ListItem.Title>
+          <ListItem.Title style={styles(colors).defaultText}>{getPatientFullName(props.patient)}</ListItem.Title>
+          <ListItem.Subtitle style={styles(colors).subTitle}>{props.patient.extra_info}</ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
     </TouchableHighlight>
@@ -40,7 +41,11 @@ const styles = (colors: Colors) =>
     listItemContainer: {
       backgroundColor: colors.background,
     },
-    listItemTitle: {
+    defaultText: {
       color: colors.text,
+    },
+    subTitle: {
+      marginTop: 5,
+      color: 'grey',
     },
   })
