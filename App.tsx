@@ -43,6 +43,7 @@ function Home() {
             <IonIcons name='calendar-outline' size={25} color={props.focused ? colors.primary : 'grey'} />
           ),
           tabBarActiveTintColor: colors.primary,
+          title: 'Agenda',
           headerTitle: 'AGENDA',
           headerTitleStyle: styles.headerTitle,
         }}
