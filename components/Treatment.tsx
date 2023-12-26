@@ -100,38 +100,36 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
       case 0:
         return (
           <MainView>
-            <View style={[styles(styleProps).card, styles(styleProps).rounded]}>
-              <View style={styles(styleProps).priceView}>
-                <Icon
-                  containerStyle={{
-                    marginRight: 20,
-                  }}
-                  name='wallet-outline'
-                  type='ionicon'
-                  size={25}
-                  color={colors.notification}
-                  reverse
-                />
-                <View style={{ flex: 1 }}>
-                  <View style={styles(styleProps).priceDetailsView}>
-                    <View>
-                      <Text style={styles(styleProps).text}>Price</Text>
-                      <Text style={[styles(styleProps).paymentsNrText, styles(styleProps).halfOpacity]}>
-                        {payments.length} Payments
-                      </Text>
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}>{totalPayments} ₼ </Text>
-                      <Text style={[styles(styleProps).valueText, styles(styleProps).halfOpacity]}> of </Text>
-                      <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}> {treatment.price} ₼</Text>
-                    </View>
+            <View style={[styles(styleProps).card, styles(styleProps).rounded, styles(styleProps).priceView]}>
+              <Icon
+                containerStyle={{
+                  marginRight: 20,
+                }}
+                name='wallet-outline'
+                type='ionicon'
+                size={25}
+                color={colors.notification}
+                reverse
+              />
+              <View style={{ flex: 1 }}>
+                <View style={styles(styleProps).priceDetailsView}>
+                  <View>
+                    <Text style={styles(styleProps).text}>Price</Text>
+                    <Text style={[styles(styleProps).paymentsNrText, styles(styleProps).halfOpacity]}>
+                      {payments.length} Payments
+                    </Text>
                   </View>
-                  <LinearProgress
-                    style={{ marginTop: 10 }}
-                    value={totalPayments / treatment.price}
-                    color={colors.notification}
-                  />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}>{totalPayments} ₼ </Text>
+                    <Text style={[styles(styleProps).valueText, styles(styleProps).halfOpacity]}> of </Text>
+                    <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}> {treatment.price} ₼</Text>
+                  </View>
                 </View>
+                <LinearProgress
+                  style={{ marginTop: 10 }}
+                  value={totalPayments / treatment.price}
+                  color={colors.notification}
+                />
               </View>
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -276,6 +274,7 @@ const styles = (styleProps: StyleProps) =>
     priceView: {
       flexDirection: 'row',
       alignItems: 'center',
+      marginTop: 0,
     },
     priceDetailsView: {
       flexDirection: 'row',

@@ -23,7 +23,7 @@ const styles = (colors: Colors) =>
       borderColor: colors.border,
       borderRadius: 20,
       marginTop: 10,
-      marginBottom: 0,
+      marginBottom: 5,
       marginLeft: 0,
       marginRight: 0,
       height: 45,
