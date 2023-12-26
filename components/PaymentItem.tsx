@@ -6,6 +6,8 @@ import CustomIcon from './CustomIcon'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import { DateTime } from 'luxon'
+import { useContext } from 'react'
+import { DataContext } from '../contexts/DataContext'
 
 type Props = {
   payment: Payment
@@ -16,16 +18,26 @@ export default function PaymentItem(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const { colors } = useTheme()
 
-  const date = DateTime.fromISO(props.payment.date).toISODate()
+  const context = useContext(DataContext)
+
+  if (!context) {
+    return
+  }
+
+  const date = DateTime.fromISO(props.payment.date).toFormat('MMMM d, yyyy')
+  const treatment = context.treatments?.find((t) => t.id === props.payment.treatment_id)
 
   return (
     <TouchableHighlight onPress={() => navigation.navigate('EditPayment', { paymentId: props.payment.id })}>
       <ListItem containerStyle={styles(colors).listItemContainer}>
         <ListItem.Content style={[styles(colors).flexRow, styles(colors).spacedItems]}>
-          <ListItem.Title style={styles(colors).defaultText}>{date}</ListItem.Title>
+          <View>
+            <ListItem.Title style={styles(colors).defaultText}>{treatment?.title}</ListItem.Title>
+            <ListItem.Subtitle style={styles(colors).subTitle}>{date}</ListItem.Subtitle>
+          </View>
           <View style={styles(colors).flexRow}>
             <ListItem.Title style={styles(colors).payment}>+ {props.payment.amount}</ListItem.Title>
-            <CustomIcon style={styles(colors).currency} name='manat' size={18} color={colors.text} />
+            <CustomIcon style={styles(colors).currency} name='manat' size={16} />
           </View>
         </ListItem.Content>
       </ListItem>
@@ -40,6 +52,7 @@ const styles = (colors: Colors) =>
     },
     flexRow: {
       flexDirection: 'row',
+      alignItems: 'center',
     },
     spacedItems: {
       justifyContent: 'space-between',
@@ -47,11 +60,16 @@ const styles = (colors: Colors) =>
     defaultText: {
       color: colors.text,
     },
+    subTitle: {
+      color: colors.text,
+      opacity: 0.5,
+      marginTop: 10,
+    },
     payment: {
-      color: colors.notification,
+      color: 'lightgreen',
     },
     currency: {
       marginLeft: 10,
-      color: colors.notification,
+      color: 'lightgreen',
     },
   })

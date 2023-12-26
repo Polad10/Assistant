@@ -77,7 +77,6 @@ const styles = (styleProps: StyleProps) =>
     },
     listItemTitle: {
       color: styleProps.colors.text,
-      marginBottom: 15,
     },
     listItemSubtitle: {
       color: styleProps.colors.text,
