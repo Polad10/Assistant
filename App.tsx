@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import { NavigationContainer, DefaultTheme, DarkTheme, useTheme } from '@react-navigation/native'
-import { useColorScheme, StyleSheet } from 'react-native'
+import { useColorScheme, StyleSheet, Animated } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
@@ -43,6 +43,8 @@ function Home() {
             <IonIcons name='calendar-outline' size={25} color={props.focused ? colors.primary : 'grey'} />
           ),
           tabBarActiveTintColor: colors.primary,
+          headerTitle: 'AGENDA',
+          headerTitleStyle: styles.headerTitle,
         }}
       />
       <Tab.Screen
@@ -53,6 +55,8 @@ function Home() {
             <IonIcons name='people-outline' size={25} color={props.focused ? colors.primary : 'grey'} />
           ),
           tabBarActiveTintColor: colors.primary,
+          headerTitle: 'PATIENTS',
+          headerTitleStyle: styles.headerTitle,
         }}
       />
     </Tab.Navigator>
@@ -79,19 +83,19 @@ export default function App() {
           }}
         >
           <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-          <Stack.Group screenOptions={{ presentation: 'modal' }}>
-            <Stack.Screen name='Patients' component={Patients} />
-            <Stack.Screen name='Treatments' component={Treatments} />
-            <Stack.Screen name='Patient' component={Patient} />
-            <Stack.Screen name='Treatment' component={Treatment} />
-            <Stack.Screen name='NewAppointment' component={NewAppointment} />
-            <Stack.Screen name='NewTreatment' component={NewTreatment} />
-            <Stack.Screen name='NewPatient' component={NewPatient} />
-            <Stack.Screen name='EditAppointment' component={EditAppointment} />
-            <Stack.Screen name='EditPatient' component={EditPatient} />
-            <Stack.Screen name='EditTreatment' component={EditTreatment} />
-            <Stack.Screen name='EditPayment' component={EditPayment} />
-            <Stack.Screen name='NewPayment' component={NewPayment} />
+          <Stack.Group screenOptions={{ presentation: 'modal', headerTitleStyle: styles.headerTitle }}>
+            <Stack.Screen name='Patients' component={Patients} options={{ headerTitle: 'PATIENTS' }} />
+            <Stack.Screen name='Treatments' component={Treatments} options={{ headerTitle: 'TREATMENTS' }} />
+            <Stack.Screen name='Patient' component={Patient} options={{ headerTitle: 'PATIENT' }} />
+            <Stack.Screen name='Treatment' component={Treatment} options={{ headerTitle: 'TREATMENT' }} />
+            <Stack.Screen name='NewAppointment' component={NewAppointment} options={{ headerTitle: 'APPOINTMENT' }} />
+            <Stack.Screen name='NewTreatment' component={NewTreatment} options={{ headerTitle: 'TREATMENT' }} />
+            <Stack.Screen name='NewPatient' component={NewPatient} options={{ headerTitle: 'PATIENT' }} />
+            <Stack.Screen name='EditAppointment' component={EditAppointment} options={{ headerTitle: 'APPOINTMENT' }} />
+            <Stack.Screen name='EditPatient' component={EditPatient} options={{ headerTitle: 'PATIENT' }} />
+            <Stack.Screen name='EditTreatment' component={EditTreatment} options={{ headerTitle: 'TREATMENT' }} />
+            <Stack.Screen name='EditPayment' component={EditPayment} options={{ headerTitle: 'PAYMENT' }} />
+            <Stack.Screen name='NewPayment' component={NewPayment} options={{ headerTitle: 'PAYMENT' }} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
@@ -105,5 +109,8 @@ const styles = StyleSheet.create({
   },
   headerLeftContainer: {
     paddingLeft: 5,
+  },
+  headerTitle: {
+    letterSpacing: 1,
   },
 })
