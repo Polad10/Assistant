@@ -102,20 +102,15 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
       </View>
       <View style={styles(colors).card}>
         <View style={styles(colors).infoField}>
-          <IonIcons name='home-outline' size={22} color='rgb(140, 140, 140)' style={styles(colors).infoIcon} />
+          <IonIcons name='home-outline' size={22} style={styles(colors).infoIcon} />
           <Text style={styles(colors).text}>{patient?.city}</Text>
         </View>
         <View style={styles(colors).infoField}>
-          <IonIcons name='call-outline' size={22} color='rgb(140, 140, 140)' style={styles(colors).infoIcon} />
+          <IonIcons name='call-outline' size={22} style={styles(colors).infoIcon} />
           <Text style={styles(colors).text}>{patient?.phone}</Text>
         </View>
         <View style={styles(colors).infoField}>
-          <IonIcons
-            name='information-circle-outline'
-            size={22}
-            color='rgb(140, 140, 140)'
-            style={styles(colors).infoIcon}
-          />
+          <IonIcons name='information-circle-outline' size={22} style={styles(colors).infoIcon} />
           <Text style={styles(colors).text}>{patient?.extra_info}</Text>
         </View>
       </View>
@@ -140,6 +135,8 @@ const styles = (colors: Colors) =>
       marginVertical: 5,
     },
     infoIcon: {
+      color: colors.text,
+      opacity: 0.5,
       marginRight: 10,
     },
     additionalInfoView: {

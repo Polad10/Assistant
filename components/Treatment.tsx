@@ -197,7 +197,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
       </View>
       <View style={styles(styleProps).card}>
         <View style={styles(styleProps).infoField}>
-          <IonIcons name='person-outline' color='rgb(140, 140, 140)' size={22} style={styles(styleProps).infoIcon} />
+          <IonIcons name='person-outline' size={22} style={styles(styleProps).infoIcon} />
           <Text style={styles(styleProps).text}>{getPatientFullName(patient)}</Text>
         </View>
       </View>
@@ -222,6 +222,8 @@ const styles = (styleProps: StyleProps) =>
       marginVertical: 5,
     },
     infoIcon: {
+      color: styleProps.colors.text,
+      opacity: 0.5,
       marginRight: 10,
     },
     additionalInfoView: {
