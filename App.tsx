@@ -81,6 +81,7 @@ export default function App() {
           screenOptions={{
             headerRightContainerStyle: styles.headerRightContainer,
             headerLeftContainerStyle: styles.headerLeftContainer,
+            headerBackTitle: 'Back',
           }}
         >
           <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
