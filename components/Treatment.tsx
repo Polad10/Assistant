@@ -8,7 +8,6 @@ import PaymentList from './PaymentList'
 import { Colors } from '../types/Colors'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import { DateTime } from 'luxon'
 import { getAgendaItems, getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Status } from '../enums/Status'
 import MainView from './MainView'
@@ -18,7 +17,7 @@ import { treatmentFinished } from '../helpers/TreatmentHelper'
 import MyButtonGroup from './MyButtonGroup'
 import { Chip, Icon } from '@rneui/themed'
 import IonIcons from '@expo/vector-icons/Ionicons'
-import { LinearProgress } from '@rneui/base'
+import TreatmentInfo from './TreatmentInfo'
 
 type StyleProps = {
   colors: Colors
@@ -62,8 +61,6 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   const appointments = context.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
   const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
 
-  const totalPayments = payments.reduce((sum, payment) => Number(sum) + Number(payment.amount), 0)
-
   const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)
 
@@ -89,70 +86,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   const TabContent = () => {
     switch (selectedIndex) {
       case 0:
-        return (
-          <MainView>
-            <View style={[styles(styleProps).card, styles(styleProps).rounded, styles(styleProps).priceView]}>
-              <Icon
-                containerStyle={{
-                  marginRight: 20,
-                }}
-                name='wallet-outline'
-                type='ionicon'
-                size={25}
-                color={colors.notification}
-                reverse
-              />
-              <View style={{ flex: 1 }}>
-                <View style={styles(styleProps).priceDetailsView}>
-                  <View>
-                    <Text style={styles(styleProps).text}>Price</Text>
-                    <Text style={[styles(styleProps).paymentsNrText, styles(styleProps).halfOpacity]}>
-                      {payments.length} Payments
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}>{totalPayments} ₼ </Text>
-                    <Text style={[styles(styleProps).valueText, styles(styleProps).halfOpacity]}> of </Text>
-                    <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}> {treatment.price} ₼</Text>
-                  </View>
-                </View>
-                <LinearProgress
-                  style={{ marginTop: 10 }}
-                  value={totalPayments / treatment.price}
-                  color={colors.notification}
-                />
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={[styles(styleProps).startDateView, styles(styleProps).card, styles(styleProps).rounded]}>
-                <Text style={styles(styleProps).text}>Start</Text>
-                <Icon
-                  name='hourglass-start'
-                  type='font-awesome'
-                  color='orange'
-                  size={25}
-                  containerStyle={styles(styleProps).dateIconContainer}
-                />
-                <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}>
-                  {DateTime.fromISO(treatment.start_date).toFormat('MMMM d, yyyy')}
-                </Text>
-              </View>
-              <View style={[styles(styleProps).endDateView, styles(styleProps).card, styles(styleProps).rounded]}>
-                <Text style={styles(styleProps).text}>End</Text>
-                <Icon
-                  name='hourglass-end'
-                  type='font-awesome'
-                  color='lightgreen'
-                  size={25}
-                  containerStyle={styles(styleProps).dateIconContainer}
-                />
-                <Text style={[styles(styleProps).valueText, styles(styleProps).bold]}>
-                  {treatment.end_date ? DateTime.fromISO(treatment.end_date).toFormat('MMMM d, yyyy') : '-'}
-                </Text>
-              </View>
-            </View>
-          </MainView>
-        )
+        return <TreatmentInfo treatment={treatment} />
       case 1:
         return (
           <MainView>
@@ -229,29 +163,10 @@ const styles = (styleProps: StyleProps) =>
       color: styleProps.colors.text,
       fontSize: 20,
     },
-    valueText: {
-      color: styleProps.colors.text,
-      fontSize: 18,
-    },
-    paymentsNrText: {
-      color: styleProps.colors.text,
-      fontSize: 16,
-      marginTop: 5,
-    },
-    halfOpacity: {
-      opacity: 0.5,
-      fontWeight: '200',
-    },
-    bold: {
-      fontWeight: 'bold',
-    },
     card: {
       backgroundColor: styleProps.colors.card,
       padding: 20,
       marginTop: 5,
-    },
-    rounded: {
-      borderRadius: 10,
     },
     statusView: {
       flexDirection: 'row',
@@ -263,28 +178,5 @@ const styles = (styleProps: StyleProps) =>
     },
     statusButton: {
       borderColor: styleProps.treatmentFinished ? 'lightgreen' : 'orange',
-    },
-    priceView: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 0,
-    },
-    priceDetailsView: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    startDateView: {
-      flex: 1,
-      marginRight: 2.5,
-    },
-    endDateView: {
-      flex: 1,
-      marginLeft: 2.5,
-    },
-    dateIconContainer: {
-      alignItems: 'flex-start',
-      marginTop: 25,
-      marginBottom: 15,
     },
   })
