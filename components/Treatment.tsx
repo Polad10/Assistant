@@ -9,7 +9,7 @@ import { Colors } from '../types/Colors'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { DateTime } from 'luxon'
-import { getGroupedAppointments } from '../helpers/AppointmentHelper'
+import { getAgendaItems, getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Status } from '../enums/Status'
 import MainView from './MainView'
 import MyAgendaList from './MyAgendaList'
@@ -64,16 +64,8 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 
   const totalPayments = payments.reduce((sum, payment) => Number(sum) + Number(payment.amount), 0)
 
-  const groupedAppointments = getGroupedAppointments(appointments)
-
-  const agendaItems = groupedAppointments
-    ? Array.from(groupedAppointments).map(([date, appointments]) => {
-        return {
-          title: date,
-          data: appointments,
-        }
-      })
-    : []
+  const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
+  const agendaItems = getAgendaItems(groupedAppointments)
 
   const styleProps: StyleProps = {
     colors: colors,

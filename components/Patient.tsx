@@ -7,7 +7,7 @@ import TreatmentList from './TreatmentList'
 import PaymentList from './PaymentList'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import { getGroupedAppointments } from '../helpers/AppointmentHelper'
+import { getAgendaItems, getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { DateTime } from 'luxon'
 import MyAgendaList from './MyAgendaList'
 import MainView from './MainView'
@@ -48,25 +48,19 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !treatmentFinished(t))
   const payments = context.payments?.filter((p) => treatments?.some((t) => t.id === p.treatment_id)) ?? []
 
-  const appointments = context.appointments?.filter((a) => {
-    const datetime = DateTime.fromISO(a.datetime).toISODate()
+  const appointments =
+    context.appointments?.filter((a) => {
+      const datetime = DateTime.fromISO(a.datetime).toISODate()
 
-    if (!datetime || !today) {
-      return false
-    }
+      if (!datetime || !today) {
+        return false
+      }
 
-    return treatments?.some((t) => t.id === a.treatment_id) && datetime >= today
-  })
+      return treatments?.some((t) => t.id === a.treatment_id) && datetime >= today
+    }) ?? []
 
-  const groupedAppointments = appointments ? getGroupedAppointments(appointments) : null
-  const agendaItems = groupedAppointments
-    ? Array.from(groupedAppointments).map(([date, appointments]) => {
-        return {
-          title: date,
-          data: appointments,
-        }
-      })
-    : []
+  const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
+  const agendaItems = getAgendaItems(groupedAppointments)
 
   const buttons = [
     {

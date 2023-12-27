@@ -28,3 +28,14 @@ export function getGroupedAppointments(appointments: Appointment[]) {
 
   return groupedAppointments
 }
+
+export function getAgendaItems(groupedAppointments: Map<string, Appointment[]>) {
+  return groupedAppointments
+  ? Array.from(groupedAppointments).map(([date, appointments]) => {
+      return {
+        title: date,
+        data: appointments,
+      }
+    })
+  : []
+}
