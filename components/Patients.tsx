@@ -5,9 +5,9 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { Patient } from '../modals/Patient'
-import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
 import PatientList from './PatientList'
+import { searchPatients } from '../helpers/Searcher'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)
@@ -21,28 +21,8 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
 
   const ref = useRef<SearchBarRefType>()
 
-  const searchOptions = {
-    keys: [
-      {
-        name: 'first_name',
-        weight: 2,
-      },
-      {
-        name: 'last_name',
-        weight: 1,
-      },
-    ],
-  }
-
-  const fuse = new Fuse(context.patients ?? [], searchOptions)
-
   function handleSearch(search: string) {
-    if (!search) {
-      setPatients(context?.patients ?? [])
-      return
-    }
-
-    const foundPatients = fuse.search(search).map((s) => s.item)
+    const foundPatients = searchPatients(context?.patients ?? [], search)
 
     setPatients(foundPatients)
   }

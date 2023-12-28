@@ -4,15 +4,10 @@ import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import Fuse from 'fuse.js'
 import { DeviceEventEmitter } from 'react-native'
-import { Treatment } from '../modals/Treatment'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
-
-interface TreatmentWithPatientName extends Treatment {
-  patientFirstName?: string
-  patientLastName?: string
-}
+import { TreatmentWithPatientName } from '../types/TreatmentWithPatientName'
+import { searchTreatments } from '../helpers/Searcher'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
   const context = useContext(DataContext)
@@ -27,29 +22,9 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
 
   const ref = useRef<SearchBarRefType>()
 
-  const searchOptions = {
-    keys: [
-      {
-        name: 'patientFirstName',
-        weight: 2,
-      },
-      {
-        name: 'patientLastName',
-        weight: 1,
-      },
-    ],
-  }
-
-  const fuse = new Fuse(treatmentsInitial, searchOptions)
-
   const handleSearch = useCallback(
     (search: string) => {
-      if (!search) {
-        setTreatments(treatmentsInitial)
-        return
-      }
-
-      const foundTreatments = fuse.search(search).map((s) => s.item)
+      const foundTreatments = searchTreatments(treatmentsInitial, search)
 
       setTreatments(foundTreatments)
     },
