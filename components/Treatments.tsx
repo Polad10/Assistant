@@ -5,7 +5,7 @@ import MainView from './MainView'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { DeviceEventEmitter } from 'react-native'
-import { treatmentFinished } from '../helpers/TreatmentHelper'
+import { getOngoingTreatments, treatmentFinished } from '../helpers/TreatmentHelper'
 import { TreatmentWithPatientName } from '../types/TreatmentWithPatientName'
 import { searchTreatments } from '../helpers/Searcher'
 
@@ -39,8 +39,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   useEffect(() => {
     ref.current?.clear()
 
-    const ongoingTreatments = context.treatments?.filter((t) => !treatmentFinished(t))
-    ongoingTreatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
+    const ongoingTreatments = getOngoingTreatments(context.treatments ?? [])
 
     const treatmentsWithPatientName: TreatmentWithPatientName[] =
       ongoingTreatments?.map((t) => {
