@@ -11,6 +11,7 @@ import { DataContext } from '../contexts/DataContext'
 import { Patient } from '../modals/Patient'
 import { Treatment } from '../modals/Treatment'
 import NoDataFound from './NoDataView'
+import { getPatientTreatments } from '../helpers/TreatmentHelper'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -30,8 +31,7 @@ export default function TreatmentList(props: Props) {
   let treatments = props.treatments
 
   if (props.patient) {
-    treatments = context.treatments?.filter((t) => t.patient_id === props.patient?.id)
-    treatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
+    treatments = getPatientTreatments(context.treatments ?? [], props.patient.id)
   }
 
   const treatmentElements = treatments

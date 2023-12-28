@@ -10,3 +10,10 @@ export function getOngoingTreatments(treatments: Treatment[]) {
 
   return ongoingTreatments
 }
+
+export function getPatientTreatments(treatments: Treatment[], patientId: number) {
+  treatments = treatments.filter((t) => t.patient_id === patientId)
+  treatments.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
+
+  return treatments
+}
