@@ -21,7 +21,9 @@ export default function PatientItem(props: Props) {
       <ListItem containerStyle={styles(colors).listItemContainer}>
         <ListItem.Content>
           <ListItem.Title style={styles(colors).defaultText}>{getPatientFullName(props.patient)}</ListItem.Title>
-          <ListItem.Subtitle style={styles(colors).subTitle}>{props.patient.extra_info}</ListItem.Subtitle>
+          {props.patient.extra_info && (
+            <ListItem.Subtitle style={styles(colors).subTitle}>{props.patient.extra_info}</ListItem.Subtitle>
+          )}
         </ListItem.Content>
       </ListItem>
     </TouchableHighlight>
