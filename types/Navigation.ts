@@ -4,7 +4,7 @@ import { Treatment } from '../modals/Treatment'
 
 export type RootStackParamList = {
   Home: undefined
-  NewAppointment: { treatment?: Treatment } | undefined
+  NewAppointment: { treatment?: Treatment, patient?: Patient } | undefined
   NewPatient: undefined
   NewTreatment: { patient?: Patient } | undefined
   EditAppointment: { appointmentId: number }
@@ -13,7 +13,7 @@ export type RootStackParamList = {
   EditPayment: { paymentId: number }
   Appointments: undefined
   Patients: { pageName: keyof RootStackParamList } | undefined
-  Treatments: undefined
+  Treatments: { patient?: Patient } | undefined
   Patient: { patientId: number }
   Treatment: { treatmentId: number }
   NewPayment: { treatmentId: number }

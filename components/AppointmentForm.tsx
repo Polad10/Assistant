@@ -14,11 +14,13 @@ import HeaderButton from './HeaderButton'
 import CreateButton from './CreateButton'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
+import { Patient } from '../modals/Patient'
 
 type Props = {
   pageName: keyof RootStackParamList
   appointment?: Appointment
   treatment?: Treatment
+  patient?: Patient
 }
 
 export default function AppointmentForm(props: Props) {
@@ -31,6 +33,7 @@ export default function AppointmentForm(props: Props) {
 
   let treatment = props.treatment
   let appointment = props.appointment
+  const patient = props.patient
 
   if (appointment) {
     treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
@@ -102,7 +105,7 @@ export default function AppointmentForm(props: Props) {
   function handleTreatmentSelect(treatment: Treatment) {
     // first navigate, then set appointment
     // avoids reseting appointment
-    navigation.navigate('NewAppointment')
+    navigation.navigate('NewAppointment', { patient: patient })
 
     setShowTreatmentInputError(false)
     setSelectedTreatment(treatment)
@@ -110,7 +113,7 @@ export default function AppointmentForm(props: Props) {
 
   function handleTreatmentChange() {
     if (treatmentEditable) {
-      navigation.navigate('Treatments')
+      navigation.navigate('Treatments', { patient: patient })
     }
   }
 

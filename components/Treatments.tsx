@@ -5,12 +5,15 @@ import MainView from './MainView'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { DeviceEventEmitter } from 'react-native'
-import { getOngoingTreatments, treatmentFinished } from '../helpers/TreatmentHelper'
+import { getOngoingTreatments, getPatientTreatments, treatmentFinished } from '../helpers/TreatmentHelper'
 import { TreatmentWithPatientName } from '../types/TreatmentWithPatientName'
 import { searchTreatments } from '../helpers/Searcher'
+import MyFAB from './MyFAB'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
   const context = useContext(DataContext)
+  const navigation = useNavigation<RootStackScreenProps<'Treatments'>['navigation']>()
   const searchEventName = 'searchTreatment'
 
   const [treatments, setTreatments] = useState<TreatmentWithPatientName[]>([])
@@ -21,6 +24,8 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   }
 
   const ref = useRef<SearchBarRefType>()
+
+  const patient = route.params?.patient
 
   const handleSearch = useCallback(
     (search: string) => {
@@ -39,7 +44,8 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   useEffect(() => {
     ref.current?.clear()
 
-    const ongoingTreatments = getOngoingTreatments(context.treatments ?? [])
+    const treatments = patient ? getPatientTreatments(context.treatments ?? [], patient.id) : context.treatments
+    const ongoingTreatments = getOngoingTreatments(treatments ?? [])
 
     const treatmentsWithPatientName: TreatmentWithPatientName[] =
       ongoingTreatments?.map((t) => {
@@ -68,6 +74,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
     <MainView>
       <MySearchBar searchEventName={searchEventName} ref={ref} />
       <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
+      <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
     </MainView>
   )
 }

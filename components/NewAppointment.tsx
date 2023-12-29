@@ -16,6 +16,7 @@ export default function NewAppointment() {
   }
 
   const treatment = route.params?.treatment
+  const patient = route.params?.patient
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
     await context.createAppointment(appointment)
@@ -31,5 +32,5 @@ export default function NewAppointment() {
     }
   }, [])
 
-  return <AppointmentForm pageName='NewAppointment' treatment={treatment} />
+  return <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
 }

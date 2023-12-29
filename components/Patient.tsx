@@ -21,6 +21,7 @@ import IonIcons from '@expo/vector-icons/Ionicons'
 import DetailTab from './DetailTab'
 import MyButtonGroup from './MyButtonGroup'
 import { getPaymentsForTreatments } from '../helpers/PaymentHelper'
+import MyFAB from './MyFAB'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -66,9 +67,19 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   const TabContent = () => {
     switch (selectedIndex) {
       case 0:
-        return <MyAgendaList sections={agendaItems} pageName='Patient' />
+        return (
+          <MainView>
+            <MyAgendaList sections={agendaItems} pageName='Patient' />
+            <MyFAB onPress={() => navigation.navigate('NewAppointment', { patient: patient })} />
+          </MainView>
+        )
       case 1:
-        return <TreatmentList pageName='Patient' patient={patient} />
+        return (
+          <MainView>
+            <TreatmentList pageName='Patient' patient={patient} />
+            <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
+          </MainView>
+        )
       case 2:
         return <PaymentList pageName='Patient' payments={payments} />
       default:

@@ -1,10 +1,9 @@
 import { View, StyleSheet, ScrollView } from 'react-native'
 import TreatmentItem from './TreatmentItem'
 import { Divider } from '@rneui/themed'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useTheme } from '@react-navigation/native'
 import { Colors } from '../types/Colors'
-import MyFAB from './MyFAB'
-import { RootStackScreenProps, RootStackParamList } from '../types/Navigation'
+import { RootStackParamList } from '../types/Navigation'
 import MainView from './MainView'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
@@ -21,7 +20,6 @@ type Props = {
 
 export default function TreatmentList(props: Props) {
   const { colors } = useTheme()
-  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const context = useContext(DataContext)
 
   if (!context) {
@@ -57,12 +55,7 @@ export default function TreatmentList(props: Props) {
     }
   }
 
-  return (
-    <MainView>
-      {getTreatmentsContentView()}
-      <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: props.patient })} />
-    </MainView>
-  )
+  return <MainView>{getTreatmentsContentView()}</MainView>
 }
 
 const styles = (colors: Colors) =>
