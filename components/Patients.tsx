@@ -3,29 +3,35 @@ import MySearchBar, { SearchBarRefType } from './MySearchBar'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Patient } from '../modals/Patient'
 import { DeviceEventEmitter } from 'react-native'
 import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
+import { sortPatients } from '../helpers/PatientHelper'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)
-  const searchEventName = 'searchPatient'
-
-  const [patients, setPatients] = useState<Patient[]>(context?.patients ?? [])
 
   if (!context) {
     return
   }
 
+  const searchEventName = 'searchPatient'
+
+  const [patientsInitial, setPatientsInitial] = useState<Patient[]>([])
+  const [patients, setPatients] = useState<Patient[]>([])
+
   const ref = useRef<SearchBarRefType>()
 
-  function handleSearch(search: string) {
-    const foundPatients = searchPatients(context?.patients ?? [], search)
+  const handleSearch = useCallback(
+    (search: string) => {
+      const foundPatients = searchPatients(patientsInitial, search)
 
-    setPatients(foundPatients)
-  }
+      setPatients(foundPatients)
+    },
+    [patientsInitial]
+  )
 
   function getPatientsContentView() {
     return <PatientList pageName='Patients' patients={patients} />
@@ -33,7 +39,11 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
 
   useEffect(() => {
     ref.current?.clear()
-    setPatients(context.patients ?? [])
+
+    const patientsInitial = sortPatients(context.patients ?? [])
+
+    setPatientsInitial(patientsInitial)
+    setPatients(patientsInitial)
   }, [context.patients])
 
   useEffect(() => {
