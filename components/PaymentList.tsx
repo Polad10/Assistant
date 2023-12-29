@@ -16,8 +16,6 @@ type Props = {
 export default function PaymentList(props: Props) {
   const { colors } = useTheme()
 
-  props.payments.sort((p1, p2) => p2.date.localeCompare(p1.date))
-
   const paymentElements = props.payments.map((p) => {
     return (
       <View key={p.id}>

@@ -18,6 +18,7 @@ import MyButtonGroup from './MyButtonGroup'
 import { Chip, Icon } from '@rneui/themed'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import TreatmentInfo from './TreatmentInfo'
+import { getTreatmentPayments } from '../helpers/PaymentHelper'
 
 type StyleProps = {
   colors: Colors
@@ -59,7 +60,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 
   const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
   const appointments = context.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
-  const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
+  const payments = getTreatmentPayments(context.payments ?? [], treatment.id)
 
   const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)

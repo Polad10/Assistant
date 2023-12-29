@@ -6,14 +6,18 @@ export function treatmentFinished(treatment: Treatment) {
 
 export function getOngoingTreatments(treatments: Treatment[]) {
   const ongoingTreatments = treatments.filter((t) => !treatmentFinished(t))
-  ongoingTreatments?.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
+  sortTreatments(ongoingTreatments)
 
   return ongoingTreatments
 }
 
 export function getPatientTreatments(treatments: Treatment[], patientId: number) {
   treatments = treatments.filter((t) => t.patient_id === patientId)
-  treatments.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date))
+  sortTreatments(treatments)
 
   return treatments
+}
+
+function sortTreatments(treatments: Treatment[]) {
+  treatments.sort((t1, t2) => t2.start_date.localeCompare(t1.start_date)) 
 }

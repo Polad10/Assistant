@@ -16,6 +16,7 @@ import { treatmentFinished } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import DetailTab from './DetailTab'
 import MyButtonGroup from './MyButtonGroup'
+import { getPaymentsForTreatments } from '../helpers/PaymentHelper'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -46,7 +47,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 
   const patient = context.patients?.find((p) => p.id === patientId)
   const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !treatmentFinished(t))
-  const payments = context.payments?.filter((p) => treatments?.some((t) => t.id === p.treatment_id)) ?? []
+  const payments = getPaymentsForTreatments(context.payments ?? [], treatments ?? [])
 
   const appointments =
     context.appointments?.filter((a) => {

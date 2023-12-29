@@ -7,6 +7,7 @@ import { Colors } from '../types/Colors'
 import { useTheme } from '@react-navigation/native'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
+import { getTotalPayment } from '../helpers/PaymentHelper'
 
 type Props = {
   treatment: Treatment
@@ -23,7 +24,7 @@ export default function TreatmentInfo(props: Props) {
   const treatment = props.treatment
 
   const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
-  const totalPayments = payments.reduce((sum, payment) => Number(sum) + Number(payment.amount), 0)
+  const totalPayment = getTotalPayment(payments)
 
   return (
     <MainView>
@@ -47,14 +48,14 @@ export default function TreatmentInfo(props: Props) {
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={[styles(colors).valueText, styles(colors).bold]}>{totalPayments} ₼ </Text>
+              <Text style={[styles(colors).valueText, styles(colors).bold]}>{totalPayment} ₼ </Text>
               <Text style={[styles(colors).valueText, styles(colors).halfOpacity]}> of </Text>
               <Text style={[styles(colors).valueText, styles(colors).bold]}> {treatment.price} ₼</Text>
             </View>
           </View>
           <LinearProgress
             style={{ marginTop: 10 }}
-            value={totalPayments / treatment.price}
+            value={totalPayment / treatment.price}
             color={colors.notification}
           />
         </View>
