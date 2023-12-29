@@ -7,12 +7,16 @@ import TreatmentList from './TreatmentList'
 import PaymentList from './PaymentList'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import { getAgendaItems, getGroupedAppointments } from '../helpers/AppointmentHelper'
-import { DateTime } from 'luxon'
+import {
+  getAgendaItems,
+  getAppointmentsForTreatments,
+  getGroupedAppointments,
+  getOngoingAppointments,
+} from '../helpers/AppointmentHelper'
 import MyAgendaList from './MyAgendaList'
 import MainView from './MainView'
 import HeaderButton from './HeaderButton'
-import { treatmentFinished } from '../helpers/TreatmentHelper'
+import { getOngoingTreatments, getPatientTreatments } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import DetailTab from './DetailTab'
 import MyButtonGroup from './MyButtonGroup'
@@ -29,38 +33,20 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
     return
   }
 
-  function handleEdit() {
-    navigation.navigate('EditPatient', { patientId: patientId })
+  const patient = context.patients?.find((p) => p.id === patientId)
+
+  if (!patient) {
+    return
   }
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
-    })
+  const treatments = getPatientTreatments(context.treatments ?? [], patient.id)
+  const ongoingTreatments = getOngoingTreatments(treatments)
+  const payments = getPaymentsForTreatments(context.payments ?? [], treatments)
 
-    context.fetchAppointments()
-    context.fetchTreatments()
-    context.fetchPayments()
-  }, [])
+  const appointments = getAppointmentsForTreatments(context.appointments ?? [], ongoingTreatments)
+  const ongoingAppointments = getOngoingAppointments(appointments)
 
-  const today = DateTime.local().toISODate()
-
-  const patient = context.patients?.find((p) => p.id === patientId)
-  const treatments = context.treatments?.filter((t) => t.patient_id === patient?.id && !treatmentFinished(t))
-  const payments = getPaymentsForTreatments(context.payments ?? [], treatments ?? [])
-
-  const appointments =
-    context.appointments?.filter((a) => {
-      const datetime = DateTime.fromISO(a.datetime).toISODate()
-
-      if (!datetime || !today) {
-        return false
-      }
-
-      return treatments?.some((t) => t.id === a.treatment_id) && datetime >= today
-    }) ?? []
-
-  const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
+  const groupedAppointments = getGroupedAppointments(ongoingAppointments) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)
 
   const buttons = [
@@ -90,6 +76,20 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
     }
   }
 
+  function handleEdit() {
+    navigation.navigate('EditPatient', { patientId: patientId })
+  }
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
+    })
+
+    context.fetchAppointments()
+    context.fetchTreatments()
+    context.fetchPayments()
+  }, [])
+
   return (
     <MainView>
       <View style={[styles(colors).headerView, styles(colors).card]}>
@@ -98,15 +98,15 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
       <View style={styles(colors).card}>
         <View style={styles(colors).infoField}>
           <IonIcons name='home-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient?.city}</Text>
+          <Text style={styles(colors).text}>{patient.city}</Text>
         </View>
         <View style={styles(colors).infoField}>
           <IonIcons name='call-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient?.phone}</Text>
+          <Text style={styles(colors).text}>{patient.phone}</Text>
         </View>
         <View style={styles(colors).infoField}>
           <IonIcons name='information-circle-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient?.extra_info}</Text>
+          <Text style={styles(colors).text}>{patient.extra_info}</Text>
         </View>
       </View>
       <View style={styles(colors).additionalInfoView}>

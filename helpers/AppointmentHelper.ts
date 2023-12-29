@@ -1,5 +1,6 @@
 import { Appointment } from '../modals/Appointment'
 import { DateTime } from 'luxon'
+import { Treatment } from '../modals/Treatment'
 
 export function getGroupedAppointments(appointments: Appointment[]) {
   let groupedAppointments = new Map<string, Appointment[]>()
@@ -38,4 +39,21 @@ export function getAgendaItems(groupedAppointments: Map<string, Appointment[]>) 
       }
     })
   : []
+}
+
+export function getAppointmentsForTreatments(appointments: Appointment[], treatments: Treatment[]) {
+  return appointments.filter((a) => treatments.some((t) => t.id === a.treatment_id))
+}
+
+export function getOngoingAppointments(appointments: Appointment[]) {
+  return appointments.filter((a) => {
+    const today = DateTime.local().toISODate()
+    const datetime = DateTime.fromISO(a.datetime).toISODate()
+
+    if (!datetime || !today) {
+      return false
+    }
+
+    return datetime >= today
+  })
 }
