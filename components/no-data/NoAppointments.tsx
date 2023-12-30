@@ -5,6 +5,7 @@ import AgendaIllustration from '../illustrations/AgendaIllustration'
 
 type Props = {
   pageName: keyof RootStackParamList
+  addBtnOnPress: () => void
 }
 
 export default function NoAppointments(props: Props) {
@@ -16,7 +17,7 @@ export default function NoAppointments(props: Props) {
       title='No Appointments'
       subtitle="To plan your day, click the '+' button to add a new appointment."
       addBtnTitle='Add Appointment'
-      addBtnOnPress={() => navigation.navigate('NewAppointment')}
+      addBtnOnPress={props.addBtnOnPress}
     />
   )
 }
