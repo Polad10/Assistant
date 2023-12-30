@@ -22,6 +22,7 @@ import DetailTab from './DetailTab'
 import MyButtonGroup from './MyButtonGroup'
 import { getPaymentsForTreatments } from '../helpers/PaymentHelper'
 import MyFAB from './MyFAB'
+import NoAppointments from './no-data/NoAppointments'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -77,12 +78,21 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   const TabContent = () => {
     switch (selectedIndex) {
       case 0:
-        return (
-          <MainView>
-            <MyAgendaList sections={agendaItems} pageName='Patient' />
-            <MyFAB onPress={() => navigation.navigate('NewAppointment', { patient: patient })} />
-          </MainView>
-        )
+        if (agendaItems.length > 0) {
+          return (
+            <MainView>
+              <MyAgendaList sections={agendaItems} pageName='Patient' />
+              <MyFAB onPress={() => navigation.navigate('NewAppointment', { patient: patient })} />
+            </MainView>
+          )
+        } else {
+          return (
+            <NoAppointments
+              pageName='Patient'
+              addBtnOnPress={() => navigation.navigate('NewAppointment', { patient: patient })}
+            />
+          )
+        }
       case 1:
         return (
           <MainView>
