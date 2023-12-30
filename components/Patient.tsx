@@ -34,6 +34,16 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
     return
   }
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
+    })
+
+    context.fetchAppointments()
+    context.fetchTreatments()
+    context.fetchPayments()
+  }, [])
+
   const patient = context.patients?.find((p) => p.id === patientId)
 
   if (!patient) {
@@ -90,16 +100,6 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   function handleEdit() {
     navigation.navigate('EditPatient', { patientId: patientId })
   }
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
-    })
-
-    context.fetchAppointments()
-    context.fetchTreatments()
-    context.fetchPayments()
-  }, [])
 
   return (
     <MainView>
