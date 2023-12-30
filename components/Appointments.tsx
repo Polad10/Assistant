@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
 import { useContext, useEffect, useState } from 'react'
@@ -12,6 +12,8 @@ import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
 import NoDataFound from './NoDataView'
 import { DateTime } from 'luxon'
+import EmptyAgendaIllustration from './EmptyAgendaIllustration'
+import { Button } from '@rneui/themed'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
@@ -38,7 +40,15 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return <NoDataFound text='No appointments found' />
+    return (
+      <NoDataFound
+        illustration={<EmptyAgendaIllustration />}
+        title='No Appointments'
+        subtitle="To plan your day, click the '+' button to add a new appointment."
+        addBtnTitle='Add Appointment'
+        addBtnOnPress={() => navigation.navigate('NewAppointment')}
+      />
+    )
   }
 
   return (
@@ -62,7 +72,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
           agendaTodayColor: colors.primary,
         }}
       />
-      <MyFAB onPress={() => navigation.navigate('NewAppointment')} />
+      {Object.keys(agendaItems).length > 0 && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
     </MainView>
   )
 }

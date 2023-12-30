@@ -5,10 +5,12 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Patient } from '../modals/Patient'
-import { DeviceEventEmitter } from 'react-native'
+import { DeviceEventEmitter, View } from 'react-native'
 import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
+import NoDataFound from './NoDataView'
+import EmptyPatientsIllustration from './EmptyPatientsIllustration'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)
@@ -34,7 +36,25 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   )
 
   function getPatientsContentView() {
-    return <PatientList pageName='Patients' patients={patients} />
+    if (patientsInitial.length > 0) {
+      return (
+        <MainView>
+          <MySearchBar searchEventName={searchEventName} ref={ref} />
+          <PatientList pageName='Patients' patients={patients} />
+          <MyFAB onPress={() => navigation.navigate('NewPatient')} />
+        </MainView>
+      )
+    } else {
+      return (
+        <NoDataFound
+          illustration={<EmptyPatientsIllustration />}
+          title='No Patients'
+          subtitle="Click the '+' button to add new patients and start managing their records."
+          addBtnTitle='Add Patient'
+          addBtnOnPress={() => navigation.navigate('NewPatient')}
+        />
+      )
+    }
   }
 
   useEffect(() => {
@@ -54,11 +74,5 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
     }
   }, [handleSearch])
 
-  return (
-    <MainView>
-      <MySearchBar searchEventName={searchEventName} ref={ref} />
-      {getPatientsContentView()}
-      <MyFAB onPress={() => navigation.navigate('NewPatient')} />
-    </MainView>
-  )
+  return <MainView>{getPatientsContentView()}</MainView>
 }

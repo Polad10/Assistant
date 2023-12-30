@@ -6,7 +6,6 @@ import PatientItem from './PatientItem'
 import { Divider } from '@rneui/themed'
 import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
-import NoDataFound from './NoDataView'
 
 type Props = {
   patients: Patient[]
@@ -16,26 +15,20 @@ type Props = {
 export default function PatientList(props: Props) {
   const { colors } = useTheme()
 
-  const patientElements = props.patients.map((p) => (
-    <View key={p.id}>
-      <PatientItem patient={p} pageName={props.pageName} />
-      <Divider color={colors.border} style={styles.divider} />
-    </View>
-  ))
-
-  function getPatientsContentView() {
-    if (patientElements.length > 0) {
-      return (
-        <ScrollView keyboardDismissMode='on-drag'>
-          <MainView>{patientElements}</MainView>
-        </ScrollView>
-      )
-    } else {
-      return <NoDataFound text='No patients found' />
-    }
+  function getPatientElements() {
+    return props.patients.map((p) => (
+      <View key={p.id}>
+        <PatientItem patient={p} pageName={props.pageName} />
+        <Divider color={colors.border} style={styles.divider} />
+      </View>
+    ))
   }
 
-  return <MainView>{getPatientsContentView()}</MainView>
+  return (
+    <ScrollView keyboardDismissMode='on-drag'>
+      <MainView>{getPatientElements()}</MainView>
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
