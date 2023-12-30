@@ -6,7 +6,7 @@ import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import MainView from './MainView'
-import NoDataFound from './NoDataView'
+import NoDataFound from './no-data/NoDataView'
 
 type Props = {
   pageName: keyof RootStackParamList

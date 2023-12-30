@@ -10,7 +10,7 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
-import NoDataFound from './NoDataView'
+import NoDataFound from './no-data/NoDataView'
 import { DateTime } from 'luxon'
 import AgendaIllustration from './illustrations/AgendaIllustration'
 

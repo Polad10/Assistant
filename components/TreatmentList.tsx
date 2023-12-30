@@ -9,7 +9,7 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Patient } from '../modals/Patient'
 import { Treatment } from '../modals/Treatment'
-import NoDataFound from './NoDataView'
+import NoDataFound from './no-data/NoDataView'
 import { getPatientTreatments } from '../helpers/TreatmentHelper'
 
 type Props = {

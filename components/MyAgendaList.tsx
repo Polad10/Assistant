@@ -4,7 +4,7 @@ import AgendaItem from './AgendaItem'
 import MainView from './MainView'
 import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
-import NoDataFound from './NoDataView'
+import NoDataFound from './no-data/NoDataView'
 import { StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 

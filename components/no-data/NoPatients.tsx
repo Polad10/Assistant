@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
-import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
+import { RootStackParamList, RootStackScreenProps } from '../../types/Navigation'
 import NoDataFound from './NoDataView'
-import PatientsIllustration from './illustrations/PatientsIllustration'
+import PatientsIllustration from '../illustrations/PatientsIllustration'
 
 type Props = {
   pageName: keyof RootStackParamList

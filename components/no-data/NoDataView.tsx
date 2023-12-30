@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native'
 import { StyleSheet, Text } from 'react-native'
-import { Colors } from '../types/Colors'
-import MainView from './MainView'
+import { Colors } from '../../types/Colors'
+import MainView from '../MainView'
 import { ReactNode } from 'react'
 import { Button } from '@rneui/themed'
 
