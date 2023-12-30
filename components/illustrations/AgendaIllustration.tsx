@@ -1,6 +1,6 @@
 import { Circle, Path, Polygon, Svg } from 'react-native-svg'
 
-export default function EmptyAgendaIllustration() {
+export default function AgendaIllustration() {
   return (
     <Svg data-name='Layer 1' width={200} height={150} viewBox='0 0 853.11745 565'>
       <Path

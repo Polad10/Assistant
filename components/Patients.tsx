@@ -10,7 +10,7 @@ import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
 import NoDataFound from './NoDataView'
-import EmptyPatientsIllustration from './EmptyPatientsIllustration'
+import PatientsIllustration from './illustrations/PatientsIllustration'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)
@@ -47,7 +47,7 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
     } else {
       return (
         <NoDataFound
-          illustration={<EmptyPatientsIllustration />}
+          illustration={<PatientsIllustration />}
           title='No Patients'
           subtitle="Click the '+' button to add new patients and start managing their records."
           addBtnTitle='Add Patient'

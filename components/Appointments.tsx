@@ -12,8 +12,7 @@ import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
 import NoDataFound from './NoDataView'
 import { DateTime } from 'luxon'
-import EmptyAgendaIllustration from './EmptyAgendaIllustration'
-import { Button } from '@rneui/themed'
+import AgendaIllustration from './illustrations/AgendaIllustration'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
@@ -42,7 +41,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   const renderEmptyData = () => {
     return (
       <NoDataFound
-        illustration={<EmptyAgendaIllustration />}
+        illustration={<AgendaIllustration />}
         title='No Appointments'
         subtitle="To plan your day, click the '+' button to add a new appointment."
         addBtnTitle='Add Appointment'

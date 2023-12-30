@@ -1,6 +1,6 @@
 import { Circle, Path, Polygon, Svg } from 'react-native-svg'
 
-export default function EmptyPatientsIllustration() {
+export default function PatientsIllustration() {
   return (
     <Svg data-name='Layer 1' width='200' height='150' viewBox='0 0 838 638.00376'>
       <Path
