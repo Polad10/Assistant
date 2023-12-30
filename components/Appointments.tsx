@@ -13,6 +13,7 @@ import { Appointment } from '../modals/Appointment'
 import NoDataFound from './no-data/NoDataView'
 import { DateTime } from 'luxon'
 import AgendaIllustration from './illustrations/AgendaIllustration'
+import NoAppointments from './no-data/NoAppointments'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
@@ -39,15 +40,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return (
-      <NoDataFound
-        illustration={<AgendaIllustration />}
-        title='No Appointments'
-        subtitle="To plan your day, click the '+' button to add a new appointment."
-        addBtnTitle='Add Appointment'
-        addBtnOnPress={() => navigation.navigate('NewAppointment')}
-      />
-    )
+    return <NoAppointments pageName='Appointments' />
   }
 
   return (
