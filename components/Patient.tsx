@@ -109,15 +109,15 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
       <View style={styles(colors).card}>
         <View style={styles(colors).infoField}>
           <IonIcons name='home-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient.city}</Text>
+          <Text style={styles(colors).text}>{patient.city || '-'}</Text>
         </View>
         <View style={styles(colors).infoField}>
           <IonIcons name='call-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient.phone}</Text>
+          <Text style={styles(colors).text}>{patient.phone || '-'}</Text>
         </View>
         <View style={styles(colors).infoField}>
           <IonIcons name='information-circle-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient.extra_info}</Text>
+          <Text style={styles(colors).text}>{patient.extra_info || '-'}</Text>
         </View>
       </View>
       <View style={styles(colors).additionalInfoView}>
