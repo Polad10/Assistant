@@ -11,6 +11,9 @@ import { DataContext } from '../contexts/DataContext'
 import DateInput from './DateInput'
 import CreateButton from './CreateButton'
 import MainView from './MainView'
+import { Treatment } from '../modals/Treatment'
+import TouchableInput from './TouchableInput'
+import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -28,22 +31,27 @@ export default function PaymentForm(props: Props) {
     return
   }
 
+  const treatmentEditable = !props.treatmentId
+
   const treatmentId = props.payment?.treatment_id || props.treatmentId
+  const treatment = context.treatments?.find((t) => t.id === treatmentId)
 
   let dateInitialVal = props.payment ? new Date(props.payment.date) : undefined
 
   const [date, setDate] = useState(dateInitialVal)
   const [amount, setAmount] = useState(props.payment?.amount.toString())
+  const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
   const [showAmountInputError, setShowAmountInputError] = useState(false)
   const [showDatePickerError, setShowDatePickerError] = useState(false)
+  const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
 
   const handleSave = useCallback(async () => {
     if (validate()) {
       const newPaymentRequest: PaymentRequest = {
         date: DateTime.fromJSDate(date!).toISODate()!,
         amount: Number(amount),
-        treatment_id: treatmentId!,
+        treatment_id: selectedTreatment!.id,
       }
 
       if (props.payment) {
@@ -52,7 +60,7 @@ export default function PaymentForm(props: Props) {
 
       DeviceEventEmitter.emit('paymentSaved', newPaymentRequest)
     }
-  }, [date, amount, treatmentId])
+  }, [date, amount, selectedTreatment])
 
   function validate() {
     let valid = true
@@ -67,6 +75,11 @@ export default function PaymentForm(props: Props) {
       setShowAmountInputError(true)
     }
 
+    if (!selectedTreatment) {
+      valid = false
+      setShowTreatmentInputError(true)
+    }
+
     return valid
   }
 
@@ -78,6 +91,16 @@ export default function PaymentForm(props: Props) {
     }
   }, [navigation, handleSave])
 
+  useEffect(() => {
+    const treatmentSelectedListener = DeviceEventEmitter.addListener('treatmentSelected', handleTreatmentSelect)
+    const treatmentCreatedListener = DeviceEventEmitter.addListener('treatmentCreated', handleTreatmentSelect)
+
+    return () => {
+      treatmentSelectedListener.remove()
+      treatmentCreatedListener.remove()
+    }
+  }, [])
+
   function handleDateChange(date: Date) {
     setDate(date)
     setShowDatePickerError(false)
@@ -86,6 +109,19 @@ export default function PaymentForm(props: Props) {
   function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
     setShowAmountInputError(false)
     setAmount(event.nativeEvent.text.replace(',', '.'))
+  }
+
+  function handleTreatmentSelect(treatment: Treatment) {
+    navigation.navigate('NewPayment', { treatmentId: treatment.id })
+
+    setShowTreatmentInputError(false)
+    setSelectedTreatment(treatment)
+  }
+
+  function handleTreatmentChange() {
+    if (treatmentEditable) {
+      navigation.navigate('Treatments')
+    }
   }
 
   return (
@@ -106,6 +142,23 @@ export default function PaymentForm(props: Props) {
         keyboardType='decimal-pad'
         rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
       />
+
+      {treatmentEditable ? (
+        <TouchableInput
+          onPress={handleTreatmentChange}
+          label='Treatment'
+          placeholder='Select'
+          value={selectedTreatment?.title}
+          showError={showTreatmentInputError}
+        />
+      ) : (
+        <TouchableWithoutFeedbackInput
+          label='Treatment'
+          placeholder='Select'
+          value={selectedTreatment?.title}
+          showError={showTreatmentInputError}
+        />
+      )}
 
       {!props.payment && <CreateButton onPress={handleSave} />}
     </MainView>
