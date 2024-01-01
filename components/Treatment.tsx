@@ -15,10 +15,11 @@ import MyAgendaList from './MyAgendaList'
 import HeaderButton from './HeaderButton'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
 import MyButtonGroup from './MyButtonGroup'
-import { Chip, Icon } from '@rneui/themed'
+import { Chip } from '@rneui/themed'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import TreatmentInfo from './TreatmentInfo'
 import { getTreatmentPayments } from '../helpers/PaymentHelper'
+import NoPayments from './no-data/NoPayments'
 
 type StyleProps = {
   colors: Colors
@@ -96,12 +97,16 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
           </MainView>
         )
       case 2:
-        return (
-          <MainView>
-            <PaymentList pageName='Patient' payments={payments} />
-            <MyFAB onPress={() => navigation.navigate('NewPayment', { treatmentId: treatment.id })} />
-          </MainView>
-        )
+        if (payments.length > 0) {
+          return (
+            <MainView>
+              <PaymentList pageName='Patient' payments={payments} />
+              <MyFAB onPress={() => navigation.navigate('NewPayment', { treatmentId: treatment.id })} />
+            </MainView>
+          )
+        } else {
+          return <NoPayments addBtnOnPress={() => navigation.navigate('NewPayment', { treatmentId: treatment.id })} />
+        }
       default:
         return null
     }

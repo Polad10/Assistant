@@ -1,4 +1,3 @@
-import { RootStackParamList } from '../../types/Navigation'
 import NoDataFound from './NoDataView'
 import AgendaIllustration from '../illustrations/AgendaIllustration'
 
