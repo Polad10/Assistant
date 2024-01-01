@@ -40,7 +40,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return <NoAppointments pageName='Appointments' addBtnOnPress={() => navigation.navigate('NewAppointment')} />
+    return <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
   }
 
   return (

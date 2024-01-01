@@ -10,6 +10,7 @@ import { TreatmentWithPatientName } from '../types/TreatmentWithPatientName'
 import { searchTreatments } from '../helpers/Searcher'
 import MyFAB from './MyFAB'
 import { useNavigation } from '@react-navigation/native'
+import NoTreatments from './no-data/NoTreatments'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
   const context = useContext(DataContext)
@@ -70,11 +71,19 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
     }
   }, [handleSearch])
 
-  return (
-    <MainView>
-      <MySearchBar searchEventName={searchEventName} ref={ref} />
-      <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
-      <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
-    </MainView>
-  )
+  function getTreatmentsContentView() {
+    if (treatmentsInitial.length > 0) {
+      return (
+        <MainView>
+          <MySearchBar searchEventName={searchEventName} ref={ref} />
+          <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
+          <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
+        </MainView>
+      )
+    } else {
+      return <NoTreatments addBtnOnPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
+    }
+  }
+
+  return <MainView>{getTreatmentsContentView()}</MainView>
 }

@@ -1,16 +1,12 @@
-import { useNavigation } from '@react-navigation/native'
-import { RootStackParamList, RootStackScreenProps } from '../../types/Navigation'
+import { RootStackParamList } from '../../types/Navigation'
 import NoDataFound from './NoDataView'
 import AgendaIllustration from '../illustrations/AgendaIllustration'
 
 type Props = {
-  pageName: keyof RootStackParamList
   addBtnOnPress: () => void
 }
 
 export default function NoAppointments(props: Props) {
-  const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-
   return (
     <NoDataFound
       illustration={<AgendaIllustration />}
