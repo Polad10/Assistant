@@ -107,7 +107,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         if (payments.length > 0) {
           return (
             <MainView>
-              <PaymentList pageName='Patient' payments={payments} />
+              <PaymentList pageName='Treatment' payments={payments} />
               <MyFAB onPress={() => navigation.navigate('NewPayment', { treatmentId: treatment.id })} />
             </MainView>
           )
