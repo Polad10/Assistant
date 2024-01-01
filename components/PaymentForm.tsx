@@ -14,11 +14,13 @@ import MainView from './MainView'
 import { Treatment } from '../modals/Treatment'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
+import { Patient } from '../modals/Patient'
 
 type Props = {
   pageName: keyof RootStackParamList
   treatmentId?: number
   payment?: Payment
+  patient?: Patient
 }
 
 export default function PaymentForm(props: Props) {
@@ -31,10 +33,10 @@ export default function PaymentForm(props: Props) {
     return
   }
 
-  const treatmentEditable = !props.treatmentId
-
   const treatmentId = props.payment?.treatment_id || props.treatmentId
   const treatment = context.treatments?.find((t) => t.id === treatmentId)
+
+  const treatmentEditable = !treatment
 
   let dateInitialVal = props.payment ? new Date(props.payment.date) : undefined
 
@@ -112,7 +114,7 @@ export default function PaymentForm(props: Props) {
   }
 
   function handleTreatmentSelect(treatment: Treatment) {
-    navigation.navigate('NewPayment', { treatmentId: treatment.id })
+    navigation.navigate('NewPayment', { treatmentId: props.treatmentId, patient: props.patient })
 
     setShowTreatmentInputError(false)
     setSelectedTreatment(treatment)
@@ -120,7 +122,7 @@ export default function PaymentForm(props: Props) {
 
   function handleTreatmentChange() {
     if (treatmentEditable) {
-      navigation.navigate('Treatments')
+      navigation.navigate('Treatments', { patient: props.patient })
     }
   }
 

@@ -16,7 +16,7 @@ export type RootStackParamList = {
   Treatments: { patient?: Patient } | undefined
   Patient: { patientId: number }
   Treatment: { treatmentId: number }
-  NewPayment: { treatmentId: number }
+  NewPayment: { treatmentId?: number, patient?: Patient }
 }
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>

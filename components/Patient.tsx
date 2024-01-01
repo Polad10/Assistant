@@ -24,6 +24,7 @@ import { getPaymentsForTreatments } from '../helpers/PaymentHelper'
 import MyFAB from './MyFAB'
 import NoAppointments from './no-data/NoAppointments'
 import NoTreatments from './no-data/NoTreatments'
+import NoPayments from './no-data/NoPayments'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -101,7 +102,16 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
           return <NoTreatments addBtnOnPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
         }
       case 2:
-        return <PaymentList pageName='Patient' payments={payments} />
+        if (payments.length > 0) {
+          return (
+            <MainView>
+              <PaymentList pageName='Patient' payments={payments} />
+              <MyFAB onPress={() => navigation.navigate('NewPayment', { patient: patient })} />
+            </MainView>
+          )
+        } else {
+          return <NoPayments addBtnOnPress={() => navigation.navigate('NewPayment', { patient: patient })} />
+        }
       default:
         return null
     }

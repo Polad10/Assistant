@@ -16,6 +16,7 @@ export default function NewPayment() {
   }
 
   const treatmentId = route.params.treatmentId
+  const patient = route.params.patient
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
     await context.createPayment(payment)
@@ -31,5 +32,5 @@ export default function NewPayment() {
     }
   }, [])
 
-  return <PaymentForm pageName='NewPayment' treatmentId={treatmentId} />
+  return <PaymentForm pageName='NewPayment' treatmentId={treatmentId} patient={patient} />
 }
