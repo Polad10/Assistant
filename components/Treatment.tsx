@@ -20,6 +20,7 @@ import IonIcons from '@expo/vector-icons/Ionicons'
 import TreatmentInfo from './TreatmentInfo'
 import { getTreatmentPayments } from '../helpers/PaymentHelper'
 import NoPayments from './no-data/NoPayments'
+import NoAppointments from './no-data/NoAppointments'
 
 type StyleProps = {
   colors: Colors
@@ -90,12 +91,18 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
       case 0:
         return <TreatmentInfo treatment={treatment} />
       case 1:
-        return (
-          <MainView>
-            <MyAgendaList sections={agendaItems} pageName='Treatment' />
-            <MyFAB onPress={() => navigation.navigate('NewAppointment', { treatment: treatment })} />
-          </MainView>
-        )
+        if (agendaItems.length > 0) {
+          return (
+            <MainView>
+              <MyAgendaList sections={agendaItems} pageName='Treatment' />
+              <MyFAB onPress={() => navigation.navigate('NewAppointment', { treatment: treatment })} />
+            </MainView>
+          )
+        } else {
+          return (
+            <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment', { treatment: treatment })} />
+          )
+        }
       case 2:
         if (payments.length > 0) {
           return (
