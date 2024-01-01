@@ -86,12 +86,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
             </MainView>
           )
         } else {
-          return (
-            <NoAppointments
-              pageName='Patient'
-              addBtnOnPress={() => navigation.navigate('NewAppointment', { patient: patient })}
-            />
-          )
+          return <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment', { patient: patient })} />
         }
       case 1:
         return (
