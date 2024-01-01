@@ -7,14 +7,10 @@ import { RootStackParamList } from '../types/Navigation'
 import MainView from './MainView'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { Patient } from '../modals/Patient'
 import { Treatment } from '../modals/Treatment'
-import NoDataFound from './no-data/NoDataView'
-import { getPatientTreatments } from '../helpers/TreatmentHelper'
 
 type Props = {
   pageName: keyof RootStackParamList
-  patient?: Patient
   treatments?: Treatment[]
 }
 
@@ -28,10 +24,6 @@ export default function TreatmentList(props: Props) {
 
   let treatments = props.treatments
 
-  if (props.patient) {
-    treatments = getPatientTreatments(context.treatments ?? [], props.patient.id)
-  }
-
   const treatmentElements = treatments
     ? treatments?.map((t) => {
         return (
@@ -44,15 +36,11 @@ export default function TreatmentList(props: Props) {
     : []
 
   function getTreatmentsContentView() {
-    if (treatmentElements.length > 0) {
-      return (
-        <ScrollView keyboardDismissMode='on-drag'>
-          <MainView>{treatmentElements}</MainView>
-        </ScrollView>
-      )
-    } else {
-      return <NoDataFound text='No treatments found' />
-    }
+    return (
+      <ScrollView keyboardDismissMode='on-drag'>
+        <MainView>{treatmentElements}</MainView>
+      </ScrollView>
+    )
   }
 
   return <MainView>{getTreatmentsContentView()}</MainView>
