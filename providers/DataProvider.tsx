@@ -23,35 +23,27 @@ export default function DataProvider({ children }: DataProviderProps) {
   const paymentsApi = `${apiBaseUrl}/payments`
 
   async function fetchPatients() {
-    if (!patients) {
-      const patients = (await axios.get<Patient[]>(patientsApi)).data
+    const patients = (await axios.get<Patient[]>(patientsApi)).data
 
-      setPatients(patients)
-    }
+    setPatients(patients)
   }
 
   async function fetchAppointments() {
-    if (!appointments) {
-      const appointments = (await axios.get<Appointment[]>(appointmentsApi)).data
+    const appointments = (await axios.get<Appointment[]>(appointmentsApi)).data
 
-      setAppointments(appointments)
-    }
+    setAppointments(appointments)
   }
 
   async function fetchTreatments() {
-    if (!treatments) {
-      const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
+    const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
 
-      setTreatments(treatments)
-    }
+    setTreatments(treatments)
   }
 
   async function fetchPayments() {
-    if (!payments) {
-      const payments = (await axios.get<Payment[]>(paymentsApi)).data
+    const payments = (await axios.get<Payment[]>(paymentsApi)).data
 
-      setPayments(payments)
-    }
+    setPayments(payments)
   }
 
   async function createAppointment(appointment: AppointmentRequest) {
