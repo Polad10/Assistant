@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../../types/Navigation'
-import NoDataFound from './NoDataView'
+import NoDataView from './NoDataView'
 import PatientsIllustration from '../illustrations/PatientsIllustration'
 
 type Props = {
@@ -11,7 +11,7 @@ export default function NoPatients(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
   return (
-    <NoDataFound
+    <NoDataView
       illustration={<PatientsIllustration />}
       title='No Patients'
       subtitle="Click the '+' button to add new patients and start managing their records."

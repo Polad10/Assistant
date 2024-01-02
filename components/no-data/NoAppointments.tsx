@@ -1,4 +1,4 @@
-import NoDataFound from './NoDataView'
+import NoDataView from './NoDataView'
 import AgendaIllustration from '../illustrations/AgendaIllustration'
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 
 export default function NoAppointments(props: Props) {
   return (
-    <NoDataFound
+    <NoDataView
       illustration={<AgendaIllustration />}
       title='No Appointments'
       subtitle="To plan your day, click the '+' button to add a new appointment."

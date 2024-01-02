@@ -6,7 +6,7 @@ import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import MainView from './MainView'
-import NoDataFound from './no-data/NoDataView'
+import NoDataView from './no-data/NoDataView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -33,7 +33,7 @@ export default function PaymentList(props: Props) {
         </ScrollView>
       )
     } else {
-      return <NoDataFound text='No payments found' />
+      return <NoDataView text='No payments found' />
     }
   }
 

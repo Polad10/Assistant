@@ -8,6 +8,7 @@ import MainView from './MainView'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '../modals/Treatment'
+import TreatmentsNotFound from './no-data/TreatmentsNotFound'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -29,26 +30,29 @@ export default function TreatmentList(props: Props) {
         return (
           <View key={t.id}>
             <TreatmentItem treatment={t} pageName={props.pageName} />
-            <Divider color={colors.border} style={styles(colors).divider} />
+            <Divider color={colors.border} style={styles.divider} />
           </View>
         )
       })
     : []
 
   function getTreatmentsContentView() {
-    return (
-      <ScrollView keyboardDismissMode='on-drag'>
-        <MainView>{treatmentElements}</MainView>
-      </ScrollView>
-    )
+    if (treatmentElements.length > 0) {
+      return (
+        <ScrollView keyboardDismissMode='on-drag'>
+          <MainView>{treatmentElements}</MainView>
+        </ScrollView>
+      )
+    } else {
+      return <TreatmentsNotFound />
+    }
   }
 
   return <MainView>{getTreatmentsContentView()}</MainView>
 }
 
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    divider: {
-      marginHorizontal: 13,
-    },
-  })
+const styles = StyleSheet.create({
+  divider: {
+    marginHorizontal: 13,
+  },
+})

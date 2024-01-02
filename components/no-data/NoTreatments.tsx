@@ -1,4 +1,4 @@
-import NoDataFound from './NoDataView'
+import NoDataView from './NoDataView'
 import TreatmentsIllustration from '../illustrations/TreatmentsIllustration'
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 
 export default function NoTreatments(props: Props) {
   return (
-    <NoDataFound
+    <NoDataView
       illustration={<TreatmentsIllustration />}
       title='No Treatments'
       subtitle="Click the '+' button to begin documenting your patients' treatments."

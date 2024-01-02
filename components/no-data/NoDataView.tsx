@@ -9,11 +9,11 @@ type Props = {
   illustration: ReactNode
   title: string
   subtitle: string
-  addBtnTitle: string
-  addBtnOnPress: () => void
+  addBtnTitle?: string
+  addBtnOnPress?: () => void
 }
 
-export default function NoDataFound(props: Props) {
+export default function NoDataView(props: Props) {
   const { colors } = useTheme()
 
   return (
@@ -21,15 +21,17 @@ export default function NoDataFound(props: Props) {
       {props.illustration}
       <Text style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>{props.title}</Text>
       <Text style={{ color: colors.text, fontSize: 16, marginTop: 10, opacity: 0.7 }}>{props.subtitle}</Text>
-      <Button
-        title={props.addBtnTitle}
-        icon={{ name: 'add', color: colors.text }}
-        titleStyle={{ fontWeight: 'bold' }}
-        buttonStyle={{ borderRadius: 20, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}
-        containerStyle={{ marginTop: 50 }}
-        color={colors.primary}
-        onPress={props.addBtnOnPress}
-      />
+      {props.addBtnTitle && (
+        <Button
+          title={props.addBtnTitle}
+          icon={{ name: 'add', color: colors.text }}
+          titleStyle={{ fontWeight: 'bold' }}
+          buttonStyle={{ borderRadius: 20, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}
+          containerStyle={{ marginTop: 50 }}
+          color={colors.primary}
+          onPress={props.addBtnOnPress}
+        />
+      )}
     </MainView>
   )
 }
