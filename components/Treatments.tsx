@@ -75,7 +75,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
     if (treatmentsInitial.length > 0) {
       return (
         <MainView>
-          <MySearchBar searchEventName={searchEventName} ref={ref} />
+          <MySearchBar placeholder='Enter patient name...' searchEventName={searchEventName} ref={ref} />
           <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
           <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
         </MainView>

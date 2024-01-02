@@ -38,7 +38,7 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
     if (patientsInitial.length > 0) {
       return (
         <MainView>
-          <MySearchBar searchEventName={searchEventName} ref={ref} />
+          <MySearchBar placeholder='Enter patient name...' searchEventName={searchEventName} ref={ref} />
           <PatientList pageName='Patients' patients={patients} />
           <MyFAB onPress={() => navigation.navigate('NewPatient')} />
         </MainView>

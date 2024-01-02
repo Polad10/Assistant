@@ -6,6 +6,7 @@ import { SearchBar as BaseSearchBar } from '@rneui/base'
 import { Colors } from '../types/Colors'
 
 type Props = {
+  placeholder: string
   searchEventName: string
 }
 
@@ -38,7 +39,7 @@ const MySearchBar = forwardRef((props: Props, ref) => {
   return (
     <SearchBar
       ref={searchBarRef}
-      placeholder='Search...'
+      placeholder={props.placeholder}
       platform={Platform.OS === 'ios' || Platform.OS === 'android' ? Platform.OS : 'default'}
       lightTheme={false}
       containerStyle={styles(colors).searchBarContainer}
