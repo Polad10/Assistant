@@ -10,9 +10,7 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
-import NoDataView from './no-data/NoDataView'
 import { DateTime } from 'luxon'
-import AgendaIllustration from './illustrations/AgendaIllustration'
 import NoAppointments from './no-data/NoAppointments'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
