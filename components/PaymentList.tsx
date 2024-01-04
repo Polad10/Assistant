@@ -6,7 +6,6 @@ import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import MainView from './MainView'
-import NoDataView from './no-data/NoDataView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -26,15 +25,11 @@ export default function PaymentList(props: Props) {
   })
 
   function getPaymentsContentView() {
-    if (paymentElements.length > 0) {
-      return (
-        <ScrollView keyboardDismissMode='on-drag'>
-          <MainView>{paymentElements}</MainView>
-        </ScrollView>
-      )
-    } else {
-      return <NoDataView text='No payments found' />
-    }
+    return (
+      <ScrollView keyboardDismissMode='on-drag'>
+        <MainView>{paymentElements}</MainView>
+      </ScrollView>
+    )
   }
 
   return <MainView>{getPaymentsContentView()}</MainView>

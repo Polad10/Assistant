@@ -4,7 +4,6 @@ import AgendaItem from './AgendaItem'
 import MainView from './MainView'
 import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
-import NoDataView from './no-data/NoDataView'
 import { StyleSheet } from 'react-native'
 import { Colors } from '../types/Colors'
 
@@ -20,13 +19,7 @@ export default function MyAgendaList(props: Props) {
   }, [])
 
   function getContentView() {
-    if (props.sections.length > 0) {
-      return (
-        <AgendaList sections={props.sections} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
-      )
-    } else {
-      return <NoDataView text='No appointments found' />
-    }
+    return <AgendaList sections={props.sections} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
   }
 
   return <MainView>{getContentView()}</MainView>
