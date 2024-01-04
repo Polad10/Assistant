@@ -1,11 +1,12 @@
 import { Colors } from '../types/Colors'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ListRenderItemInfo } from 'react-native'
 import PaymentItem from './PaymentItem'
 import { useTheme } from '@react-navigation/native'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import MainView from './MainView'
+import { FlatList } from 'react-native-gesture-handler'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -15,20 +16,23 @@ type Props = {
 export default function PaymentList(props: Props) {
   const { colors } = useTheme()
 
-  const paymentElements = props.payments.map((p) => {
+  function renderItem(data: ListRenderItemInfo<Payment>) {
     return (
-      <View key={p.id}>
-        <PaymentItem payment={p} pageName={props.pageName} />
+      <View>
+        <PaymentItem payment={data.item} pageName={props.pageName} />
         <Divider color={colors.border} style={styles(colors).divider} />
       </View>
     )
-  })
+  }
 
   function getPaymentsContentView() {
     return (
-      <ScrollView keyboardDismissMode='on-drag'>
-        <MainView>{paymentElements}</MainView>
-      </ScrollView>
+      <FlatList
+        keyboardDismissMode='on-drag'
+        data={props.payments}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
     )
   }
 
