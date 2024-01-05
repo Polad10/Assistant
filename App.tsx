@@ -22,6 +22,7 @@ import EditPatient from './components/EditPatient'
 import EditTreatment from './components/EditTreatment'
 import EditPayment from './components/EditPayment'
 import { RootSiblingParent } from 'react-native-root-siblings'
+import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 
 type Tabs = {
   Appointments: undefined
@@ -77,37 +78,43 @@ export default function App() {
 
   return (
     <RootSiblingParent>
-      <DataProvider>
-        <NavigationContainer theme={theme}>
-          <Stack.Navigator
-            screenOptions={{
-              headerRightContainerStyle: styles.headerRightContainer,
-              headerLeftContainerStyle: styles.headerLeftContainer,
-              headerBackTitle: 'Back',
-            }}
-          >
-            <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-            <Stack.Group screenOptions={{ presentation: 'modal', headerTitleStyle: styles.headerTitle }}>
-              <Stack.Screen name='Patients' component={Patients} options={{ headerTitle: 'PATIENTS' }} />
-              <Stack.Screen name='Treatments' component={Treatments} options={{ headerTitle: 'TREATMENTS' }} />
-              <Stack.Screen name='Patient' component={Patient} options={{ headerTitle: 'PATIENT' }} />
-              <Stack.Screen name='Treatment' component={Treatment} options={{ headerTitle: 'TREATMENT' }} />
-              <Stack.Screen name='NewAppointment' component={NewAppointment} options={{ headerTitle: 'APPOINTMENT' }} />
-              <Stack.Screen name='NewTreatment' component={NewTreatment} options={{ headerTitle: 'TREATMENT' }} />
-              <Stack.Screen name='NewPatient' component={NewPatient} options={{ headerTitle: 'PATIENT' }} />
-              <Stack.Screen
-                name='EditAppointment'
-                component={EditAppointment}
-                options={{ headerTitle: 'APPOINTMENT' }}
-              />
-              <Stack.Screen name='EditPatient' component={EditPatient} options={{ headerTitle: 'PATIENT' }} />
-              <Stack.Screen name='EditTreatment' component={EditTreatment} options={{ headerTitle: 'TREATMENT' }} />
-              <Stack.Screen name='EditPayment' component={EditPayment} options={{ headerTitle: 'PAYMENT' }} />
-              <Stack.Screen name='NewPayment' component={NewPayment} options={{ headerTitle: 'PAYMENT' }} />
-            </Stack.Group>
-          </Stack.Navigator>
-        </NavigationContainer>
-      </DataProvider>
+      <ActionSheetProvider>
+        <DataProvider>
+          <NavigationContainer theme={theme}>
+            <Stack.Navigator
+              screenOptions={{
+                headerRightContainerStyle: styles.headerRightContainer,
+                headerLeftContainerStyle: styles.headerLeftContainer,
+                headerBackTitle: 'Back',
+              }}
+            >
+              <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+              <Stack.Group screenOptions={{ presentation: 'modal', headerTitleStyle: styles.headerTitle }}>
+                <Stack.Screen name='Patients' component={Patients} options={{ headerTitle: 'PATIENTS' }} />
+                <Stack.Screen name='Treatments' component={Treatments} options={{ headerTitle: 'TREATMENTS' }} />
+                <Stack.Screen name='Patient' component={Patient} options={{ headerTitle: 'PATIENT' }} />
+                <Stack.Screen name='Treatment' component={Treatment} options={{ headerTitle: 'TREATMENT' }} />
+                <Stack.Screen
+                  name='NewAppointment'
+                  component={NewAppointment}
+                  options={{ headerTitle: 'APPOINTMENT' }}
+                />
+                <Stack.Screen name='NewTreatment' component={NewTreatment} options={{ headerTitle: 'TREATMENT' }} />
+                <Stack.Screen name='NewPatient' component={NewPatient} options={{ headerTitle: 'PATIENT' }} />
+                <Stack.Screen
+                  name='EditAppointment'
+                  component={EditAppointment}
+                  options={{ headerTitle: 'APPOINTMENT' }}
+                />
+                <Stack.Screen name='EditPatient' component={EditPatient} options={{ headerTitle: 'PATIENT' }} />
+                <Stack.Screen name='EditTreatment' component={EditTreatment} options={{ headerTitle: 'TREATMENT' }} />
+                <Stack.Screen name='EditPayment' component={EditPayment} options={{ headerTitle: 'PAYMENT' }} />
+                <Stack.Screen name='NewPayment' component={NewPayment} options={{ headerTitle: 'PAYMENT' }} />
+              </Stack.Group>
+            </Stack.Navigator>
+          </NavigationContainer>
+        </DataProvider>
+      </ActionSheetProvider>
     </RootSiblingParent>
   )
 }
