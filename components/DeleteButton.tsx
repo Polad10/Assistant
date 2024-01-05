@@ -1,5 +1,4 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
-import { useTheme } from '@react-navigation/native'
 import { Button } from '@rneui/themed'
 import { DeviceEventEmitter, SafeAreaView, StyleSheet } from 'react-native'
 
