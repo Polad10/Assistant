@@ -7,7 +7,7 @@ import { DeviceEventEmitter } from 'react-native'
 import PaymentForm from './PaymentForm'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
-import { showMessage } from '../helpers/ToastHelper'
+import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
@@ -30,6 +30,7 @@ export default function EditPayment() {
 
   const handleDelete = useCallback(async () => {
     await context.deletePayment(paymentId)
+    showDangerMessage('Payment deleted')
 
     navigation.goBack()
   }, [])

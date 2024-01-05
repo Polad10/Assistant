@@ -11,3 +11,7 @@ export function showMessage(message: string) {
 export function showSuccessMessage(message: string) {
     Toast.show(message, {backgroundColor: '#27ae60', position: position, duration: duration, containerStyle: containerStyle})
 }
+
+export function showDangerMessage(message: string) {
+  Toast.show(message, {backgroundColor: '#800000', position: position, duration: duration, containerStyle: containerStyle})
+}

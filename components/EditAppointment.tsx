@@ -7,7 +7,7 @@ import { AppointmentRequest } from '../modals/Appointment'
 import { DeviceEventEmitter } from 'react-native'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
-import { showMessage } from '../helpers/ToastHelper'
+import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 
 export default function EditAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
@@ -30,6 +30,7 @@ export default function EditAppointment() {
 
   const handleDelete = useCallback(async () => {
     await context.deleteAppointment(appointmentId)
+    showDangerMessage('Appointment deleted')
 
     navigation.goBack()
   }, [])

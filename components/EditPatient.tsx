@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
-import { showMessage } from '../helpers/ToastHelper'
+import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
@@ -40,6 +40,7 @@ export default function EditPatient() {
 
   const handleDelete = useCallback(async () => {
     await context.deletePatient(patientId)
+    showDangerMessage('Patient deleted')
 
     navigation.popToTop()
   }, [])
