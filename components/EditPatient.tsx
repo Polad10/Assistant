@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
+import { showMessage } from '../helpers/ToastHelper'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
@@ -22,6 +23,7 @@ export default function EditPatient() {
 
   const handlePatientSave = useCallback(async (patient: PatientRequest) => {
     await context.updatePatient(patient)
+    showMessage('Saved')
 
     navigation.goBack()
   }, [])

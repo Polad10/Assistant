@@ -7,6 +7,7 @@ import { TreatmentRequest } from '../modals/Treatment'
 import { DeviceEventEmitter } from 'react-native'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
+import { showMessage } from '../helpers/ToastHelper'
 
 export default function EditTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'EditTreatment'>['navigation']>()
@@ -23,6 +24,7 @@ export default function EditTreatment() {
 
   const handleTreatmentSave = useCallback(async (treatment: TreatmentRequest) => {
     await context.updateTreatment(treatment)
+    showMessage('Saved')
 
     navigation.goBack()
   }, [])

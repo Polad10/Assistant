@@ -7,6 +7,7 @@ import { DeviceEventEmitter } from 'react-native'
 import PaymentForm from './PaymentForm'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
+import { showMessage } from '../helpers/ToastHelper'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
@@ -22,6 +23,7 @@ export default function EditPayment() {
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
     await context.updatePayment(payment)
+    showMessage('Saved')
 
     navigation.goBack()
   }, [])

@@ -7,6 +7,7 @@ import { AppointmentRequest } from '../modals/Appointment'
 import { DeviceEventEmitter } from 'react-native'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
+import { showMessage } from '../helpers/ToastHelper'
 
 export default function EditAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
@@ -22,6 +23,7 @@ export default function EditAppointment() {
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
     await context.updateAppointment(appointment)
+    showMessage('Saved')
 
     navigation.goBack()
   }, [])
