@@ -5,6 +5,8 @@ import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { AppointmentRequest } from '../modals/Appointment'
 import { DeviceEventEmitter } from 'react-native'
+import Toast from 'react-native-root-toast'
+import { showSuccessMessage } from '../helpers/ToastHelper'
 
 export default function NewAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'NewAppointment'>['navigation']>()
@@ -20,6 +22,7 @@ export default function NewAppointment() {
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
     await context.createAppointment(appointment)
+    showSuccessMessage('Appointment added')
 
     navigation.goBack()
   }, [])

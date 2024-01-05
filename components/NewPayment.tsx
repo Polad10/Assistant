@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { PaymentRequest } from '../modals/Payment'
 import { DeviceEventEmitter } from 'react-native'
+import { showSuccessMessage } from '../helpers/ToastHelper'
 
 export default function NewPayment() {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
@@ -20,6 +21,7 @@ export default function NewPayment() {
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
     await context.createPayment(payment)
+    showSuccessMessage('Payment added')
 
     navigation.goBack()
   }, [])

@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { TreatmentRequest } from '../modals/Treatment'
 import { DeviceEventEmitter } from 'react-native'
+import { showSuccessMessage } from '../helpers/ToastHelper'
 
 export default function NewTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
@@ -17,6 +18,7 @@ export default function NewTreatment() {
 
   const handleTreatmentSave = useCallback(async (treatment: TreatmentRequest) => {
     const newTreatment = await context.createTreatment(treatment)
+    showSuccessMessage('Treatment added')
 
     if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
       DeviceEventEmitter.emit('treatmentCreated', newTreatment)
