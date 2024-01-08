@@ -8,6 +8,7 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import HeaderButton from './HeaderButton'
 import { Patient, PatientRequest } from '../modals/Patient'
 import CreateButton from './CreateButton'
+import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 
 type Props = {
   patient?: Patient
@@ -30,6 +31,8 @@ export default function PatientForm(props: Props) {
 
   const [showFirstNameInputError, setShowFirstNameInputError] = useState(false)
   const [showLastNameInputError, setShowLastNameInputError] = useState(false)
+
+  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const handleSave = useCallback(async () => {
     if (validate()) {
@@ -96,39 +99,51 @@ export default function PatientForm(props: Props) {
   }
 
   return (
-    <MainView style={styles.mainView}>
-      <MyInput
-        label='First Name'
-        placeholder='Enter first name'
-        value={firstName}
-        showError={showFirstNameInputError}
-        onChange={handleFirstNameChange}
-      />
-      <MyInput
-        label='Last Name'
-        placeholder='Enter last name'
-        value={lastName}
-        showError={showLastNameInputError}
-        onChange={handleLastNameChange}
-      />
-      <MyInput label='City' placeholder='Enter city' value={city} onChange={handleCityChange} />
-      <MyInput
-        label='Phone Number'
-        placeholder='Enter phone number'
-        keyboardType='phone-pad'
-        value={phoneNr}
-        onChange={handlePhoneNrChange}
-      />
-      <MyInput
-        label='Extra Info'
-        placeholder='Enter extra info...'
-        multiline={true}
-        value={extraInfo}
-        onChange={handleExtraInfoChange}
-        style={{ minHeight: 100 }}
-      />
-      {!props.patient && <CreateButton onPress={handleSave} />}
-    </MainView>
+    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
+      <MainView style={styles.mainView}>
+        <MyInput
+          label='First Name'
+          placeholder='Enter first name'
+          value={firstName}
+          showError={showFirstNameInputError}
+          onChange={handleFirstNameChange}
+          onFocus={() => setFocusedInputIndex(0)}
+        />
+        <MyInput
+          label='Last Name'
+          placeholder='Enter last name'
+          value={lastName}
+          showError={showLastNameInputError}
+          onChange={handleLastNameChange}
+          onFocus={() => setFocusedInputIndex(1)}
+        />
+        <MyInput
+          label='City'
+          placeholder='Enter city'
+          value={city}
+          onChange={handleCityChange}
+          onFocus={() => setFocusedInputIndex(2)}
+        />
+        <MyInput
+          label='Phone Number'
+          placeholder='Enter phone number'
+          keyboardType='phone-pad'
+          value={phoneNr}
+          onChange={handlePhoneNrChange}
+          onFocus={() => setFocusedInputIndex(3)}
+        />
+        <MyInput
+          label='Extra Info'
+          placeholder='Enter extra info...'
+          multiline={true}
+          value={extraInfo}
+          onChange={handleExtraInfoChange}
+          style={{ minHeight: 100 }}
+          onFocus={() => setFocusedInputIndex(4)}
+        />
+        {!props.patient && <CreateButton onPress={handleSave} />}
+      </MainView>
+    </MyKeyboardAvoidingView>
   )
 }
 

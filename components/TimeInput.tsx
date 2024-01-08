@@ -13,6 +13,7 @@ type Props = {
   onChange?: (dateTime: Date) => void
   showError?: boolean
   style?: StyleProp<ViewStyle>
+  onFocus?: () => void
 }
 
 type Mode = 'date' | 'time'
@@ -30,9 +31,14 @@ export default function TimeInput(props: Props) {
     setShowTimePicker(false)
   }
 
+  function handlePress() {
+    props.onFocus?.()
+    setShowTimePicker(true)
+  }
+
   return (
     <View style={props.style}>
-      <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+      <TouchableOpacity onPress={handlePress}>
         <MyInput
           pointerEvents='none'
           label={props.label}

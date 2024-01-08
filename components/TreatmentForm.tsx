@@ -1,4 +1,4 @@
-import { StyleSheet, DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
+import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
 import MyInput from './MyInput'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
@@ -16,6 +16,7 @@ import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import DateInput from './DateInput'
 import CreateButton from './CreateButton'
+import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 
 type StyleProps = {
   patientEditable: boolean
@@ -61,6 +62,8 @@ export default function TreatmentForm(props: Props) {
   const [endDate, setEndDate] = useState(endDateInitialVal)
   const [title, setTitle] = useState(props.treatment?.title)
   const [price, setPrice] = useState(props.treatment?.price.toString())
+
+  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   let styleProps: StyleProps = {
     patientEditable: !patient,
@@ -168,76 +171,64 @@ export default function TreatmentForm(props: Props) {
   }
 
   return (
-    <MainView style={{ paddingTop: 20 }}>
-      <View style={{ flexDirection: 'row' }}>
-        <DateInput
-          style={{ flex: 1 }}
-          label='Start date'
-          placeholder='Pick a date'
-          date={startDate}
-          showError={showStartDatePickerError}
-          onChange={handleStartDateChange}
+    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
+      <MainView style={{ paddingTop: 20 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <DateInput
+            style={{ flex: 1 }}
+            label='Start date'
+            placeholder='Pick a date'
+            date={startDate}
+            showError={showStartDatePickerError}
+            onChange={handleStartDateChange}
+            onFocus={() => setFocusedInputIndex(0)}
+          />
+          <DateInput
+            style={{ flex: 1 }}
+            label='End date'
+            placeholder='Pick a date'
+            date={endDate}
+            onChange={handleEndDateChange}
+            onFocus={() => setFocusedInputIndex(0)}
+          />
+        </View>
+        <MyInput
+          label='Title'
+          placeholder='Enter title'
+          value={title}
+          showError={showTitleInputError}
+          onChange={handleTitleChange}
+          onFocus={() => setFocusedInputIndex(1)}
         />
-        <DateInput
-          style={{ flex: 1 }}
-          label='End date'
-          placeholder='Pick a date'
-          date={endDate}
-          onChange={handleEndDateChange}
+        <MyInput
+          label='Price'
+          placeholder='Enter price'
+          value={price}
+          showError={showPriceInputError}
+          onChange={handlePriceChange}
+          keyboardType='decimal-pad'
+          rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
+          onFocus={() => setFocusedInputIndex(2)}
         />
-      </View>
-      <MyInput
-        label='Title'
-        placeholder='Enter title'
-        value={title}
-        showError={showTitleInputError}
-        onChange={handleTitleChange}
-      />
-      <MyInput
-        label='Price'
-        placeholder='Enter price'
-        value={price}
-        showError={showPriceInputError}
-        onChange={handlePriceChange}
-        keyboardType='decimal-pad'
-        rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
-      />
-      {styleProps.patientEditable ? (
-        <TouchableInput
-          onPress={handlePatientChange}
-          label='Patient'
-          placeholder='Select'
-          value={getSelectedPatientFullName()}
-          showError={showPatientInputError}
-        />
-      ) : (
-        <TouchableWithoutFeedbackInput
-          label='Patient'
-          placeholder='Select'
-          value={getSelectedPatientFullName()}
-          showError={showPatientInputError}
-        />
-      )}
+        {styleProps.patientEditable ? (
+          <TouchableInput
+            onPress={handlePatientChange}
+            label='Patient'
+            placeholder='Select'
+            value={getSelectedPatientFullName()}
+            showError={showPatientInputError}
+          />
+        ) : (
+          <TouchableWithoutFeedbackInput
+            label='Patient'
+            placeholder='Select'
+            value={getSelectedPatientFullName()}
+            showError={showPatientInputError}
+          />
+        )}
 
-      {!props.treatment && <CreateButton onPress={handleSave} />}
-    </MainView>
+        {!props.treatment && <CreateButton onPress={handleSave} />}
+      </MainView>
+    </MyKeyboardAvoidingView>
   )
 }
-
-const styles = (styleProps: StyleProps) =>
-  StyleSheet.create({
-    patient: {
-      opacity: styleProps.patientEditable ? 1 : 0.5,
-    },
-    checkbox: {
-      backgroundColor: styleProps.colors.background,
-      margin: 0,
-      paddingLeft: 0,
-      borderBottomWidth: 1,
-      borderBottomColor: styleProps.colors.border,
-    },
-    checkboxText: {
-      fontSize: 18,
-      fontWeight: 'normal',
-    },
-  })

@@ -13,6 +13,7 @@ type Props = {
   onChange?: (dateTime: Date) => void
   showError?: boolean
   style?: StyleProp<ViewStyle>
+  onFocus?: () => void
 }
 
 export default function DateInput(props: Props) {
@@ -28,9 +29,14 @@ export default function DateInput(props: Props) {
     setShowDatePicker(false)
   }
 
+  function handlePress() {
+    props.onFocus?.()
+    setShowDatePicker(true)
+  }
+
   return (
     <View style={props.style}>
-      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+      <TouchableOpacity onPress={handlePress}>
         <MyInput
           pointerEvents='none'
           label={props.label}

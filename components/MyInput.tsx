@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { NativeSyntheticEvent, StyleSheet, TextInputFocusEventData } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Colors } from '../types/Colors'
 import { Input, InputProps } from '@rneui/themed'
@@ -22,6 +22,11 @@ export default function MyInput(props: Props) {
     showError: props.showError,
   }
 
+  function handleFocus(event: NativeSyntheticEvent<TextInputFocusEventData>) {
+    props.onFocus?.(event)
+    setFocused(true)
+  }
+
   return (
     <Input
       {...props}
@@ -29,7 +34,7 @@ export default function MyInput(props: Props) {
       labelStyle={styles(styleProps).label}
       inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
       selectionColor={colors.notification}
-      onFocus={() => setFocused(true)}
+      onFocus={handleFocus}
       onBlur={() => setFocused(false)}
     />
   )

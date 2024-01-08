@@ -15,6 +15,7 @@ import CreateButton from './CreateButton'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
+import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -54,6 +55,8 @@ export default function AppointmentForm(props: Props) {
   const [dateTime, setDateTime] = useState<Date | undefined>(initialDateTime)
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
+
+  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const handleSave = useCallback(async () => {
     if (validate()) {
@@ -168,53 +171,58 @@ export default function AppointmentForm(props: Props) {
   }, [])
 
   return (
-    <MainView style={{ paddingTop: 20 }}>
-      <View style={{ flexDirection: 'row' }}>
-        <DateInput
-          style={{ flex: 1 }}
-          label='Date'
-          placeholder='Pick a date'
-          date={dateTime}
-          showError={showDatePickerError}
-          onChange={handleDateChange}
+    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
+      <MainView style={{ paddingTop: 20 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <DateInput
+            style={{ flex: 1 }}
+            label='Date'
+            placeholder='Pick a date'
+            date={dateTime}
+            showError={showDatePickerError}
+            onChange={handleDateChange}
+            onFocus={() => setFocusedInputIndex(0)}
+          />
+          <TimeInput
+            style={{ flex: 1 }}
+            label='Time'
+            placeholder='Pick a time'
+            time={dateTime}
+            showError={showTimePickerError}
+            onChange={handleTimeChange}
+            onFocus={() => setFocusedInputIndex(0)}
+          />
+        </View>
+        <MyInput
+          label='Actions'
+          placeholder='Enter actions...'
+          multiline={true}
+          value={actions}
+          onChange={handleActionsChange}
+          showError={showActionsInputError}
+          style={{ minHeight: 100 }}
+          onFocus={() => setFocusedInputIndex(1)}
         />
-        <TimeInput
-          style={{ flex: 1 }}
-          label='Time'
-          placeholder='Pick a time'
-          time={dateTime}
-          showError={showTimePickerError}
-          onChange={handleTimeChange}
-        />
-      </View>
-      <MyInput
-        label='Actions'
-        placeholder='Enter actions...'
-        multiline={true}
-        value={actions}
-        onChange={handleActionsChange}
-        showError={showActionsInputError}
-        style={{ minHeight: 100 }}
-      />
 
-      {treatmentEditable ? (
-        <TouchableInput
-          onPress={handleTreatmentChange}
-          label='Treatment'
-          placeholder='Select'
-          value={selectedTreatment?.title}
-          showError={showTreatmentInputError}
-        />
-      ) : (
-        <TouchableWithoutFeedbackInput
-          label='Treatment'
-          placeholder='Select'
-          value={selectedTreatment?.title}
-          showError={showTreatmentInputError}
-        />
-      )}
+        {treatmentEditable ? (
+          <TouchableInput
+            onPress={handleTreatmentChange}
+            label='Treatment'
+            placeholder='Select'
+            value={selectedTreatment?.title}
+            showError={showTreatmentInputError}
+          />
+        ) : (
+          <TouchableWithoutFeedbackInput
+            label='Treatment'
+            placeholder='Select'
+            value={selectedTreatment?.title}
+            showError={showTreatmentInputError}
+          />
+        )}
 
-      {!appointment && <CreateButton onPress={handleSave} />}
-    </MainView>
+        {!appointment && <CreateButton onPress={handleSave} />}
+      </MainView>
+    </MyKeyboardAvoidingView>
   )
 }

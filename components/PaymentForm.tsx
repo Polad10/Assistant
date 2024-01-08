@@ -1,4 +1,4 @@
-import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
+import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
@@ -15,6 +15,7 @@ import { Treatment } from '../modals/Treatment'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
+import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -47,6 +48,8 @@ export default function PaymentForm(props: Props) {
   const [showAmountInputError, setShowAmountInputError] = useState(false)
   const [showDatePickerError, setShowDatePickerError] = useState(false)
   const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
+
+  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const handleSave = useCallback(async () => {
     if (validate()) {
@@ -127,42 +130,46 @@ export default function PaymentForm(props: Props) {
   }
 
   return (
-    <MainView>
-      <DateInput
-        label='Date'
-        placeholder='Pick a date'
-        date={date}
-        showError={showDatePickerError}
-        onChange={handleDateChange}
-      />
-      <MyInput
-        label='Amount'
-        placeholder='Enter amount'
-        value={amount}
-        showError={showAmountInputError}
-        onChange={handleAmountChange}
-        keyboardType='decimal-pad'
-        rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
-      />
-
-      {treatmentEditable ? (
-        <TouchableInput
-          onPress={handleTreatmentChange}
-          label='Treatment'
-          placeholder='Select'
-          value={selectedTreatment?.title}
-          showError={showTreatmentInputError}
+    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
+      <MainView>
+        <DateInput
+          label='Date'
+          placeholder='Pick a date'
+          date={date}
+          showError={showDatePickerError}
+          onChange={handleDateChange}
+          onFocus={() => setFocusedInputIndex(0)}
         />
-      ) : (
-        <TouchableWithoutFeedbackInput
-          label='Treatment'
-          placeholder='Select'
-          value={selectedTreatment?.title}
-          showError={showTreatmentInputError}
+        <MyInput
+          label='Amount'
+          placeholder='Enter amount'
+          value={amount}
+          showError={showAmountInputError}
+          onChange={handleAmountChange}
+          keyboardType='decimal-pad'
+          rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
+          onFocus={() => setFocusedInputIndex(1)}
         />
-      )}
 
-      {!props.payment && <CreateButton onPress={handleSave} />}
-    </MainView>
+        {treatmentEditable ? (
+          <TouchableInput
+            onPress={handleTreatmentChange}
+            label='Treatment'
+            placeholder='Select'
+            value={selectedTreatment?.title}
+            showError={showTreatmentInputError}
+          />
+        ) : (
+          <TouchableWithoutFeedbackInput
+            label='Treatment'
+            placeholder='Select'
+            value={selectedTreatment?.title}
+            showError={showTreatmentInputError}
+          />
+        )}
+
+        {!props.payment && <CreateButton onPress={handleSave} />}
+      </MainView>
+    </MyKeyboardAvoidingView>
   )
 }
