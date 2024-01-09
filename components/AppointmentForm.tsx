@@ -1,11 +1,11 @@
 import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter, View } from 'react-native'
-import DateInput from './DateInput'
-import TimeInput from './TimeInput'
+import DateInput, { DateInputRefType } from './DateInput'
+import TimeInput, { TimeInputRefType } from './TimeInput'
 import MyInput from './MyInput'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '../modals/Treatment'
 import { Appointment, AppointmentRequest } from '../modals/Appointment'
@@ -49,19 +49,23 @@ export default function AppointmentForm(props: Props) {
   const [showDatePickerError, setShowDatePickerError] = useState(false)
   const [showTimePickerError, setShowTimePickerError] = useState(false)
 
-  const [dateFilled, setDateFilled] = useState(!!initialDateTime)
-  const [timeFilled, setTimeFilled] = useState(!!initialDateTime)
-
-  const [dateTime, setDateTime] = useState<Date | undefined>(initialDateTime)
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
   const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
+  const dateInputRef = useRef<DateInputRefType>()
+  const timeInputRef = useRef<TimeInputRefType>()
+
   const handleSave = useCallback(async () => {
     if (validate()) {
+      const date = dateInputRef.current?.getDate()
+      const time = timeInputRef.current?.getTime()
+
+      const dateTime = combineDateTime(date!, time!)
+
       const newAppointmentRequest: AppointmentRequest = {
-        datetime: DateTime.fromJSDate(dateTime!).toISO()!,
+        datetime: DateTime.fromJSDate(dateTime).toISO()!,
         actions: actions,
         treatment_id: selectedTreatment!.id,
       }
@@ -72,10 +76,13 @@ export default function AppointmentForm(props: Props) {
 
       DeviceEventEmitter.emit('appointmentSaved', newAppointmentRequest)
     }
-  }, [dateTime, actions, selectedTreatment])
+  }, [actions, selectedTreatment])
 
   function validate() {
     let valid = true
+
+    const date = dateInputRef.current?.getDate()
+    const time = timeInputRef.current?.getTime()
 
     if (!actions) {
       valid = false
@@ -87,12 +94,12 @@ export default function AppointmentForm(props: Props) {
       setShowTreatmentInputError(true)
     }
 
-    if (!dateFilled) {
+    if (!date) {
       valid = false
       setShowDatePickerError(true)
     }
 
-    if (!timeFilled) {
+    if (!time) {
       valid = false
       setShowTimePickerError(true)
     }
@@ -120,36 +127,13 @@ export default function AppointmentForm(props: Props) {
     }
   }
 
-  function handleDateChange(date: Date) {
-    if (!dateTime) {
-      setDateTime(date)
-    } else {
-      const currentDateTime = DateTime.fromJSDate(dateTime)
-      const newDateTime = DateTime.fromJSDate(date).set({ hour: currentDateTime.hour, minute: currentDateTime.minute })
+  function combineDateTime(date: Date, time: Date) {
+    const dateObj = DateTime.fromJSDate(date)
+    const timeObj = DateTime.fromJSDate(time)
 
-      setDateTime(newDateTime.toJSDate())
-    }
+    const dateTime = dateObj.set({ hour: timeObj.hour, minute: timeObj.minute })
 
-    setShowDatePickerError(false)
-    setDateFilled(true)
-  }
-
-  function handleTimeChange(time: Date) {
-    if (!dateTime) {
-      setDateTime(time)
-    } else {
-      const currentDateTime = DateTime.fromJSDate(dateTime)
-      const newDateTime = DateTime.fromJSDate(time).set({
-        year: currentDateTime.year,
-        month: currentDateTime.month,
-        day: currentDateTime.day,
-      })
-
-      setDateTime(newDateTime.toJSDate())
-    }
-
-    setShowTimePickerError(false)
-    setTimeFilled(true)
+    return dateTime.toJSDate()
   }
 
   useEffect(() => {
@@ -175,21 +159,23 @@ export default function AppointmentForm(props: Props) {
       <MainView style={{ paddingTop: 20 }}>
         <View style={{ flexDirection: 'row' }}>
           <DateInput
+            ref={dateInputRef}
             style={{ flex: 1 }}
             label='Date'
             placeholder='Pick a date'
-            date={dateTime}
+            date={initialDateTime}
             showError={showDatePickerError}
-            onChange={handleDateChange}
+            onChange={() => setShowDatePickerError(false)}
             onFocus={() => setFocusedInputIndex(0)}
           />
           <TimeInput
+            ref={timeInputRef}
             style={{ flex: 1 }}
             label='Time'
             placeholder='Pick a time'
-            time={dateTime}
+            time={initialDateTime}
             showError={showTimePickerError}
-            onChange={handleTimeChange}
+            onChange={() => setShowTimePickerError(false)}
             onFocus={() => setFocusedInputIndex(0)}
           />
         </View>

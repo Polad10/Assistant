@@ -1,7 +1,14 @@
-import { View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+} from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import MyInput from './MyInput'
-import { useState } from 'react'
+import { forwardRef, useImperativeHandle, useState } from 'react'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { DateTime } from 'luxon'
 import IonIcons from '@expo/vector-icons/Ionicons'
@@ -10,52 +17,77 @@ type Props = {
   label?: string
   placeholder?: string
   time?: Date
-  onChange?: (dateTime: Date) => void
+  onChange?: () => void
   showError?: boolean
   style?: StyleProp<ViewStyle>
   onFocus?: () => void
 }
 
-type Mode = 'date' | 'time'
+type TimeInputRefType = {
+  getTime: () => Date | undefined
+}
 
-export default function TimeInput(props: Props) {
+const TimeInput = forwardRef((props: Props, ref) => {
   const { colors } = useTheme()
 
-  const [time, setTime] = useState(props.time)
+  let initialTime = props.time ? DateTime.fromJSDate(props.time).toLocaleString(DateTime.TIME_24_SIMPLE) : undefined
+  initialTime ??= undefined
+
+  const [time, setTime] = useState(initialTime)
   const [showTimePicker, setShowTimePicker] = useState(false)
 
+  useImperativeHandle(ref, () => {
+    return {
+      getTime,
+    }
+  })
+
+  function getTime() {
+    const timeVal = time ?? ''
+    const timeObj = DateTime.fromFormat(timeVal, 'HH:mm')
+
+    return timeObj.isValid ? timeObj.toJSDate() : undefined
+  }
+
   function handleConfirm(dateTime: Date) {
-    setTime(dateTime)
-    props.onChange?.(dateTime)
+    setTime(DateTime.fromJSDate(dateTime).toLocaleString(DateTime.TIME_24_SIMPLE))
+    props.onChange?.()
 
     setShowTimePicker(false)
   }
 
-  function handlePress() {
+  function handleIconPress() {
     props.onFocus?.()
     setShowTimePicker(true)
   }
 
+  function handleChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
+    setTime(event.nativeEvent.text)
+    props.onChange?.()
+  }
+
   return (
     <View style={props.style}>
-      <TouchableOpacity onPress={handlePress}>
-        <MyInput
-          pointerEvents='none'
-          label={props.label}
-          placeholder={props.placeholder}
-          value={time ? DateTime.fromJSDate(time).toLocaleString(DateTime.TIME_24_SIMPLE) ?? undefined : undefined}
-          rightIcon={<IonIcons name='time-outline' size={25} color={colors.notification} />}
-          showError={props.showError}
-        />
-      </TouchableOpacity>
+      <MyInput
+        label={props.label}
+        placeholder={props.placeholder}
+        value={time}
+        rightIcon={<IonIcons name='time-outline' size={25} color={colors.notification} onPress={handleIconPress} />}
+        showError={props.showError}
+        onFocus={props.onFocus}
+        onChange={handleChange}
+      />
       <DateTimePickerModal
         isVisible={showTimePicker}
         mode='time'
-        date={time ?? new Date()}
+        date={getTime()}
         onConfirm={handleConfirm}
         onCancel={() => setShowTimePicker(false)}
         display='spinner'
       />
     </View>
   )
-}
+})
+
+export default TimeInput
+export { TimeInputRefType }

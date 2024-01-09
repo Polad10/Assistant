@@ -1,6 +1,6 @@
-import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { NativeSyntheticEvent, StyleProp, TextInputChangeEventData, View, ViewStyle } from 'react-native'
 import MyInput from './MyInput'
-import { useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { DateTime } from 'luxon'
 import IonIcons from '@expo/vector-icons/Ionicons'
@@ -10,50 +10,77 @@ type Props = {
   label?: string
   placeholder?: string
   date?: Date
-  onChange?: (dateTime: Date) => void
   showError?: boolean
   style?: StyleProp<ViewStyle>
   onFocus?: () => void
+  onChange?: () => void
 }
 
-export default function DateInput(props: Props) {
+type DateInputRefType = {
+  getDate: () => Date | undefined
+}
+
+const DateInput = forwardRef((props: Props, ref) => {
   const { colors } = useTheme()
 
-  const [date, setDate] = useState<Date | undefined>(props.date)
+  let initialDate = props.date ? DateTime.fromJSDate(props.date).toISODate() : undefined
+  initialDate ??= undefined
+
+  const [date, setDate] = useState(initialDate)
   const [showDatePicker, setShowDatePicker] = useState(false)
 
+  useImperativeHandle(ref, () => {
+    return {
+      getDate,
+    }
+  })
+
+  function getDate() {
+    const dateVal = date ?? ''
+    const dateObj = DateTime.fromISO(dateVal)
+
+    return dateObj.isValid ? dateObj.toJSDate() : undefined
+  }
+
   function handleConfirm(date: Date) {
-    setDate(date)
-    props.onChange?.(date)
+    setDate(DateTime.fromJSDate(date).toISODate() ?? undefined)
+    props.onChange?.()
 
     setShowDatePicker(false)
   }
 
-  function handlePress() {
+  function handleIconPress() {
     props.onFocus?.()
     setShowDatePicker(true)
   }
 
+  function handleChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
+    setDate(event.nativeEvent.text)
+    props.onChange?.()
+  }
+
   return (
     <View style={props.style}>
-      <TouchableOpacity onPress={handlePress}>
-        <MyInput
-          pointerEvents='none'
-          label={props.label}
-          placeholder={props.placeholder}
-          value={date ? DateTime.fromJSDate(date).toISODate() ?? undefined : undefined}
-          rightIcon={<IonIcons name='calendar-outline' size={25} color={colors.notification} />}
-          showError={props.showError}
-        />
-      </TouchableOpacity>
+      <MyInput
+        label={props.label}
+        placeholder={props.placeholder}
+        value={date}
+        rightIcon={<IonIcons name='calendar-outline' size={25} color={colors.notification} onPress={handleIconPress} />}
+        showError={props.showError}
+        onFocus={props.onFocus}
+        onChange={handleChange}
+      />
       <DateTimePickerModal
         isVisible={showDatePicker}
         mode='date'
-        date={date ?? new Date()}
+        date={getDate()}
         onConfirm={handleConfirm}
         onCancel={() => setShowDatePicker(false)}
         display='inline'
       />
     </View>
   )
-}
+})
+
+export default DateInput
+export { DateInputRefType }

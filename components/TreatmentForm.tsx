@@ -1,6 +1,6 @@
 import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native'
 import MyInput from './MyInput'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { getPatientFullName } from '../helpers/PatientHelper'
@@ -14,7 +14,7 @@ import CustomIcon from './CustomIcon'
 import { Colors } from '../types/Colors'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
-import DateInput from './DateInput'
+import DateInput, { DateInputRefType } from './DateInput'
 import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 
@@ -58,12 +58,13 @@ export default function TreatmentForm(props: Props) {
   }
 
   const [selectedPatient, setSelectedPatient] = useState(patient)
-  const [startDate, setStartDate] = useState(startDateInitialVal)
-  const [endDate, setEndDate] = useState(endDateInitialVal)
   const [title, setTitle] = useState(props.treatment?.title)
   const [price, setPrice] = useState(props.treatment?.price.toString())
 
   const [focusedInputIndex, setFocusedInputIndex] = useState(0)
+
+  const startDateInputRef = useRef<DateInputRefType>()
+  const endDateInputRef = useRef<DateInputRefType>()
 
   let styleProps: StyleProps = {
     patientEditable: !patient,
@@ -72,6 +73,9 @@ export default function TreatmentForm(props: Props) {
 
   const handleSave = useCallback(async () => {
     if (validate()) {
+      const startDate = startDateInputRef.current?.getDate()
+      const endDate = endDateInputRef.current?.getDate()
+
       const newTreatmentRequest: TreatmentRequest = {
         start_date: DateTime.fromJSDate(startDate!).toISODate()!,
         end_date: endDate ? DateTime.fromJSDate(endDate).toISODate() : null,
@@ -86,10 +90,12 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     }
-  }, [selectedPatient, startDate, endDate, title, price])
+  }, [selectedPatient, title, price])
 
   function validate() {
     let valid = true
+
+    const startDate = startDateInputRef.current?.getDate()
 
     if (!startDate) {
       valid = false
@@ -136,15 +142,6 @@ export default function TreatmentForm(props: Props) {
     return selectedPatient ? getPatientFullName(selectedPatient) : ''
   }
 
-  function handleStartDateChange(date: Date) {
-    setStartDate(date)
-    setShowStartDatePickerError(false)
-  }
-
-  function handleEndDateChange(date: Date) {
-    setEndDate(date)
-  }
-
   function handleTitleChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
     setShowTitleInputError(false)
     setTitle(event.nativeEvent.text)
@@ -175,20 +172,21 @@ export default function TreatmentForm(props: Props) {
       <MainView style={{ paddingTop: 20 }}>
         <View style={{ flexDirection: 'row' }}>
           <DateInput
+            ref={startDateInputRef}
             style={{ flex: 1 }}
             label='Start date'
             placeholder='Pick a date'
-            date={startDate}
+            date={startDateInitialVal}
             showError={showStartDatePickerError}
-            onChange={handleStartDateChange}
+            onChange={() => setShowStartDatePickerError(false)}
             onFocus={() => setFocusedInputIndex(0)}
           />
           <DateInput
+            ref={endDateInputRef}
             style={{ flex: 1 }}
             label='End date'
             placeholder='Pick a date'
-            date={endDate}
-            onChange={handleEndDateChange}
+            date={endDateInitialVal}
             onFocus={() => setFocusedInputIndex(0)}
           />
         </View>
