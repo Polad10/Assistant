@@ -2,13 +2,13 @@ import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData } fr
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import CustomIcon from './CustomIcon'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import HeaderButton from './HeaderButton'
 import { Payment, PaymentRequest } from '../modals/Payment'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
-import DateInput from './DateInput'
+import DateInput, { DateInputRefType } from './DateInput'
 import CreateButton from './CreateButton'
 import MainView from './MainView'
 import { Treatment } from '../modals/Treatment'
@@ -41,7 +41,6 @@ export default function PaymentForm(props: Props) {
 
   let dateInitialVal = props.payment ? new Date(props.payment.date) : undefined
 
-  const [date, setDate] = useState(dateInitialVal)
   const [amount, setAmount] = useState(props.payment?.amount.toString())
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
 
@@ -51,8 +50,12 @@ export default function PaymentForm(props: Props) {
 
   const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
+  const dateInputRef = useRef<DateInputRefType>()
+
   const handleSave = useCallback(async () => {
     if (validate()) {
+      const date = dateInputRef.current?.getDate()
+
       const newPaymentRequest: PaymentRequest = {
         date: DateTime.fromJSDate(date!).toISODate()!,
         amount: Number(amount),
@@ -65,10 +68,12 @@ export default function PaymentForm(props: Props) {
 
       DeviceEventEmitter.emit('paymentSaved', newPaymentRequest)
     }
-  }, [date, amount, selectedTreatment])
+  }, [amount, selectedTreatment])
 
   function validate() {
     let valid = true
+
+    const date = dateInputRef.current?.getDate()
 
     if (!date) {
       valid = false
@@ -106,11 +111,6 @@ export default function PaymentForm(props: Props) {
     }
   }, [])
 
-  function handleDateChange(date: Date) {
-    setDate(date)
-    setShowDatePickerError(false)
-  }
-
   function handleAmountChange(event: NativeSyntheticEvent<TextInputChangeEventData>) {
     setShowAmountInputError(false)
     setAmount(event.nativeEvent.text.replace(',', '.'))
@@ -133,11 +133,12 @@ export default function PaymentForm(props: Props) {
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
       <MainView>
         <DateInput
+          ref={dateInputRef}
           label='Date'
           placeholder='Pick a date'
-          date={date}
+          date={dateInitialVal}
           showError={showDatePickerError}
-          onChange={handleDateChange}
+          onChange={() => setShowDatePickerError(false)}
           onFocus={() => setFocusedInputIndex(0)}
         />
         <MyInput
