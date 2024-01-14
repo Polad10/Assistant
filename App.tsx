@@ -72,10 +72,6 @@ export default function App() {
   const scheme = useColorScheme()
   const theme = scheme === 'dark' ? DarkTheme : DefaultTheme
 
-  useFonts({
-    Fontello: require('./assets/fontello/font/fontello.ttf'),
-  })
-
   return (
     <RootSiblingParent>
       <ActionSheetProvider>

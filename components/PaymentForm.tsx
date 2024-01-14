@@ -1,7 +1,6 @@
 import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import MyInput from './MyInput'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import CustomIcon from './CustomIcon'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import HeaderButton from './HeaderButton'
@@ -16,6 +15,7 @@ import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
+import { FontAwesome6 } from '@expo/vector-icons'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -148,7 +148,7 @@ export default function PaymentForm(props: Props) {
           showError={showAmountInputError}
           onChange={handleAmountChange}
           keyboardType='decimal-pad'
-          rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
+          rightIcon={<FontAwesome6 name='manat-sign' color={colors.notification} size={20} />}
           onFocus={() => setFocusedInputIndex(1)}
         />
 

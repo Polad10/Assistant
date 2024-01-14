@@ -10,13 +10,13 @@ import { Treatment, TreatmentRequest } from '../modals/Treatment'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import CustomIcon from './CustomIcon'
 import { Colors } from '../types/Colors'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import DateInput, { DateInputRefType } from './DateInput'
 import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
+import { FontAwesome6 } from '@expo/vector-icons'
 
 type StyleProps = {
   patientEditable: boolean
@@ -205,7 +205,7 @@ export default function TreatmentForm(props: Props) {
           showError={showPriceInputError}
           onChange={handlePriceChange}
           keyboardType='decimal-pad'
-          rightIcon={<CustomIcon name='manat' color={colors.notification} size={20} />}
+          rightIcon={<FontAwesome6 name='manat-sign' color={colors.notification} size={20} />}
           onFocus={() => setFocusedInputIndex(2)}
         />
         {styleProps.patientEditable ? (

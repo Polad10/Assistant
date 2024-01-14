@@ -2,12 +2,12 @@ import { ListItem } from '@rneui/themed'
 import { StyleSheet, TouchableHighlight, View } from 'react-native'
 import { Colors } from '../types/Colors'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import CustomIcon from './CustomIcon'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import { DateTime } from 'luxon'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
+import { FontAwesome6 } from '@expo/vector-icons'
 
 type Props = {
   payment: Payment
@@ -37,7 +37,7 @@ export default function PaymentItem(props: Props) {
           </View>
           <View style={styles(colors).flexRow}>
             <ListItem.Title style={styles(colors).payment}>+ {props.payment.amount}</ListItem.Title>
-            <CustomIcon style={styles(colors).currency} name='manat' size={16} />
+            <FontAwesome6 name='manat-sign' color='lightgreen' size={16} />
           </View>
         </ListItem.Content>
       </ListItem>
@@ -67,6 +67,7 @@ const styles = (colors: Colors) =>
     },
     payment: {
       color: 'lightgreen',
+      marginRight: 10,
     },
     currency: {
       marginLeft: 10,

@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useRef } from 'react'
-import { Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 
 type Props = {
   children: ReactNode
@@ -14,15 +14,21 @@ export default function MyKeyboardAvoidingView(props: Props) {
   }, [props.focusedInputIndex])
 
   useEffect(() => {
-    const listener = Keyboard.addListener('keyboardWillShow', scrollToInput)
+    if (Platform.OS === 'ios') {
+      const listener = Keyboard.addListener('keyboardWillShow', scrollToInput)
 
-    return () => {
-      listener.remove()
+      return () => {
+        listener.remove()
+      }
     }
   }, [scrollToInput])
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding' keyboardVerticalOffset={150}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior='padding'
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 150 : -300}
+    >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} ref={scrollRef}>
         {props.children}
       </ScrollView>
