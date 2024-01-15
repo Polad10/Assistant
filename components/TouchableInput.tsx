@@ -13,12 +13,12 @@ export default function TouchableInput(props: Props) {
   const { colors } = useTheme()
 
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <MyInput
-        {...props}
-        pointerEvents='none'
-        rightIcon={<IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />}
-      />
-    </TouchableOpacity>
+    <MyInput
+      {...props}
+      showSoftInputOnFocus={false}
+      onFocus={props.onPress}
+      selectionColor='transparent'
+      rightIcon={<IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />}
+    />
   )
 }

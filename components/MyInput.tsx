@@ -30,10 +30,11 @@ export default function MyInput(props: Props) {
   return (
     <Input
       {...props}
+      style={[props.style, { paddingHorizontal: 10, paddingVertical: 20, paddingTop: props.multiline ? 15 : 20 }]}
       inputStyle={styles(styleProps).input}
       labelStyle={styles(styleProps).label}
       inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
-      selectionColor={colors.notification}
+      selectionColor={props.selectionColor || colors.notification}
       onFocus={handleFocus}
       onBlur={() => setFocused(false)}
     />
@@ -51,7 +52,6 @@ const styles = (styleProps: StyleProps) =>
     },
     inputContainer: {
       borderWidth: 1,
-      padding: 10,
       borderRadius: 10,
       borderColor: styleProps.showError ? 'red' : styleProps.colors.border,
     },
