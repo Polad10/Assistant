@@ -1,8 +1,8 @@
 import { InputProps } from '@rneui/themed'
 import MyInput from './MyInput'
-import { TouchableOpacity } from 'react-native'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import { useTheme } from '@react-navigation/native'
+import { FontAwesome6 } from '@expo/vector-icons'
 
 type Props = InputProps & {
   showError?: boolean
@@ -18,7 +18,7 @@ export default function TouchableInput(props: Props) {
       showSoftInputOnFocus={false}
       onFocus={props.onPress}
       selectionColor='transparent'
-      rightIcon={<IonIcons name='chevron-forward-outline' size={25} color={colors.notification} />}
+      rightIcon={<FontAwesome6 name='chevron-right' size={20} color={colors.notification} />}
     />
   )
 }

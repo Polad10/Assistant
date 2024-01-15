@@ -31,6 +31,7 @@ export default function MyInput(props: Props) {
     <Input
       {...props}
       style={[props.style, { paddingHorizontal: 10, paddingVertical: 20, paddingTop: props.multiline ? 15 : 20 }]}
+      rightIconContainerStyle={{ marginRight: 10, paddingRight: 0 }}
       inputStyle={styles(styleProps).input}
       labelStyle={styles(styleProps).label}
       inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
