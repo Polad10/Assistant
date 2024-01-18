@@ -116,6 +116,10 @@ export default function DataProvider({ children }: DataProviderProps) {
     setPatients((prevPatients) => {
       return prevPatients ? [...prevPatients].filter((p) => p.id !== patientId) : []
     })
+
+    fetchTreatments()
+    fetchAppointments()
+    fetchPayments()
   }
 
   async function createTreatment(treatment: TreatmentRequest) {
@@ -152,6 +156,9 @@ export default function DataProvider({ children }: DataProviderProps) {
     setTreatments((prevTreatments) => {
       return prevTreatments ? [...prevTreatments].filter((t) => t.id !== treatmentId) : []
     })
+
+    fetchAppointments()
+    fetchPayments()
   }
 
   async function createPayment(payment: PaymentRequest) {
