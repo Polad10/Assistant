@@ -26,6 +26,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     context.fetchAppointments()
     context.fetchTreatments()
     context.fetchPatients()
+    context.fetchPayments()
   }, [])
 
   useEffect(() => {

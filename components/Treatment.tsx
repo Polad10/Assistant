@@ -47,11 +47,6 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
     navigation.setOptions({
       headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
     })
-
-    context.fetchTreatments()
-    context.fetchPatients()
-    context.fetchAppointments()
-    context.fetchPayments()
   }, [])
 
   const treatment = context.treatments?.find((t) => t.id === treatmentId)

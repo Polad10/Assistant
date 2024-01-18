@@ -38,11 +38,6 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   )
 
   useEffect(() => {
-    context.fetchTreatments()
-    context.fetchPatients()
-  }, [])
-
-  useEffect(() => {
     ref.current?.clear()
 
     const treatments = patient ? getPatientTreatments(context.treatments ?? [], patient.id) : context.treatments

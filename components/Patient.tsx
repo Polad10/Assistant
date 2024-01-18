@@ -41,10 +41,6 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
     navigation.setOptions({
       headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
     })
-
-    context.fetchAppointments()
-    context.fetchTreatments()
-    context.fetchPayments()
   }, [])
 
   const patient = context.patients?.find((p) => p.id === patientId)
