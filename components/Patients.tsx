@@ -11,30 +11,37 @@ import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
 import NoPatients from './no-data/NoPatients'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
-    const fetch = async () => {
+    fetchData()
+  }, [])
+
+  const fetchData = useCallback(async () => {
+    try {
       setLoading(true)
 
       await context.fetchTreatments()
       await context.fetchPayments()
       await context.fetchAppointments()
       await context.fetchPatients()
-
+    } catch (ex) {
+      setError(true)
+    } finally {
       setLoading(false)
     }
-
-    fetch()
   }, [])
+
+  async function retryAfterError() {
+    setError(false)
+    await fetchData()
+  }
 
   const searchEventName = 'searchPatient'
 
@@ -53,7 +60,9 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   )
 
   function getPatientsContentView() {
-    if (loading) {
+    if (error) {
+      return <Error onBtnPress={retryAfterError} />
+    } else if (loading) {
       return <LoadingView />
     } else if (patientsInitial.length > 0) {
       return (
