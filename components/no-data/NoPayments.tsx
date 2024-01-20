@@ -1,4 +1,4 @@
-import NoDataView from './NoDataView'
+import UserMessageView from '../UserMessageView'
 import PaymentsIllustration from '../illustrations/PaymentsIllustration'
 
 type Props = {
@@ -7,12 +7,13 @@ type Props = {
 
 export default function NoPayments(props: Props) {
   return (
-    <NoDataView
+    <UserMessageView
       illustration={<PaymentsIllustration />}
       title='No Payments'
       subtitle="Click the '+' button to start adding payment details for your dental treatments."
-      addBtnTitle='Add Payment'
-      addBtnOnPress={props.addBtnOnPress}
+      btnTitle='Add Payment'
+      onBtnPress={props.addBtnOnPress}
+      iconName='add'
     />
   )
 }

@@ -1,4 +1,4 @@
-import NoDataView from './NoDataView'
+import UserMessageView from '../UserMessageView'
 import AgendaIllustration from '../illustrations/AgendaIllustration'
 
 type Props = {
@@ -7,12 +7,13 @@ type Props = {
 
 export default function NoAppointments(props: Props) {
   return (
-    <NoDataView
+    <UserMessageView
       illustration={<AgendaIllustration />}
       title='No Appointments'
       subtitle="To plan your day, click the '+' button to add a new appointment."
-      addBtnTitle='Add Appointment'
-      addBtnOnPress={props.addBtnOnPress}
+      btnTitle='Add Appointment'
+      onBtnPress={props.addBtnOnPress}
+      iconName='add'
     />
   )
 }

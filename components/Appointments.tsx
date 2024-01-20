@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 import { Agenda } from 'react-native-calendars'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import { Colors } from '../types/Colors'
 import MyFAB from './MyFAB'
@@ -13,6 +13,7 @@ import { Appointment } from '../modals/Appointment'
 import { DateTime } from 'luxon'
 import NoAppointments from './no-data/NoAppointments'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
@@ -20,25 +21,35 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
 
   const [agendaItems, setAgendaItems] = useState({})
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   if (!context) {
     return
   }
 
   useEffect(() => {
-    const fetch = async () => {
+    fetchData()
+  }, [])
+
+  const fetchData = useCallback(async () => {
+    try {
       setLoading(true)
 
       await context.fetchTreatments()
       await context.fetchPatients()
       await context.fetchPayments()
       await context.fetchAppointments()
-
+    } catch (ex) {
+      setError(true)
+    } finally {
       setLoading(false)
     }
-
-    fetch()
   }, [])
+
+  async function retryAfterError() {
+    setError(false)
+    await fetchData()
+  }
 
   useEffect(() => {
     const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
@@ -53,31 +64,39 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     return loading ? <View></View> : <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
   }
 
-  return (
-    <MainView>
-      <Agenda
-        key={Math.random()} // Workaround for Agenda's bug, where the item list not updated correctly
-        items={agendaItems}
-        renderItem={renderItem}
-        renderDay={() => <View></View>}
-        renderEmptyData={renderEmptyData}
-        showOnlySelectedDayItems={true}
-        selected={DateTime.local().toISO() ?? undefined}
-        theme={{
-          calendarBackground: colors.background,
-          monthTextColor: colors.text,
-          todayTextColor: colors.primary,
-          selectedDayBackgroundColor: colors.primary,
-          reservationsBackgroundColor: colors.background,
-          agendaDayNumColor: colors.text,
-          agendaDayTextColor: colors.text,
-          agendaTodayColor: colors.primary,
-        }}
-      />
-      {Object.keys(agendaItems).length > 0 && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
-      {loading && <LoadingView />}
-    </MainView>
-  )
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={retryAfterError} />
+    } else {
+      return (
+        <MainView>
+          <Agenda
+            key={Math.random()} // Workaround for Agenda's bug, where the item list not updated correctly
+            items={agendaItems}
+            renderItem={renderItem}
+            renderDay={() => <View></View>}
+            renderEmptyData={renderEmptyData}
+            showOnlySelectedDayItems={true}
+            selected={DateTime.local().toISO() ?? undefined}
+            theme={{
+              calendarBackground: colors.background,
+              monthTextColor: colors.text,
+              todayTextColor: colors.primary,
+              selectedDayBackgroundColor: colors.primary,
+              reservationsBackgroundColor: colors.background,
+              agendaDayNumColor: colors.text,
+              agendaDayTextColor: colors.text,
+              agendaTodayColor: colors.primary,
+            }}
+          />
+          {Object.keys(agendaItems).length > 0 && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
+          {loading && <LoadingView />}
+        </MainView>
+      )
+    }
+  }
+
+  return getContent()
 }
 
 const styles = (colors: Colors) =>

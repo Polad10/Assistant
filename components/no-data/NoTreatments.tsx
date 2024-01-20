@@ -1,4 +1,4 @@
-import NoDataView from './NoDataView'
+import UserMessageView from '../UserMessageView'
 import TreatmentsIllustration from '../illustrations/TreatmentsIllustration'
 
 type Props = {
@@ -7,12 +7,13 @@ type Props = {
 
 export default function NoTreatments(props: Props) {
   return (
-    <NoDataView
+    <UserMessageView
       illustration={<TreatmentsIllustration />}
       title='No Treatments'
       subtitle="Click the '+' button to begin documenting your patients' treatments."
-      addBtnTitle='Add Treatment'
-      addBtnOnPress={props.addBtnOnPress}
+      btnTitle='Add Treatment'
+      onBtnPress={props.addBtnOnPress}
+      iconName='add'
     />
   )
 }

@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native'
 import { StyleSheet, Text } from 'react-native'
-import { Colors } from '../../types/Colors'
-import MainView from '../MainView'
+import { Colors } from '../types/Colors'
+import MainView from './MainView'
 import { ReactNode } from 'react'
 import { Button } from '@rneui/themed'
 
@@ -9,11 +9,12 @@ type Props = {
   illustration: ReactNode
   title: string
   subtitle: string
-  addBtnTitle?: string
-  addBtnOnPress?: () => void
+  btnTitle?: string
+  onBtnPress?: () => void
+  iconName?: string
 }
 
-export default function NoDataView(props: Props) {
+export default function UserMessageView(props: Props) {
   const { colors } = useTheme()
 
   return (
@@ -21,15 +22,15 @@ export default function NoDataView(props: Props) {
       {props.illustration}
       <Text style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>{props.title}</Text>
       <Text style={{ color: colors.text, fontSize: 16, marginTop: 10, opacity: 0.7 }}>{props.subtitle}</Text>
-      {props.addBtnTitle && (
+      {props.btnTitle && (
         <Button
-          title={props.addBtnTitle}
-          icon={{ name: 'add', color: colors.text }}
+          title={props.btnTitle}
+          icon={props.iconName ? { name: props.iconName, color: colors.text } : undefined}
           titleStyle={{ fontWeight: 'bold' }}
           buttonStyle={{ borderRadius: 20, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}
           containerStyle={{ marginTop: 50 }}
           color={colors.primary}
-          onPress={props.addBtnOnPress}
+          onPress={props.onBtnPress}
         />
       )}
     </MainView>
