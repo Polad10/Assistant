@@ -22,6 +22,8 @@ export default function DataProvider({ children }: DataProviderProps) {
   const treatmentsApi = `${apiBaseUrl}/treatments`
   const paymentsApi = `${apiBaseUrl}/payments`
 
+  axios.defaults.timeout = 10000
+
   async function fetchPatients() {
     const patients = (await axios.get<Patient[]>(patientsApi)).data
 
