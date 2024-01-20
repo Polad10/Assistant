@@ -3,8 +3,7 @@ import MainView from './MainView'
 import { DeviceEventEmitter, NativeSyntheticEvent, StyleSheet, TextInputChangeEventData } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
-import { DataContext } from '../contexts/DataContext'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import HeaderButton from './HeaderButton'
 import { Patient, PatientRequest } from '../modals/Patient'
 import CreateButton from './CreateButton'
@@ -17,11 +16,6 @@ type Props = {
 
 export default function PatientForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
 
   const [firstName, setFirstName] = useState(props.patient?.first_name)
   const [lastName, setLastName] = useState(props.patient?.last_name)

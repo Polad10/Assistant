@@ -28,11 +28,7 @@ export default function PaymentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
 
   const { colors } = useTheme()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const treatmentId = props.payment?.treatment_id || props.treatmentId
   const treatment = context.treatments?.find((t) => t.id === treatmentId)

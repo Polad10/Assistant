@@ -17,15 +17,11 @@ import Error from './Error'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
-  const context = useContext(DataContext)
+  const context = useContext(DataContext)!
 
   const [agendaItems, setAgendaItems] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-
-  if (!context) {
-    return
-  }
 
   useEffect(() => {
     fetchData()

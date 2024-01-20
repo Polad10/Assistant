@@ -13,11 +13,7 @@ import LoadingView from './LoadingView'
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditPatient'>['route']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
 

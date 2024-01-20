@@ -13,11 +13,7 @@ import LoadingView from './LoadingView'
 export default function EditAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditAppointment'>['route']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
 

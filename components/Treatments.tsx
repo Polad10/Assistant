@@ -13,16 +13,12 @@ import { useNavigation } from '@react-navigation/native'
 import NoTreatments from './no-data/NoTreatments'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
-  const context = useContext(DataContext)
+  const context = useContext(DataContext)!
   const navigation = useNavigation<RootStackScreenProps<'Treatments'>['navigation']>()
   const searchEventName = 'searchTreatment'
 
   const [treatments, setTreatments] = useState<TreatmentWithPatientName[]>([])
   const [treatmentsInitial, setTreatmentsInitial] = useState<TreatmentWithPatientName[]>([])
-
-  if (!context) {
-    return
-  }
 
   const ref = useRef<SearchBarRefType>()
 

@@ -26,11 +26,7 @@ type Props = {
 
 export default function AppointmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   let treatment = props.treatment
   let appointment = props.appointment

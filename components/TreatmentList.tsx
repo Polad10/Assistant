@@ -4,8 +4,6 @@ import { Divider } from '@rneui/themed'
 import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
 import MainView from './MainView'
-import { useContext } from 'react'
-import { DataContext } from '../contexts/DataContext'
 import { Treatment } from '../modals/Treatment'
 import TreatmentsNotFound from './no-data/TreatmentsNotFound'
 import { FlatList } from 'react-native-gesture-handler'
@@ -17,11 +15,6 @@ type Props = {
 
 export default function TreatmentList(props: Props) {
   const { colors } = useTheme()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
 
   let treatments = props.treatments
 

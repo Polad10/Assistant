@@ -13,11 +13,7 @@ import LoadingView from './LoadingView'
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditPayment'>['route']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
 

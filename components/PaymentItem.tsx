@@ -18,11 +18,7 @@ export default function PaymentItem(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const { colors } = useTheme()
 
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const date = DateTime.fromISO(props.payment.date).toFormat('MMMM d, yyyy')
   const treatment = context.treatments?.find((t) => t.id === props.payment.treatment_id)

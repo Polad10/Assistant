@@ -31,11 +31,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   const { colors } = useTheme()
   const { patientId } = route.params
 
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   useEffect(() => {
     navigation.setOptions({

@@ -16,11 +16,7 @@ const AgendaItem = (props: ItemProps) => {
   const { appointment } = props
   const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const treatment = context.treatments?.find((t) => t.id === appointment.treatment_id)
   const patient = context.patients?.find((p) => p.id === treatment?.patient_id)

@@ -13,11 +13,7 @@ import LoadingView from './LoadingView'
 export default function EditTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'EditTreatment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditTreatment'>['route']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
 

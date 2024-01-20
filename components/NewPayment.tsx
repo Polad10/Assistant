@@ -12,11 +12,7 @@ import LoadingView from './LoadingView'
 export default function NewPayment() {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewPayment'>['route']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
 

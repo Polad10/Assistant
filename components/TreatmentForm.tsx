@@ -31,12 +31,8 @@ type Props = {
 
 export default function TreatmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const context = useContext(DataContext)
+  const context = useContext(DataContext)!
   const { colors } = useTheme()
-
-  if (!context) {
-    return
-  }
 
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)

@@ -33,11 +33,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   const { treatmentId } = route.params
 
   const navigation = useNavigation<RootStackScreenProps<'Treatment'>['navigation']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   function handleEdit() {
     navigation.navigate('EditTreatment', { treatmentId: treatmentId })

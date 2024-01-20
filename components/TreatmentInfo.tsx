@@ -15,11 +15,7 @@ type Props = {
 
 export default function TreatmentInfo(props: Props) {
   const { colors } = useTheme()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const treatment = props.treatment
 

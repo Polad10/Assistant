@@ -12,11 +12,7 @@ import LoadingView from './LoadingView'
 export default function NewTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewTreatment'>['route']>()
-  const context = useContext(DataContext)
-
-  if (!context) {
-    return
-  }
+  const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
 
