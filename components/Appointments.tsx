@@ -12,21 +12,32 @@ import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
 import { DateTime } from 'luxon'
 import NoAppointments from './no-data/NoAppointments'
+import LoadingView from './LoadingView'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const { colors } = useTheme()
   const context = useContext(DataContext)
+
   const [agendaItems, setAgendaItems] = useState({})
+  const [loading, setLoading] = useState(true)
 
   if (!context) {
     return
   }
 
   useEffect(() => {
-    context.fetchAppointments()
-    context.fetchTreatments()
-    context.fetchPatients()
-    context.fetchPayments()
+    const fetch = async () => {
+      setLoading(true)
+
+      await context.fetchTreatments()
+      await context.fetchPatients()
+      await context.fetchPayments()
+      await context.fetchAppointments()
+
+      setLoading(false)
+    }
+
+    fetch()
   }, [])
 
   useEffect(() => {
@@ -39,7 +50,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
+    return loading ? <View></View> : <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
   }
 
   return (
@@ -64,6 +75,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
         }}
       />
       {Object.keys(agendaItems).length > 0 && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
+      {loading && <LoadingView />}
     </MainView>
   )
 }
