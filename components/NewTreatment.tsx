@@ -1,11 +1,13 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
 import TreatmentForm from './TreatmentForm'
 import { RootStackScreenProps } from '../types/Navigation'
-import { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { TreatmentRequest } from '../modals/Treatment'
 import { DeviceEventEmitter } from 'react-native'
 import { showSuccessMessage } from '../helpers/ToastHelper'
+import MainView from './MainView'
+import LoadingView from './LoadingView'
 
 export default function NewTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
@@ -16,8 +18,13 @@ export default function NewTreatment() {
     return
   }
 
+  const [loading, setLoading] = useState(false)
+
   const handleTreatmentSave = useCallback(async (treatment: TreatmentRequest) => {
+    setLoading(true)
     const newTreatment = await context.createTreatment(treatment)
+    setLoading(false)
+
     showSuccessMessage('Treatment added')
 
     if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
@@ -35,5 +42,10 @@ export default function NewTreatment() {
     }
   }, [])
 
-  return <TreatmentForm pageName='NewTreatment' patient={route.params?.patient} />
+  return (
+    <MainView>
+      <TreatmentForm pageName='NewTreatment' patient={route.params?.patient} />
+      {loading && <LoadingView />}
+    </MainView>
+  )
 }
