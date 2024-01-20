@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
 import { DataContext } from '../contexts/DataContext'
 import { PaymentRequest } from '../modals/Payment'
@@ -8,6 +8,7 @@ import PaymentForm from './PaymentForm'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
+import LoadingView from './LoadingView'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
@@ -18,20 +19,26 @@ export default function EditPayment() {
     return
   }
 
+  const [loading, setLoading] = useState(false)
+
   const paymentId = route.params.paymentId
   const payment = context.payments?.find((p) => p.id === paymentId)
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
+    setLoading(true)
     await context.updatePayment(payment)
-    showMessage('Saved')
+    setLoading(false)
 
+    showMessage('Saved')
     navigation.goBack()
   }, [])
 
   const handleDelete = useCallback(async () => {
+    setLoading(true)
     await context.deletePayment(paymentId)
-    showDangerMessage('Payment deleted')
+    setLoading(false)
 
+    showDangerMessage('Payment deleted')
     navigation.goBack()
   }, [])
 
@@ -49,6 +56,7 @@ export default function EditPayment() {
     <MainView>
       <PaymentForm pageName='EditPayment' payment={payment} />
       <DeleteButton />
+      {loading && <LoadingView />}
     </MainView>
   )
 }
