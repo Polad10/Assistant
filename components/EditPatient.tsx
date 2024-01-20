@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import PatientForm from './PatientForm'
 import { DeviceEventEmitter } from 'react-native'
 import { PatientRequest } from '../modals/Patient'
@@ -8,6 +8,7 @@ import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
+import LoadingView from './LoadingView'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
@@ -18,13 +19,17 @@ export default function EditPatient() {
     return
   }
 
+  const [loading, setLoading] = useState(false)
+
   const patientId = route.params.patientId
   const patient = context.patients?.find((p) => p.id === patientId)
 
   const handlePatientSave = useCallback(async (patient: PatientRequest) => {
+    setLoading(true)
     await context.updatePatient(patient)
-    showMessage('Saved')
+    setLoading(false)
 
+    showMessage('Saved')
     navigation.goBack()
   }, [])
 
@@ -39,9 +44,11 @@ export default function EditPatient() {
   }, [])
 
   const handleDelete = useCallback(async () => {
+    setLoading(true)
     await context.deletePatient(patientId)
-    showDangerMessage('Patient deleted')
+    setLoading(false)
 
+    showDangerMessage('Patient deleted')
     navigation.popToTop()
   }, [])
 
@@ -49,6 +56,7 @@ export default function EditPatient() {
     <MainView>
       <PatientForm patient={patient} pageName='EditPatient' />
       <DeleteButton />
+      {loading && <LoadingView />}
     </MainView>
   )
 }
