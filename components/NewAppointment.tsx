@@ -1,12 +1,13 @@
 import AppointmentForm from './AppointmentForm'
 import { RootStackScreenProps } from '../types/Navigation'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { AppointmentRequest } from '../modals/Appointment'
 import { DeviceEventEmitter } from 'react-native'
-import Toast from 'react-native-root-toast'
 import { showSuccessMessage } from '../helpers/ToastHelper'
+import MainView from './MainView'
+import LoadingView from './LoadingView'
 
 export default function NewAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'NewAppointment'>['navigation']>()
@@ -17,13 +18,17 @@ export default function NewAppointment() {
     return
   }
 
+  const [loading, setLoading] = useState(false)
+
   const treatment = route.params?.treatment
   const patient = route.params?.patient
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
+    setLoading(true)
     await context.createAppointment(appointment)
-    showSuccessMessage('Appointment added')
+    setLoading(false)
 
+    showSuccessMessage('Appointment added')
     navigation.goBack()
   }, [])
 
@@ -35,5 +40,10 @@ export default function NewAppointment() {
     }
   }, [])
 
-  return <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
+  return (
+    <MainView>
+      <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
+      {loading && <LoadingView />}
+    </MainView>
+  )
 }
