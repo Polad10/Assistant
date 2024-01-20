@@ -10,6 +10,7 @@ import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
 import NoPatients from './no-data/NoPatients'
+import LoadingView from './LoadingView'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)
@@ -17,6 +18,23 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   if (!context) {
     return
   }
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetch = async () => {
+      setLoading(true)
+
+      await context.fetchTreatments()
+      await context.fetchPayments()
+      await context.fetchAppointments()
+      await context.fetchPatients()
+
+      setLoading(false)
+    }
+
+    fetch()
+  }, [])
 
   const searchEventName = 'searchPatient'
 
@@ -35,7 +53,9 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   )
 
   function getPatientsContentView() {
-    if (patientsInitial.length > 0) {
+    if (loading) {
+      return <LoadingView />
+    } else if (patientsInitial.length > 0) {
       return (
         <MainView>
           <MySearchBar placeholder='Enter patient name...' searchEventName={searchEventName} ref={ref} />
