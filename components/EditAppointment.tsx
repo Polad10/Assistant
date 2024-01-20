@@ -1,13 +1,14 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import AppointmentForm from './AppointmentForm'
-import { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { AppointmentRequest } from '../modals/Appointment'
 import { DeviceEventEmitter } from 'react-native'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
+import LoadingView from './LoadingView'
 
 export default function EditAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
@@ -18,20 +19,26 @@ export default function EditAppointment() {
     return
   }
 
+  const [loading, setLoading] = useState(false)
+
   const { appointmentId } = route.params
   const appointment = context.appointments?.find((a) => a.id === appointmentId)
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
+    setLoading(true)
     await context.updateAppointment(appointment)
-    showMessage('Saved')
+    setLoading(false)
 
+    showMessage('Saved')
     navigation.goBack()
   }, [])
 
   const handleDelete = useCallback(async () => {
+    setLoading(true)
     await context.deleteAppointment(appointmentId)
-    showDangerMessage('Appointment deleted')
+    setLoading(false)
 
+    showDangerMessage('Appointment deleted')
     navigation.goBack()
   }, [])
 
@@ -49,6 +56,7 @@ export default function EditAppointment() {
     <MainView>
       <AppointmentForm pageName='EditAppointment' appointment={appointment} />
       <DeleteButton />
+      {loading && <LoadingView />}
     </MainView>
   )
 }
