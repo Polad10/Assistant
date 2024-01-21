@@ -9,6 +9,7 @@ import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
@@ -16,26 +17,37 @@ export default function EditPayment() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const paymentId = route.params.paymentId
   const payment = context.payments?.find((p) => p.id === paymentId)
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
-    setLoading(true)
-    await context.updatePayment(payment)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.updatePayment(payment)
 
-    showMessage('Saved')
-    navigation.goBack()
+      showMessage('Saved')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   const handleDelete = useCallback(async () => {
-    setLoading(true)
-    await context.deletePayment(paymentId)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.deletePayment(paymentId)
 
-    showDangerMessage('Payment deleted')
-    navigation.goBack()
+      showDangerMessage('Payment deleted')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -48,11 +60,19 @@ export default function EditPayment() {
     }
   }, [])
 
-  return (
-    <MainView>
-      <PaymentForm pageName='EditPayment' payment={payment} />
-      <DeleteButton />
-      {loading && <LoadingView />}
-    </MainView>
-  )
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={() => setError(false)} />
+    } else {
+      return (
+        <MainView>
+          <PaymentForm pageName='EditPayment' payment={payment} />
+          <DeleteButton />
+          {loading && <LoadingView />}
+        </MainView>
+      )
+    }
+  }
+
+  return getContent()
 }

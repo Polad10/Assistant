@@ -9,6 +9,7 @@ import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function EditAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
@@ -16,26 +17,37 @@ export default function EditAppointment() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const { appointmentId } = route.params
   const appointment = context.appointments?.find((a) => a.id === appointmentId)
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
-    setLoading(true)
-    await context.updateAppointment(appointment)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.updateAppointment(appointment)
 
-    showMessage('Saved')
-    navigation.goBack()
+      showMessage('Saved')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   const handleDelete = useCallback(async () => {
-    setLoading(true)
-    await context.deleteAppointment(appointmentId)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.deleteAppointment(appointmentId)
 
-    showDangerMessage('Appointment deleted')
-    navigation.goBack()
+      showDangerMessage('Appointment deleted')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -48,11 +60,19 @@ export default function EditAppointment() {
     }
   }, [])
 
-  return (
-    <MainView>
-      <AppointmentForm pageName='EditAppointment' appointment={appointment} />
-      <DeleteButton />
-      {loading && <LoadingView />}
-    </MainView>
-  )
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={() => setError(false)} />
+    } else {
+      return (
+        <MainView>
+          <AppointmentForm pageName='EditAppointment' appointment={appointment} />
+          <DeleteButton />
+          {loading && <LoadingView />}
+        </MainView>
+      )
+    }
+  }
+
+  return getContent()
 }

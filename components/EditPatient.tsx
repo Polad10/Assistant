@@ -9,6 +9,7 @@ import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
@@ -16,17 +17,23 @@ export default function EditPatient() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const patientId = route.params.patientId
   const patient = context.patients?.find((p) => p.id === patientId)
 
   const handlePatientSave = useCallback(async (patient: PatientRequest) => {
-    setLoading(true)
-    await context.updatePatient(patient)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.updatePatient(patient)
 
-    showMessage('Saved')
-    navigation.goBack()
+      showMessage('Saved')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -40,19 +47,32 @@ export default function EditPatient() {
   }, [])
 
   const handleDelete = useCallback(async () => {
-    setLoading(true)
-    await context.deletePatient(patientId)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.deletePatient(patientId)
 
-    showDangerMessage('Patient deleted')
-    navigation.popToTop()
+      showDangerMessage('Patient deleted')
+      navigation.popToTop()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
-  return (
-    <MainView>
-      <PatientForm patient={patient} pageName='EditPatient' />
-      <DeleteButton />
-      {loading && <LoadingView />}
-    </MainView>
-  )
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={() => setError(false)} />
+    } else {
+      return (
+        <MainView>
+          <PatientForm patient={patient} pageName='EditPatient' />
+          <DeleteButton />
+          {loading && <LoadingView />}
+        </MainView>
+      )
+    }
+  }
+
+  return getContent()
 }

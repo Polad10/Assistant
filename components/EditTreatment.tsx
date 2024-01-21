@@ -9,6 +9,7 @@ import MainView from './MainView'
 import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function EditTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'EditTreatment'>['navigation']>()
@@ -16,18 +17,24 @@ export default function EditTreatment() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const treatmentId = route.params.treatmentId
   const treatment = context.treatments?.find((t) => t.id === treatmentId)
   const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
 
   const handleTreatmentSave = useCallback(async (treatment: TreatmentRequest) => {
-    setLoading(true)
-    await context.updateTreatment(treatment)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.updateTreatment(treatment)
 
-    showMessage('Saved')
-    navigation.goBack()
+      showMessage('Saved')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -41,21 +48,34 @@ export default function EditTreatment() {
   }, [])
 
   const handleDelete = useCallback(async () => {
-    if (patient) {
-      setLoading(true)
-      await context.deleteTreatment(treatmentId)
-      setLoading(false)
+    try {
+      if (patient) {
+        setLoading(true)
+        await context.deleteTreatment(treatmentId)
 
-      showDangerMessage('Treatment deleted')
-      navigation.navigate('Patient', { patientId: patient.id })
+        showDangerMessage('Treatment deleted')
+        navigation.navigate('Patient', { patientId: patient.id })
+      }
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
     }
   }, [])
 
-  return (
-    <MainView>
-      <TreatmentForm pageName='EditTreatment' treatment={treatment} />
-      <DeleteButton />
-      {loading && <LoadingView />}
-    </MainView>
-  )
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={() => setError(false)} />
+    } else {
+      return (
+        <MainView>
+          <TreatmentForm pageName='EditTreatment' treatment={treatment} />
+          <DeleteButton />
+          {loading && <LoadingView />}
+        </MainView>
+      )
+    }
+  }
+
+  return getContent()
 }
