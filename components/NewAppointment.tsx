@@ -8,6 +8,7 @@ import { DeviceEventEmitter } from 'react-native'
 import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function NewAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'NewAppointment'>['navigation']>()
@@ -15,17 +16,23 @@ export default function NewAppointment() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const treatment = route.params?.treatment
   const patient = route.params?.patient
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
-    setLoading(true)
-    await context.createAppointment(appointment)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.createAppointment(appointment)
 
-    showSuccessMessage('Appointment added')
-    navigation.goBack()
+      showSuccessMessage('Appointment added')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -36,10 +43,18 @@ export default function NewAppointment() {
     }
   }, [])
 
-  return (
-    <MainView>
-      <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
-      {loading && <LoadingView />}
-    </MainView>
-  )
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={() => setError(false)} />
+    } else {
+      return (
+        <MainView>
+          <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
+          {loading && <LoadingView />}
+        </MainView>
+      )
+    }
+  }
+
+  return getContent()
 }
