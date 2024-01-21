@@ -63,19 +63,12 @@ export default function EditTreatment() {
     }
   }, [])
 
-  function getContent() {
-    if (error) {
-      return <Error onBtnPress={() => setError(false)} />
-    } else {
-      return (
-        <MainView>
-          <TreatmentForm pageName='EditTreatment' treatment={treatment} />
-          <DeleteButton />
-          {loading && <LoadingView />}
-        </MainView>
-      )
-    }
-  }
-
-  return getContent()
+  return (
+    <MainView>
+      <TreatmentForm pageName='EditTreatment' treatment={treatment} />
+      <DeleteButton />
+      {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
+    </MainView>
+  )
 }

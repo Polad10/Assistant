@@ -60,19 +60,12 @@ export default function EditPatient() {
     }
   }, [])
 
-  function getContent() {
-    if (error) {
-      return <Error onBtnPress={() => setError(false)} />
-    } else {
-      return (
-        <MainView>
-          <PatientForm patient={patient} pageName='EditPatient' />
-          <DeleteButton />
-          {loading && <LoadingView />}
-        </MainView>
-      )
-    }
-  }
-
-  return getContent()
+  return (
+    <MainView>
+      <PatientForm patient={patient} pageName='EditPatient' />
+      <DeleteButton />
+      {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
+    </MainView>
+  )
 }

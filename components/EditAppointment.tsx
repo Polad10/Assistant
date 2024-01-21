@@ -60,19 +60,12 @@ export default function EditAppointment() {
     }
   }, [])
 
-  function getContent() {
-    if (error) {
-      return <Error onBtnPress={() => setError(false)} />
-    } else {
-      return (
-        <MainView>
-          <AppointmentForm pageName='EditAppointment' appointment={appointment} />
-          <DeleteButton />
-          {loading && <LoadingView />}
-        </MainView>
-      )
-    }
-  }
-
-  return getContent()
+  return (
+    <MainView>
+      <AppointmentForm pageName='EditAppointment' appointment={appointment} />
+      <DeleteButton />
+      {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
+    </MainView>
+  )
 }

@@ -60,19 +60,12 @@ export default function EditPayment() {
     }
   }, [])
 
-  function getContent() {
-    if (error) {
-      return <Error onBtnPress={() => setError(false)} />
-    } else {
-      return (
-        <MainView>
-          <PaymentForm pageName='EditPayment' payment={payment} />
-          <DeleteButton />
-          {loading && <LoadingView />}
-        </MainView>
-      )
-    }
-  }
-
-  return getContent()
+  return (
+    <MainView>
+      <PaymentForm pageName='EditPayment' payment={payment} />
+      <DeleteButton />
+      {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
+    </MainView>
+  )
 }
