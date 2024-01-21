@@ -8,6 +8,7 @@ import { DeviceEventEmitter } from 'react-native'
 import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function NewPayment() {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
@@ -15,17 +16,23 @@ export default function NewPayment() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const treatmentId = route.params.treatmentId
   const patient = route.params.patient
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
-    setLoading(true)
-    await context.createPayment(payment)
-    setLoading(false)
+    try {
+      setLoading(true)
+      await context.createPayment(payment)
 
-    showSuccessMessage('Payment added')
-    navigation.goBack()
+      showSuccessMessage('Payment added')
+      navigation.goBack()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -40,6 +47,7 @@ export default function NewPayment() {
     <MainView>
       <PaymentForm pageName='NewPayment' treatmentId={treatmentId} patient={patient} />
       {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
     </MainView>
   )
 }

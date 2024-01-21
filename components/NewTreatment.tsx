@@ -8,6 +8,7 @@ import { DeviceEventEmitter } from 'react-native'
 import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
+import Error from './Error'
 
 export default function NewTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
@@ -15,18 +16,24 @@ export default function NewTreatment() {
   const context = useContext(DataContext)!
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleTreatmentSave = useCallback(async (treatment: TreatmentRequest) => {
-    setLoading(true)
-    const newTreatment = await context.createTreatment(treatment)
-    setLoading(false)
+    try {
+      setLoading(true)
+      const newTreatment = await context.createTreatment(treatment)
 
-    showSuccessMessage('Treatment added')
+      showSuccessMessage('Treatment added')
 
-    if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
-      DeviceEventEmitter.emit('treatmentCreated', newTreatment)
-    } else {
-      navigation.goBack()
+      if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
+        DeviceEventEmitter.emit('treatmentCreated', newTreatment)
+      } else {
+        navigation.goBack()
+      }
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
     }
   }, [])
 
@@ -42,6 +49,7 @@ export default function NewTreatment() {
     <MainView>
       <TreatmentForm pageName='NewTreatment' patient={route.params?.patient} />
       {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
     </MainView>
   )
 }
