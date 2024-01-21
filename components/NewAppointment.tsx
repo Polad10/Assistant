@@ -43,18 +43,11 @@ export default function NewAppointment() {
     }
   }, [])
 
-  function getContent() {
-    if (error) {
-      return <Error onBtnPress={() => setError(false)} />
-    } else {
-      return (
-        <MainView>
-          <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
-          {loading && <LoadingView />}
-        </MainView>
-      )
-    }
-  }
-
-  return getContent()
+  return (
+    <MainView>
+      <AppointmentForm pageName='NewAppointment' treatment={treatment} patient={patient} />
+      {loading && <LoadingView />}
+      {error && <Error onBtnPress={() => setError(false)} />}
+    </MainView>
+  )
 }
