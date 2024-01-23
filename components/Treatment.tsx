@@ -1,11 +1,10 @@
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
 import DetailTab from './DetailTab'
 import { View, StyleSheet, Text } from 'react-native'
 import MyFAB from './MyFAB'
 import PaymentList from './PaymentList'
-import { Colors } from '../types/Colors'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { getAgendaItems, getGroupedAppointments } from '../helpers/AppointmentHelper'
@@ -21,15 +20,16 @@ import TreatmentInfo from './TreatmentInfo'
 import { getTreatmentPayments } from '../helpers/PaymentHelper'
 import NoPayments from './no-data/NoPayments'
 import NoAppointments from './no-data/NoAppointments'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type StyleProps = {
-  colors: Colors
+  themeContext: ThemeContextType
   treatmentFinished: boolean | undefined
 }
 
 export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
   const { treatmentId } = route.params
 
   const navigation = useNavigation<RootStackScreenProps<'Treatment'>['navigation']>()
@@ -59,7 +59,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
   const agendaItems = getAgendaItems(groupedAppointments)
 
   const styleProps: StyleProps = {
-    colors: colors,
+    themeContext: themeContext,
     treatmentFinished: treatmentFinished(treatment),
   }
 
@@ -152,7 +152,7 @@ const styles = (styleProps: StyleProps) =>
       marginVertical: 5,
     },
     infoIcon: {
-      color: styleProps.colors.text,
+      color: styleProps.themeContext.neutral,
       opacity: 0.5,
       marginRight: 10,
     },
@@ -160,15 +160,15 @@ const styles = (styleProps: StyleProps) =>
       flex: 1,
     },
     title: {
-      color: styleProps.colors.text,
+      color: styleProps.themeContext.neutral,
       fontSize: 25,
     },
     text: {
-      color: styleProps.colors.text,
+      color: styleProps.themeContext.neutral,
       fontSize: 20,
     },
     card: {
-      backgroundColor: styleProps.colors.card,
+      backgroundColor: styleProps.themeContext.secondary,
       padding: 20,
       marginTop: 5,
     },

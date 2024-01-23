@@ -1,7 +1,6 @@
-import { View, StyleSheet, DeviceEventEmitter, Text } from 'react-native'
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
 import { Chip, ListItem } from '@rneui/themed'
-import { Colors } from '../types/Colors'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
@@ -11,6 +10,7 @@ import { Treatment } from '../modals/Treatment'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import { Status } from '../enums/Status'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -18,17 +18,17 @@ export type TreatmentItemProps = {
 }
 
 type StyleProps = {
-  colors: Colors
+  themeContext: ThemeContextType
   finished: boolean
 }
 
 export default function TreatmentItem(props: TreatmentItemProps) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const context = useContext(DataContext)
 
   const styleProps: StyleProps = {
-    colors: colors,
+    themeContext: themeContext,
     finished: treatmentFinished(props.treatment),
   }
 
@@ -73,13 +73,13 @@ export default function TreatmentItem(props: TreatmentItemProps) {
 const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
     listItemContainer: {
-      backgroundColor: styleProps.colors.background,
+      backgroundColor: styleProps.themeContext.primary,
     },
     listItemTitle: {
-      color: styleProps.colors.text,
+      color: styleProps.themeContext.neutral,
     },
     listItemSubtitle: {
-      color: styleProps.colors.text,
+      color: styleProps.themeContext.neutral,
       opacity: 0.5,
     },
     listItemStatus: {

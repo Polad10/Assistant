@@ -1,11 +1,11 @@
 import { createContext } from 'react'
 
-interface ThemeContextType {
+export interface ThemeContextType {
   primary: string
   secondary: string
   accent: string
   neutral: string
-  base: string
+  border: string
   info: string
   success: string
   warning: string

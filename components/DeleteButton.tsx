@@ -1,11 +1,12 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
-import { useTheme } from '@react-navigation/native'
 import { Button } from '@rneui/themed'
+import { useContext } from 'react'
 import { DeviceEventEmitter, SafeAreaView, StyleSheet } from 'react-native'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 export default function DeleteButton() {
   const { showActionSheetWithOptions } = useActionSheet()
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   function handleDelete() {
     DeviceEventEmitter.emit('entityDeleted')
@@ -22,8 +23,8 @@ export default function DeleteButton() {
         cancelButtonIndex,
         destructiveButtonIndex,
         showSeparators: true,
-        containerStyle: { backgroundColor: colors.card },
-        textStyle: { color: colors.text },
+        containerStyle: { backgroundColor: themeContext.secondary },
+        textStyle: { color: themeContext.neutral },
       },
       (selectedIndex) => {
         switch (selectedIndex) {
@@ -36,7 +37,7 @@ export default function DeleteButton() {
 
   return (
     <SafeAreaView>
-      <Button titleStyle={{ color: 'red' }} style={styles.button} type='clear' onPress={promptToConfirm}>
+      <Button titleStyle={{ color: themeContext.warning }} style={styles.button} type='clear' onPress={promptToConfirm}>
         Delete
       </Button>
     </SafeAreaView>

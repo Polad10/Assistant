@@ -1,26 +1,27 @@
-import { useTheme } from '@react-navigation/native'
 import { ButtonGroup, ButtonGroupProps } from '@rneui/themed'
 import { Colors } from '../types/Colors'
 import { StyleSheet } from 'react-native'
+import { useContext } from 'react'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 export default function MyButtonGroup(props: ButtonGroupProps) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   return (
     <ButtonGroup
       {...props}
-      buttonStyle={{ backgroundColor: colors.background }}
-      containerStyle={styles(colors).container}
-      innerBorderStyle={{ color: colors.border }}
-      selectedButtonStyle={{ backgroundColor: colors.primary }}
+      buttonStyle={{ backgroundColor: themeContext.primary }}
+      containerStyle={styles(themeContext).container}
+      innerBorderStyle={{ color: themeContext.border }}
+      selectedButtonStyle={{ backgroundColor: themeContext.accent }}
     />
   )
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     container: {
-      borderColor: colors.border,
+      borderColor: themeContext.border,
       borderRadius: 20,
       marginTop: 10,
       marginBottom: 5,

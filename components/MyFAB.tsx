@@ -1,26 +1,25 @@
-import { FAB, FABProps } from '@rneui/themed';
-import { useTheme } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
-import { Colors } from '../types/Colors';
+import { FAB, FABProps } from '@rneui/themed'
+import { StyleSheet } from 'react-native'
+import { useContext } from 'react'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 export default function MyFAB(props: FABProps) {
-  const { colors } = useTheme();
+  const themeContext = useContext(ThemeContext)!
 
   return (
     <FAB
       {...props}
-      icon={{ name: 'add', color: colors.text }}
+      icon={{ name: 'add', color: themeContext.neutral }}
       placement='right'
-      color={colors.primary}
-      style={styles(colors).fab}
+      color={themeContext.accent}
+      style={styles.fab}
     />
-  );
+  )
 }
 
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    fab: {
-      marginRight: 20,
-      marginBottom: 30,
-    },
-  });
+const styles = StyleSheet.create({
+  fab: {
+    marginRight: 20,
+    marginBottom: 30,
+  },
+})

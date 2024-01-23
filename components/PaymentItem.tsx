@@ -1,13 +1,13 @@
 import { ListItem } from '@rneui/themed'
 import { StyleSheet, TouchableHighlight, View } from 'react-native'
-import { Colors } from '../types/Colors'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { Payment } from '../modals/Payment'
 import { DateTime } from 'luxon'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { FontAwesome6 } from '@expo/vector-icons'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type Props = {
   payment: Payment
@@ -16,7 +16,7 @@ type Props = {
 
 export default function PaymentItem(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   const context = useContext(DataContext)!
 
@@ -25,14 +25,14 @@ export default function PaymentItem(props: Props) {
 
   return (
     <TouchableHighlight onPress={() => navigation.navigate('EditPayment', { paymentId: props.payment.id })}>
-      <ListItem containerStyle={styles(colors).listItemContainer}>
-        <ListItem.Content style={[styles(colors).flexRow, styles(colors).spacedItems]}>
+      <ListItem containerStyle={styles(themeContext).listItemContainer}>
+        <ListItem.Content style={[styles(themeContext).flexRow, styles(themeContext).spacedItems]}>
           <View>
-            <ListItem.Title style={styles(colors).defaultText}>{treatment?.title}</ListItem.Title>
-            <ListItem.Subtitle style={styles(colors).subTitle}>{date}</ListItem.Subtitle>
+            <ListItem.Title style={styles(themeContext).defaultText}>{treatment?.title}</ListItem.Title>
+            <ListItem.Subtitle style={styles(themeContext).subTitle}>{date}</ListItem.Subtitle>
           </View>
-          <View style={styles(colors).flexRow}>
-            <ListItem.Title style={styles(colors).payment}>+ {props.payment.amount}</ListItem.Title>
+          <View style={styles(themeContext).flexRow}>
+            <ListItem.Title style={styles(themeContext).payment}>+ {props.payment.amount}</ListItem.Title>
             <FontAwesome6 name='manat-sign' color='lightgreen' size={16} />
           </View>
         </ListItem.Content>
@@ -41,10 +41,10 @@ export default function PaymentItem(props: Props) {
   )
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     listItemContainer: {
-      backgroundColor: colors.background,
+      backgroundColor: themeContext.primary,
     },
     flexRow: {
       flexDirection: 'row',
@@ -54,10 +54,10 @@ const styles = (colors: Colors) =>
       justifyContent: 'space-between',
     },
     defaultText: {
-      color: colors.text,
+      color: themeContext.neutral,
     },
     subTitle: {
-      color: colors.text,
+      color: themeContext.neutral,
       opacity: 0.5,
       marginTop: 10,
     },

@@ -3,19 +3,18 @@ import MainView from './MainView'
 import { Icon, LinearProgress } from '@rneui/themed'
 import { DateTime } from 'luxon'
 import { Treatment } from '../modals/Treatment'
-import { Colors } from '../types/Colors'
-import { useTheme } from '@react-navigation/native'
 import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { getTotalPayment } from '../helpers/PaymentHelper'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type Props = {
   treatment: Treatment
 }
 
 export default function TreatmentInfo(props: Props) {
-  const { colors } = useTheme()
   const context = useContext(DataContext)!
+  const themeContext = useContext(ThemeContext)!
 
   const treatment = props.treatment
 
@@ -24,62 +23,57 @@ export default function TreatmentInfo(props: Props) {
 
   return (
     <MainView>
-      <View style={[styles(colors).card, styles(colors).rounded, styles(colors).priceView]}>
+      <View style={[styles(themeContext).card, styles(themeContext).rounded, styles(themeContext).priceView]}>
         <Icon
           containerStyle={{
             marginRight: 20,
           }}
           name='wallet-outline'
           type='ionicon'
-          size={25}
-          color={colors.notification}
-          reverse
+          size={50}
+          color='#ff00ff'
         />
         <View style={{ flex: 1 }}>
-          <View style={styles(colors).priceDetailsView}>
+          <View style={styles(themeContext).priceDetailsView}>
             <View>
-              <Text style={styles(colors).text}>Price</Text>
-              <Text style={[styles(colors).paymentsNrText, styles(colors).halfOpacity]}>
+              <Text style={styles(themeContext).text}>Price</Text>
+              <Text style={[styles(themeContext).paymentsNrText, styles(themeContext).halfOpacity]}>
                 {payments.length} Payments
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={[styles(colors).valueText, styles(colors).bold]}>{totalPayment} ₼ </Text>
-              <Text style={[styles(colors).valueText, styles(colors).halfOpacity]}> of </Text>
-              <Text style={[styles(colors).valueText, styles(colors).bold]}> {treatment.price} ₼</Text>
+              <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>{totalPayment} ₼ </Text>
+              <Text style={[styles(themeContext).valueText, styles(themeContext).halfOpacity]}> of </Text>
+              <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}> {treatment.price} ₼</Text>
             </View>
           </View>
-          <LinearProgress
-            style={{ marginTop: 10 }}
-            value={totalPayment / treatment.price}
-            color={colors.notification}
-          />
+          <LinearProgress style={{ marginTop: 10 }} value={totalPayment / treatment.price} color='#ff00ff' />
         </View>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <View style={[styles(colors).startDateView, styles(colors).card, styles(colors).rounded]}>
-          <Text style={styles(colors).text}>Start</Text>
+        <View style={[styles(themeContext).startDateView, styles(themeContext).card, styles(themeContext).rounded]}>
+          <Text style={styles(themeContext).text}>Start</Text>
           <Icon
             name='hourglass-start'
             type='font-awesome'
             color='orange'
             size={25}
-            containerStyle={styles(colors).dateIconContainer}
+            containerStyle={styles(themeContext).dateIconContainer}
           />
-          <Text style={[styles(colors).valueText, styles(colors).bold]}>
+          <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
             {DateTime.fromISO(treatment.start_date).toFormat('MMMM d, yyyy')}
           </Text>
         </View>
-        <View style={[styles(colors).endDateView, styles(colors).card, styles(colors).rounded]}>
-          <Text style={styles(colors).text}>End</Text>
+        <View style={[styles(themeContext).endDateView, styles(themeContext).card, styles(themeContext).rounded]}>
+          <Text style={styles(themeContext).text}>End</Text>
           <Icon
             name='hourglass-end'
             type='font-awesome'
             color='lightgreen'
             size={25}
-            containerStyle={styles(colors).dateIconContainer}
+            containerStyle={styles(themeContext).dateIconContainer}
           />
-          <Text style={[styles(colors).valueText, styles(colors).bold]}>
+          <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
             {treatment.end_date ? DateTime.fromISO(treatment.end_date).toFormat('MMMM d, yyyy') : '-'}
           </Text>
         </View>
@@ -88,10 +82,10 @@ export default function TreatmentInfo(props: Props) {
   )
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     card: {
-      backgroundColor: colors.card,
+      backgroundColor: themeContext.secondary,
       padding: 20,
       marginTop: 5,
     },
@@ -109,11 +103,11 @@ const styles = (colors: Colors) =>
       alignItems: 'center',
     },
     text: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontSize: 20,
     },
     paymentsNrText: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontSize: 16,
       marginTop: 5,
     },
@@ -125,7 +119,7 @@ const styles = (colors: Colors) =>
       fontWeight: 'bold',
     },
     valueText: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontSize: 18,
     },
     startDateView: {

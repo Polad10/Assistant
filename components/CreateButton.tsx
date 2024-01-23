@@ -1,13 +1,14 @@
-import { useTheme } from '@react-navigation/native'
 import { Button, ButtonProps } from '@rneui/themed'
+import { useContext } from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 export default function CreateButton(props: ButtonProps) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   return (
     <SafeAreaView style={styles.buttonView}>
-      <Button {...props} color={colors.primary} style={styles.button} buttonStyle={styles.buttonStyle}>
+      <Button {...props} color={themeContext.accent} style={styles.button} buttonStyle={styles.buttonStyle}>
         Create
       </Button>
     </SafeAreaView>

@@ -1,11 +1,10 @@
-import { PropsWithChildren, SetStateAction, forwardRef, useImperativeHandle, useRef, useState } from 'react'
-import { useTheme } from '@react-navigation/native'
+import { PropsWithChildren, SetStateAction, forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react'
 import { DeviceEventEmitter, StyleSheet, TextInput } from 'react-native'
 import { SearchBar } from '@rneui/themed'
 import { SearchBar as BaseSearchBar } from '@rneui/base'
-import { Colors } from '../types/Colors'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type Props = {
   placeholder: string
@@ -17,7 +16,7 @@ type SearchBarRefType = {
 }
 
 const MySearchBar = forwardRef((props: Props, ref) => {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
   const [search, setSearch] = useState('')
 
   const searchBarRef = useRef<TextInput & PropsWithChildren<BaseSearchBar>>(null)
@@ -45,27 +44,27 @@ const MySearchBar = forwardRef((props: Props, ref) => {
       ref={searchBarRef}
       placeholder={props.placeholder}
       platform={'ios'}
-      containerStyle={styles(colors).searchBarContainer}
-      inputContainerStyle={styles(colors).searchBarInputContainer}
-      inputStyle={styles(colors).searchBarInput}
-      searchIcon={<Ionicons name='search-outline' size={20} color={colors.text} />}
-      clearIcon={<MaterialIcons name='clear' size={20} color={colors.text} onPress={clear} />}
+      containerStyle={styles(themeContext).searchBarContainer}
+      inputContainerStyle={styles(themeContext).searchBarInputContainer}
+      inputStyle={styles(themeContext).searchBarInput}
+      searchIcon={<Ionicons name='search-outline' size={20} color={themeContext.neutral} />}
+      clearIcon={<MaterialIcons name='clear' size={20} color={themeContext.neutral} onPress={clear} />}
       value={search}
       onChangeText={updateSearch}
     />
   )
 })
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     searchBarContainer: {
-      backgroundColor: colors.background,
+      backgroundColor: themeContext.primary,
     },
     searchBarInputContainer: {
-      backgroundColor: colors.card,
+      backgroundColor: themeContext.primary,
     },
     searchBarInput: {
-      color: colors.text,
+      color: themeContext.neutral,
     },
   })
 

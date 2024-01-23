@@ -1,6 +1,7 @@
-import { useTheme } from '@react-navigation/native'
 import { Icon } from '@rneui/themed'
+import { useContext } from 'react'
 import { StyleSheet } from 'react-native'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 type Props = {
   name: string
@@ -10,14 +11,14 @@ type Props = {
 }
 
 export default function DetailTab(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   return (
     <Icon
       name={props.name}
       size={25}
       type={props.type}
-      color={colors.text}
+      color={themeContext.neutral}
       style={styles(props.index, props.selectedIndex).icon}
     />
   )

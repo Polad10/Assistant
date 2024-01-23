@@ -1,10 +1,10 @@
 import { NativeSyntheticEvent, StyleProp, TextInputChangeEventData, View, ViewStyle } from 'react-native'
 import MyInput from './MyInput'
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import { forwardRef, useContext, useImperativeHandle, useState } from 'react'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { DateTime } from 'luxon'
 import IonIcons from '@expo/vector-icons/Ionicons'
-import { useTheme } from '@react-navigation/native'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 type Props = {
   label?: string
@@ -21,7 +21,7 @@ type DateInputRefType = {
 }
 
 const DateInput = forwardRef((props: Props, ref) => {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   let initialDate = props.date ? DateTime.fromJSDate(props.date).toISODate() : undefined
   initialDate ??= undefined
@@ -65,7 +65,9 @@ const DateInput = forwardRef((props: Props, ref) => {
         label={props.label}
         placeholder={props.placeholder}
         value={date}
-        rightIcon={<IonIcons name='calendar-outline' size={25} color={colors.notification} onPress={handleIconPress} />}
+        rightIcon={
+          <IonIcons name='calendar-outline' size={25} color={themeContext.neutral} onPress={handleIconPress} />
+        }
         showError={props.showError}
         onFocus={props.onFocus}
         onChange={handleChange}

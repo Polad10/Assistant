@@ -1,7 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { RootStackScreenProps } from '../types/Navigation'
-import { Colors } from '../types/Colors'
-import { useTheme } from '@react-navigation/native'
 import { useContext, useEffect, useState } from 'react'
 import TreatmentList from './TreatmentList'
 import PaymentList from './PaymentList'
@@ -25,13 +23,14 @@ import MyFAB from './MyFAB'
 import NoAppointments from './no-data/NoAppointments'
 import NoTreatments from './no-data/NoTreatments'
 import NoPayments from './no-data/NoPayments'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const { colors } = useTheme()
-  const { patientId } = route.params
-
   const context = useContext(DataContext)!
+  const themeContext = useContext(ThemeContext)!
+
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const { patientId } = route.params
 
   useEffect(() => {
     navigation.setOptions({
@@ -115,24 +114,24 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 
   return (
     <MainView>
-      <View style={[styles(colors).headerView, styles(colors).card]}>
-        <Text style={styles(colors).title}>{getPatientFullName(patient)}</Text>
+      <View style={[styles(themeContext).headerView, styles(themeContext).card]}>
+        <Text style={styles(themeContext).title}>{getPatientFullName(patient)}</Text>
       </View>
-      <View style={styles(colors).card}>
-        <View style={styles(colors).infoField}>
-          <IonIcons name='home-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient.city || '-'}</Text>
+      <View style={styles(themeContext).card}>
+        <View style={styles(themeContext).infoField}>
+          <IonIcons name='home-outline' size={22} style={styles(themeContext).infoIcon} />
+          <Text style={styles(themeContext).text}>{patient.city || '-'}</Text>
         </View>
-        <View style={styles(colors).infoField}>
-          <IonIcons name='call-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient.phone || '-'}</Text>
+        <View style={styles(themeContext).infoField}>
+          <IonIcons name='call-outline' size={22} style={styles(themeContext).infoIcon} />
+          <Text style={styles(themeContext).text}>{patient.phone || '-'}</Text>
         </View>
-        <View style={styles(colors).infoField}>
-          <IonIcons name='information-circle-outline' size={22} style={styles(colors).infoIcon} />
-          <Text style={styles(colors).text}>{patient.extra_info || '-'}</Text>
+        <View style={styles(themeContext).infoField}>
+          <IonIcons name='information-circle-outline' size={22} style={styles(themeContext).infoIcon} />
+          <Text style={styles(themeContext).text}>{patient.extra_info || '-'}</Text>
         </View>
       </View>
-      <View style={styles(colors).additionalInfoView}>
+      <View style={styles(themeContext).additionalInfoView}>
         <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
         <TabContent />
       </View>
@@ -140,7 +139,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
   )
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     headerView: {
       padding: 22,
@@ -153,7 +152,7 @@ const styles = (colors: Colors) =>
       marginVertical: 5,
     },
     infoIcon: {
-      color: colors.text,
+      color: themeContext.neutral,
       opacity: 0.5,
       marginRight: 10,
     },
@@ -161,20 +160,20 @@ const styles = (colors: Colors) =>
       flex: 1,
     },
     title: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontSize: 25,
     },
     text: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontSize: 20,
     },
     card: {
-      backgroundColor: colors.card,
+      backgroundColor: themeContext.secondary,
       padding: 20,
       marginTop: 5,
     },
     defaultText: {
-      color: colors.text,
+      color: themeContext.neutral,
     },
     emptyDateView: {
       flex: 1,

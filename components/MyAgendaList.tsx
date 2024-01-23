@@ -1,34 +1,45 @@
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
 import { AgendaList, AgendaListProps } from 'react-native-calendars'
 import AgendaItem from './AgendaItem'
 import MainView from './MainView'
-import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Colors } from '../types/Colors'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { Divider } from '@rneui/themed'
 
 interface Props extends AgendaListProps {
   pageName: keyof RootStackParamList
 }
 
 export default function MyAgendaList(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   const renderItem = useCallback(({ item }: any) => {
-    return <AgendaItem appointment={item} />
+    return (
+      <View>
+        <AgendaItem appointment={item} />
+        <Divider color={themeContext.border} style={styles.divider} />
+      </View>
+    )
   }, [])
 
   function getContentView() {
-    return <AgendaList sections={props.sections} renderItem={renderItem} sectionStyle={styles(colors).agendaSection} />
+    return (
+      <AgendaList sections={props.sections} renderItem={renderItem} sectionStyle={styles(themeContext).agendaSection} />
+    )
   }
 
   return <MainView>{getContentView()}</MainView>
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     agendaSection: {
-      backgroundColor: colors.card,
-      color: colors.text,
+      backgroundColor: themeContext.secondary,
+      color: themeContext.neutral,
+    },
+    divider: {
+      marginHorizontal: 10,
     },
   })

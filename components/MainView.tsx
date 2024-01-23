@@ -1,5 +1,6 @@
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import { TouchableWithoutFeedback, View, StyleSheet, Keyboard, ViewStyle } from 'react-native'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type Props = {
   children: ReactNode
@@ -7,15 +8,19 @@ type Props = {
 }
 
 export default function MainView(props: Props) {
+  const themeContext = useContext(ThemeContext)!
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={[props.style, styles.mainView]}>{props.children}</View>
+      <View style={[props.style, styles(themeContext).mainView]}>{props.children}</View>
     </TouchableWithoutFeedback>
   )
 }
 
-const styles = StyleSheet.create({
-  mainView: {
-    flex: 1,
-  },
-})
+const styles = (themeContext: ThemeContextType) =>
+  StyleSheet.create({
+    mainView: {
+      flex: 1,
+      backgroundColor: themeContext.primary,
+    },
+  })

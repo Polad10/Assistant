@@ -9,18 +9,18 @@ import HeaderButton from './HeaderButton'
 import { Treatment, TreatmentRequest } from '../modals/Treatment'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
-import { useNavigation, useTheme } from '@react-navigation/native'
-import { Colors } from '../types/Colors'
+import { useNavigation } from '@react-navigation/native'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import DateInput, { DateInputRefType } from './DateInput'
 import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type StyleProps = {
   patientEditable: boolean
-  colors: Colors
+  themeContext: ThemeContextType
 }
 
 type Props = {
@@ -32,7 +32,7 @@ type Props = {
 export default function TreatmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const context = useContext(DataContext)!
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
@@ -64,7 +64,7 @@ export default function TreatmentForm(props: Props) {
 
   let styleProps: StyleProps = {
     patientEditable: !patient,
-    colors: colors,
+    themeContext: themeContext,
   }
 
   const handleSave = useCallback(async () => {
@@ -201,7 +201,7 @@ export default function TreatmentForm(props: Props) {
           showError={showPriceInputError}
           onChange={handlePriceChange}
           keyboardType='decimal-pad'
-          rightIcon={<FontAwesome6 name='manat-sign' color={colors.notification} size={20} />}
+          rightIcon={<FontAwesome6 name='manat-sign' color={themeContext.neutral} size={20} />}
           onFocus={() => setFocusedInputIndex(2)}
         />
         {styleProps.patientEditable ? (

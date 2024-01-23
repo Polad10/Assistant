@@ -1,8 +1,7 @@
-import { useTheme } from '@react-navigation/native'
 import { StyleSheet, Text, View } from 'react-native'
-import { Colors } from '../types/Colors'
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import { Button } from '@rneui/themed'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type Props = {
   illustration: ReactNode
@@ -14,22 +13,24 @@ type Props = {
 }
 
 export default function UserMessageView(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   return (
-    <View style={styles(colors).mainView}>
-      <View style={styles(colors).content}>
+    <View style={styles(themeContext).mainView}>
+      <View style={styles(themeContext).content}>
         {props.illustration}
-        <Text style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>{props.title}</Text>
-        <Text style={{ color: colors.text, fontSize: 16, marginTop: 10, opacity: 0.7 }}>{props.subtitle}</Text>
+        <Text style={{ color: themeContext.neutral, fontSize: 22, fontWeight: 'bold', marginTop: 20 }}>
+          {props.title}
+        </Text>
+        <Text style={{ color: themeContext.neutral, fontSize: 16, marginTop: 10, opacity: 0.7 }}>{props.subtitle}</Text>
         {props.btnTitle && (
           <Button
             title={props.btnTitle}
-            icon={props.iconName ? { name: props.iconName, color: colors.text } : undefined}
+            icon={props.iconName ? { name: props.iconName, color: themeContext.neutral } : undefined}
             titleStyle={{ fontWeight: 'bold' }}
             buttonStyle={{ borderRadius: 20, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}
             containerStyle={{ marginTop: 50 }}
-            color={colors.primary}
+            color={themeContext.accent}
             onPress={props.onBtnPress}
           />
         )}
@@ -38,12 +39,12 @@ export default function UserMessageView(props: Props) {
   )
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     mainView: {
       ...StyleSheet.absoluteFillObject,
       zIndex: 1000,
-      backgroundColor: colors.background,
+      backgroundColor: themeContext.primary,
     },
     content: {
       alignItems: 'center',
@@ -51,7 +52,7 @@ const styles = (colors: Colors) =>
       paddingHorizontal: 30,
     },
     defaultText: {
-      color: colors.text,
+      color: themeContext.neutral,
     },
     emptyDateText: {
       fontSize: 28,

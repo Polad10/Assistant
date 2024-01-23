@@ -4,9 +4,10 @@ import { Patient } from '../modals/Patient'
 import { ListRenderItemInfo, StyleSheet, View } from 'react-native'
 import PatientItem from './PatientItem'
 import { Divider } from '@rneui/themed'
-import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
 import PatientsNotFound from './no-data/PatientsNotFound'
+import { useContext } from 'react'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 type Props = {
   patients: Patient[]
@@ -14,13 +15,13 @@ type Props = {
 }
 
 export default function PatientList(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   function renderItem(data: ListRenderItemInfo<Patient>) {
     return (
       <View>
         <PatientItem patient={data.item} pageName={props.pageName} />
-        <Divider color={colors.border} style={styles.divider} />
+        <Divider color={themeContext.border} style={styles.divider} />
       </View>
     )
   }
@@ -45,6 +46,6 @@ export default function PatientList(props: Props) {
 
 const styles = StyleSheet.create({
   divider: {
-    marginHorizontal: 13,
+    marginHorizontal: 10,
   },
 })

@@ -1,6 +1,6 @@
 import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import MyInput from './MyInput'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import HeaderButton from './HeaderButton'
@@ -16,6 +16,7 @@ import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -27,7 +28,7 @@ type Props = {
 export default function PaymentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
 
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
   const context = useContext(DataContext)!
 
   const treatmentId = props.payment?.treatment_id || props.treatmentId
@@ -127,7 +128,7 @@ export default function PaymentForm(props: Props) {
 
   return (
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView>
+      <MainView style={{ paddingTop: 20 }}>
         <DateInput
           ref={dateInputRef}
           label='Date'
@@ -144,7 +145,7 @@ export default function PaymentForm(props: Props) {
           showError={showAmountInputError}
           onChange={handleAmountChange}
           keyboardType='decimal-pad'
-          rightIcon={<FontAwesome6 name='manat-sign' color={colors.notification} size={20} />}
+          rightIcon={<FontAwesome6 name='manat-sign' color={themeContext.neutral} size={20} />}
           onFocus={() => setFocusedInputIndex(1)}
         />
 

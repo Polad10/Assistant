@@ -1,11 +1,12 @@
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { ListItem } from '@rneui/themed'
 import { TouchableHighlight } from 'react-native-gesture-handler'
 import { DeviceEventEmitter, StyleSheet } from 'react-native'
-import { Colors } from '../types/Colors'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { Patient } from '../modals/Patient'
+import { useContext } from 'react'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type Props = {
   patient: Patient
@@ -13,16 +14,16 @@ type Props = {
 }
 
 export default function PatientItem(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
 
   return (
     <TouchableHighlight onPress={() => handlePatientSelect(props.patient)}>
-      <ListItem containerStyle={styles(colors).listItemContainer}>
+      <ListItem containerStyle={styles(themeContext).listItemContainer}>
         <ListItem.Content>
-          <ListItem.Title style={styles(colors).defaultText}>{getPatientFullName(props.patient)}</ListItem.Title>
+          <ListItem.Title style={styles(themeContext).defaultText}>{getPatientFullName(props.patient)}</ListItem.Title>
           {props.patient.extra_info && (
-            <ListItem.Subtitle style={styles(colors).subTitle}>{props.patient.extra_info}</ListItem.Subtitle>
+            <ListItem.Subtitle style={styles(themeContext).subTitle}>{props.patient.extra_info}</ListItem.Subtitle>
           )}
         </ListItem.Content>
       </ListItem>
@@ -38,13 +39,13 @@ export default function PatientItem(props: Props) {
   }
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     listItemContainer: {
-      backgroundColor: colors.background,
+      backgroundColor: themeContext.primary,
     },
     defaultText: {
-      color: colors.text,
+      color: themeContext.neutral,
     },
     subTitle: {
       marginTop: 5,

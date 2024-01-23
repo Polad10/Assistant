@@ -1,11 +1,10 @@
 import { NativeSyntheticEvent, StyleSheet, TextInputFocusEventData } from 'react-native'
-import { useTheme } from '@react-navigation/native'
-import { Colors } from '../types/Colors'
 import { Input, InputProps } from '@rneui/themed'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type StyleProps = {
-  colors: Colors
+  themeContext: ThemeContextType
   showError?: boolean
 }
 
@@ -14,11 +13,11 @@ type Props = InputProps & {
 }
 
 export default function MyInput(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
   const [focused, setFocused] = useState(false)
 
   const styleProps: StyleProps = {
-    colors: colors,
+    themeContext: themeContext,
     showError: props.showError,
   }
 
@@ -35,7 +34,7 @@ export default function MyInput(props: Props) {
       inputStyle={styles(styleProps).input}
       labelStyle={styles(styleProps).label}
       inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
-      selectionColor={props.selectionColor || colors.notification}
+      selectionColor={props.selectionColor || themeContext.neutral}
       onFocus={handleFocus}
       onBlur={() => setFocused(false)}
     />
@@ -45,16 +44,16 @@ export default function MyInput(props: Props) {
 const styles = (styleProps: StyleProps) =>
   StyleSheet.create({
     input: {
-      color: styleProps.colors.text,
+      color: styleProps.themeContext.neutral,
     },
     label: {
       marginBottom: 5,
-      color: styleProps.colors.notification,
+      color: styleProps.themeContext.info,
     },
     inputContainer: {
       borderWidth: 1,
       borderRadius: 10,
-      borderColor: styleProps.showError ? 'red' : styleProps.colors.border,
+      borderColor: styleProps.showError ? 'red' : styleProps.themeContext.border,
     },
     focused: {
       borderColor: 'grey',

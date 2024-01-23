@@ -1,9 +1,7 @@
-import { StyleSheet, View, Text } from 'react-native'
-import { useTheme } from '@react-navigation/native'
+import { View, StyleSheet } from 'react-native'
 import { Agenda } from 'react-native-calendars'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
-import { Colors } from '../types/Colors'
 import MyFAB from './MyFAB'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
@@ -14,10 +12,12 @@ import { DateTime } from 'luxon'
 import NoAppointments from './no-data/NoAppointments'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { ThemeContext } from '../contexts/ThemeContext'
+import { Divider } from '@rneui/themed'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
-  const { colors } = useTheme()
   const context = useContext(DataContext)!
+  const themeContext = useContext(ThemeContext)!
 
   const [agendaItems, setAgendaItems] = useState({})
   const [loading, setLoading] = useState(true)
@@ -53,7 +53,12 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }, [context.appointments])
 
   const renderItem = (item: Appointment) => {
-    return <AgendaItem appointment={item} />
+    return (
+      <View>
+        <AgendaItem appointment={item} />
+        <Divider color={themeContext.border} style={styles.divider} />
+      </View>
+    )
   }
 
   const renderEmptyData = () => {
@@ -75,14 +80,15 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
             showOnlySelectedDayItems={true}
             selected={DateTime.local().toISO() ?? undefined}
             theme={{
-              calendarBackground: colors.background,
-              monthTextColor: colors.text,
-              todayTextColor: colors.primary,
-              selectedDayBackgroundColor: colors.primary,
-              reservationsBackgroundColor: colors.background,
-              agendaDayNumColor: colors.text,
-              agendaDayTextColor: colors.text,
-              agendaTodayColor: colors.primary,
+              calendarBackground: themeContext.primary,
+              monthTextColor: themeContext.neutral,
+              todayTextColor: themeContext.accent,
+              selectedDayBackgroundColor: themeContext.accent,
+              reservationsBackgroundColor: themeContext.primary,
+              agendaDayNumColor: themeContext.info,
+              agendaDayTextColor: themeContext.info,
+              agendaTodayColor: themeContext.primary,
+              dotColor: themeContext.info,
             }}
           />
           {Object.keys(agendaItems).length > 0 && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
@@ -95,24 +101,8 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   return getContent()
 }
 
-const styles = (colors: Colors) =>
-  StyleSheet.create({
-    agendaSection: {
-      backgroundColor: colors.card,
-      color: colors.text,
-    },
-    todayButton: {
-      backgroundColor: colors.primary,
-    },
-    defaultText: {
-      color: colors.text,
-    },
-    emptyDateView: {
-      flex: 1,
-      alignItems: 'center',
-      marginTop: 100,
-    },
-    emptyDateText: {
-      fontSize: 40,
-    },
-  })
+const styles = StyleSheet.create({
+  divider: {
+    marginHorizontal: 10,
+  },
+})

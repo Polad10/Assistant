@@ -1,12 +1,12 @@
 import { memo, useCallback, useContext } from 'react'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Colors } from '../types/Colors'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import type { RootStackScreenProps } from '../types/Navigation'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
 import { Appointment } from '../modals/Appointment'
+import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 
 type ItemProps = {
   appointment: Appointment
@@ -14,8 +14,8 @@ type ItemProps = {
 
 const AgendaItem = (props: ItemProps) => {
   const { appointment } = props
-  const { colors } = useTheme()
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
+  const themeContext = useContext(ThemeContext)!
   const context = useContext(DataContext)!
 
   const treatment = context.treatments?.find((t) => t.id === appointment.treatment_id)
@@ -26,25 +26,29 @@ const AgendaItem = (props: ItemProps) => {
   }, [])
 
   return (
-    <TouchableOpacity onPress={itemPressed} style={styles(colors).item}>
-      <View style={styles(colors).mainView}>
+    <TouchableOpacity onPress={itemPressed} style={styles(themeContext).item}>
+      <View style={styles(themeContext).mainView}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles(colors).defaultText, styles(colors).time]}>
+          <Text style={[styles(themeContext).defaultText, styles(themeContext).time]}>
             {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
           </Text>
         </View>
-        <View style={styles(colors).appointmentContent}>
+        <View style={styles(themeContext).appointmentContent}>
           <View>
-            <Text style={[styles(colors).defaultText, styles(colors).patient]}>{getPatientFullName(patient)}</Text>
+            <Text style={[styles(themeContext).defaultText, styles(themeContext).patient]}>
+              {getPatientFullName(patient)}
+            </Text>
           </View>
-          <Text style={[styles(colors).defaultText, styles(colors).description]}>{appointment.actions}</Text>
+          <Text style={[styles(themeContext).defaultText, styles(themeContext).description]}>
+            {appointment.actions}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
   )
 }
 
-const styles = (colors: Colors) =>
+const styles = (themeContext: ThemeContextType) =>
   StyleSheet.create({
     mainView: {
       flex: 1,
@@ -52,20 +56,18 @@ const styles = (colors: Colors) =>
     },
     item: {
       padding: 10,
-      backgroundColor: colors.background,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
+      backgroundColor: themeContext.primary,
       flexDirection: 'row',
     },
     defaultText: {
       fontSize: 16,
-      color: colors.text,
+      color: themeContext.neutral,
     },
     patient: {
-      color: colors.notification,
+      color: themeContext.info,
     },
     time: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontWeight: 'bold',
     },
     appointmentContent: {
@@ -83,7 +85,7 @@ const styles = (colors: Colors) =>
       borderBottomColor: 'lightgrey',
     },
     emptyItemText: {
-      color: colors.text,
+      color: themeContext.neutral,
       fontSize: 14,
     },
   })

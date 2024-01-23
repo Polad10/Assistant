@@ -6,18 +6,18 @@ interface DataProviderProps {
 }
 
 export default function ThemeProvider({ children }: DataProviderProps) {
-  const primary = '#fbbf24'
-  const secondary = '#f43f5e'
-  const accent = '#4f46e5'
-  const neutral = '#130f1d'
-  const base = '#1f2937'
-  const info = '#d1d5db'
+  const primary = '#121212'
+  const secondary = '#1a1a1a'
+  const accent = '#7600eb'
+  const neutral = '#faf8ff'
+  const border = '#374151'
+  const info = '#d3fbd8'
   const success = '#eab308'
   const warning = '#9f1239'
   const error = '#9f1239'
 
   return (
-    <ThemeContext.Provider value={{ primary, secondary, accent, neutral, base, info, success, warning, error }}>
+    <ThemeContext.Provider value={{ primary, secondary, accent, neutral, border, info, success, warning, error }}>
       {children}
     </ThemeContext.Provider>
   )

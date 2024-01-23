@@ -1,12 +1,13 @@
 import { View, StyleSheet, ListRenderItemInfo } from 'react-native'
 import TreatmentItem from './TreatmentItem'
 import { Divider } from '@rneui/themed'
-import { useTheme } from '@react-navigation/native'
 import { RootStackParamList } from '../types/Navigation'
 import MainView from './MainView'
 import { Treatment } from '../modals/Treatment'
 import TreatmentsNotFound from './no-data/TreatmentsNotFound'
 import { FlatList } from 'react-native-gesture-handler'
+import { useContext } from 'react'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -14,7 +15,7 @@ type Props = {
 }
 
 export default function TreatmentList(props: Props) {
-  const { colors } = useTheme()
+  const themeContext = useContext(ThemeContext)!
 
   let treatments = props.treatments
 
@@ -22,7 +23,7 @@ export default function TreatmentList(props: Props) {
     return (
       <View>
         <TreatmentItem treatment={data.item} pageName={props.pageName} />
-        <Divider color={colors.border} style={styles.divider} />
+        <Divider color={themeContext.border} style={styles.divider} />
       </View>
     )
   }
@@ -47,6 +48,6 @@ export default function TreatmentList(props: Props) {
 
 const styles = StyleSheet.create({
   divider: {
-    marginHorizontal: 13,
+    marginHorizontal: 10,
   },
 })
