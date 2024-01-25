@@ -71,7 +71,7 @@ export default function ErrorIllustration() {
         fill='#e6e6e6'
       />
       <G>
-        <Circle cx='218.47958' cy='311.43145' r='73' fill='#ad164d' />
+        <Circle cx='218.47958' cy='311.43145' r='73' fill='#7600eb' />
         <G>
           <Circle cx='218.49274' cy='349.47878' r='6.70264' fill='#fff' />
           <Path
