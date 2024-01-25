@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native'
-import { Agenda } from 'react-native-calendars'
+import { Agenda, DateData } from 'react-native-calendars'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import MyFAB from './MyFAB'
@@ -8,7 +8,6 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
-import { DateTime } from 'luxon'
 import NoAppointments from './no-data/NoAppointments'
 import LoadingView from './LoadingView'
 import Error from './Error'
@@ -19,8 +18,10 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   const context = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
 
+  const [agendaKey, setAgendaKey] = useState(Math.random())
   const [agendaItems, setAgendaItems] = useState({})
   const [loading, setLoading] = useState(true)
+  const [dayIsEmpty, setDayIsEmpty] = useState(false)
   const [error, setError] = useState(false)
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [context.appointments])
 
   async function retryAfterError() {
     setError(false)
@@ -50,6 +51,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   useEffect(() => {
     const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
     setAgendaItems(groupedAppointments ? Object.fromEntries(groupedAppointments) : {})
+    setAgendaKey(Math.random)
   }, [context.appointments])
 
   const renderItem = (item: Appointment) => {
@@ -65,6 +67,21 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     return loading ? <View></View> : <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
   }
 
+  function handleDayChange(dateData: DateData) {
+    if (agendaItems.hasOwnProperty(dateData.dateString)) {
+      setDayIsEmpty(false)
+    } else {
+      setDayIsEmpty(true)
+    }
+  }
+
+  function handleRowHasChanged(appointmentBefore: Appointment, appointmentAfter: Appointment) {
+    console.log(appointmentAfter)
+    return (
+      appointmentBefore.actions !== appointmentAfter.actions || appointmentBefore.datetime !== appointmentAfter.datetime
+    )
+  }
+
   function getContent() {
     if (error) {
       return <Error onBtnPress={retryAfterError} />
@@ -72,13 +89,13 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
       return (
         <MainView>
           <Agenda
-            key={Math.random()} // Workaround for Agenda's bug, where the item list not updated correctly
+            key={agendaKey}
             items={agendaItems}
             renderItem={renderItem}
             renderDay={() => <View></View>}
             renderEmptyData={renderEmptyData}
             showOnlySelectedDayItems={true}
-            selected={DateTime.local().toISO() ?? undefined}
+            onDayPress={handleDayChange}
             theme={{
               calendarBackground: themeContext.primary,
               monthTextColor: themeContext.neutral,
@@ -91,7 +108,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
               dotColor: themeContext.info,
             }}
           />
-          {Object.keys(agendaItems).length > 0 && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
+          {!dayIsEmpty && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
           {loading && <LoadingView />}
         </MainView>
       )
