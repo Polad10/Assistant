@@ -131,8 +131,8 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
           <Text style={styles(themeContext).text}>{patient.extra_info || '-'}</Text>
         </View>
       </View>
+      <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
       <View style={styles(themeContext).additionalInfoView}>
-        <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
         <TabContent />
       </View>
     </MainView>

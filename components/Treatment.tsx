@@ -131,8 +131,8 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
           <Text style={styles(styleProps).text}>{getPatientFullName(patient)}</Text>
         </View>
       </View>
+      <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
       <View style={styles(styleProps).additionalInfoView}>
-        <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
         <TabContent />
       </View>
     </MainView>
