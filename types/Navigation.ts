@@ -17,6 +17,8 @@ export type RootStackParamList = {
   Patient: { patientId: number }
   Treatment: { treatmentId: number }
   NewPayment: { treatmentId?: number, patient?: Patient }
+  Settings: undefined
+  Languages: undefined
 }
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>

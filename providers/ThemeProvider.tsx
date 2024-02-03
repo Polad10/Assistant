@@ -12,7 +12,7 @@ export default function ThemeProvider({ children }: DataProviderProps) {
   const neutral = '#faf8ff'
   const border = '#374151'
   const info = '#d3fbd8'
-  const success = '#eab308'
+  const success = '#00e5b0'
   const warning = '#9f1239'
   const error = '#9f1239'
 

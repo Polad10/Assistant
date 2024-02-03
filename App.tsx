@@ -24,10 +24,13 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet'
 import ThemeProvider from './providers/ThemeProvider'
 import { ThemeContext } from './contexts/ThemeContext'
 import { StyleSheet } from 'react-native'
+import Settings from './components/Settings'
+import Languages from './components/Languages'
 
 type Tabs = {
   Appointments: undefined
   Patients: undefined
+  Settings: undefined
 }
 
 const Tab = createBottomTabNavigator<Tabs>()
@@ -63,6 +66,20 @@ function Home() {
           tabBarActiveTintColor: themeContext.accent,
           tabBarStyle: { backgroundColor: themeContext.primary },
           headerTitle: 'PATIENTS',
+          headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
+          headerStyle: { backgroundColor: themeContext.primary },
+        }}
+      />
+      <Tab.Screen
+        name='Settings'
+        component={Settings}
+        options={{
+          tabBarIcon: (props) => (
+            <IonIcons name='cog-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
+          ),
+          tabBarActiveTintColor: themeContext.accent,
+          tabBarStyle: { backgroundColor: themeContext.primary },
+          headerTitle: 'SETTINGS',
           headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
           headerStyle: { backgroundColor: themeContext.primary },
         }}
@@ -119,6 +136,7 @@ function Navigation() {
           <Stack.Screen name='EditTreatment' component={EditTreatment} options={{ headerTitle: 'TREATMENT' }} />
           <Stack.Screen name='EditPayment' component={EditPayment} options={{ headerTitle: 'PAYMENT' }} />
           <Stack.Screen name='NewPayment' component={NewPayment} options={{ headerTitle: 'PAYMENT' }} />
+          <Stack.Screen name='Languages' component={Languages} options={{ headerTitle: 'LANGUAGES' }} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
