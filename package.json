@@ -24,7 +24,9 @@
     "expo-secure-store": "~12.3.1",
     "expo-status-bar": "~1.6.0",
     "fuse.js": "^7.0.0",
+    "i18n-js": "^4.3.2",
     "install": "^0.13.0",
+    "lottie-react-native": "5.1.6",
     "luxon": "^3.4.3",
     "npm": "^8.13.2",
     "react": "18.2.0",
@@ -38,8 +40,7 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "13.9.0",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.6",
-    "lottie-react-native": "5.1.6"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
