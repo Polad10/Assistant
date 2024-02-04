@@ -75,13 +75,6 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
     }
   }
 
-  function handleRowHasChanged(appointmentBefore: Appointment, appointmentAfter: Appointment) {
-    console.log(appointmentAfter)
-    return (
-      appointmentBefore.actions !== appointmentAfter.actions || appointmentBefore.datetime !== appointmentAfter.datetime
-    )
-  }
-
   function getContent() {
     if (error) {
       return <Error onBtnPress={retryAfterError} />
