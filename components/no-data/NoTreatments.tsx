@@ -1,3 +1,4 @@
+import { translate } from '../../helpers/Translator'
 import UserMessageView from '../UserMessageView'
 import TreatmentsIllustration from '../illustrations/TreatmentsIllustration'
 
@@ -9,9 +10,9 @@ export default function NoTreatments(props: Props) {
   return (
     <UserMessageView
       illustration={<TreatmentsIllustration />}
-      title='No Treatments'
-      subtitle="Click the '+' button to begin documenting your patients' treatments."
-      btnTitle='Add Treatment'
+      title={translate('noTreatments')}
+      subtitle={translate('noTreatmentsMessage')}
+      btnTitle={translate('addTreatment')}
       onBtnPress={props.addBtnOnPress}
       iconName='add'
     />

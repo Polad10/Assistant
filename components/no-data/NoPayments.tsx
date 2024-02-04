@@ -1,3 +1,4 @@
+import { translate } from '../../helpers/Translator'
 import UserMessageView from '../UserMessageView'
 import PaymentsIllustration from '../illustrations/PaymentsIllustration'
 
@@ -9,9 +10,9 @@ export default function NoPayments(props: Props) {
   return (
     <UserMessageView
       illustration={<PaymentsIllustration />}
-      title='No Payments'
-      subtitle="Click the '+' button to start adding payment details for your dental treatments."
-      btnTitle='Add Payment'
+      title={translate('noPayments')}
+      subtitle={translate('noPaymentsMessage')}
+      btnTitle={translate('addPayment')}
       onBtnPress={props.addBtnOnPress}
       iconName='add'
     />
