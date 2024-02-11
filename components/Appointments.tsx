@@ -13,6 +13,7 @@ import LoadingView from './LoadingView'
 import Error from './Error'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { Divider } from '@rneui/themed'
+import { configureCalendar } from '../helpers/CalendarConfig'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const context = useContext(DataContext)!
@@ -25,6 +26,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   const [error, setError] = useState(false)
 
   useEffect(() => {
+    configureCalendar()
     fetchData()
   }, [])
 

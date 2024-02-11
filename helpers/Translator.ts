@@ -33,6 +33,11 @@ type TranslationKeys = {
   pickTime: string
   enterActions: string
   selectTreatment: string
+  dayNames: string[]
+  dayNamesShort: string[]
+  monthNames: string[]
+  monthNamesShort: string[]
+  today: string
 }
 
 type TranslationsType = {
@@ -75,6 +80,37 @@ const translations: TranslationsType = {
     pickTime: 'Vaxt seçin',
     enterActions: 'Tədbirləri daxil edin',
     selectTreatment: 'Müalicəni seçin',
+    dayNames: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
+    dayNamesShort: ['B.', 'B.e.', 'Ç.a.', 'Ç.', 'C.a.', 'C.', 'Ş.'],
+    monthNames: [
+      'Yanvar',
+      'Fevral',
+      'Mart',
+      'Aprel',
+      'May',
+      'İyun',
+      'İyul',
+      'Avqust',
+      'Sentyabr',
+      'Oktyabr',
+      'Noyabr',
+      'Dekabr'
+    ],
+    monthNamesShort: [
+      'Yan',
+      'Fev',
+      'Mar',
+      'Apr',
+      'May',
+      'İyn',
+      'İyl',
+      'Avq',
+      'Sen',
+      'Okt',
+      'Noy',
+      'Dek'
+    ],
+    today: 'Bu gün',
   },
   en: {
     agenda: 'Agenda',
@@ -109,6 +145,37 @@ const translations: TranslationsType = {
     pickTime: 'Pick a time',
     enterActions: 'Enter actions',
     selectTreatment: 'Select a treatment',
+    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    monthNames: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
+    monthNamesShort: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ],
+    today: 'Today',
   },
   ru: {
     agenda: 'Встречи',
@@ -143,12 +210,49 @@ const translations: TranslationsType = {
     pickTime: 'Выберите время',
     enterActions: 'Введите действия',
     selectTreatment: 'Выберите лечение',
+    dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+    dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    monthNames: [
+      'Январь',
+      'Февраль',
+      'Март',
+      'Апрель',
+      'Май',
+      'Июнь',
+      'Июль',
+      'Август',
+      'Сентябрь',
+      'Октябрь',
+      'Ноябрь',
+      'Декабрь'
+    ],
+    monthNamesShort: [
+      'Янв',
+      'Фев',
+      'Мар',
+      'Апр',
+      'Май',
+      'Июн',
+      'Июл',
+      'Авг',
+      'Сен',
+      'Окт',
+      'Ноя',
+      'Дек'
+    ],
+    today: 'Сегодня',
   }
 }
 
+export let language = 'az'
+
 const translator = new I18n(translations)
-translator.locale = 'az'
+translator.locale = language
 
 export function translate(key: keyof TranslationKeys) {
   return translator.t(key)
+}
+
+export function translateForLanguage(key: keyof TranslationKeys, language: keyof TranslationsType) {
+  return translator.t(key, {lng: language})
 }
