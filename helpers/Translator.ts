@@ -26,6 +26,13 @@ type TranslationKeys = {
   patientNotFound: string
   patientNotFoundMessage: string
   treatmentNotFound: string
+  date: string
+  time: string
+  actions: string
+  pickDate: string
+  pickTime: string
+  enterActions: string
+  selectTreatment: string
 }
 
 type TranslationsType = {
@@ -61,6 +68,13 @@ const translations: TranslationsType = {
     patientNotFound: 'Xəstə Tapılmadı',
     patientNotFoundMessage: 'Lütfən, orfoqrafiyanı bir daha yoxlayın və ya başqa axtarış terminini yoxlayın.',
     treatmentNotFound: 'Müalicə Tapılmadı',
+    date: 'Tarix',
+    time: 'Vaxt',
+    actions: 'Tədbirlər',
+    pickDate: 'Tarix seçin',
+    pickTime: 'Vaxt seçin',
+    enterActions: 'Tədbirləri daxil edin',
+    selectTreatment: 'Müalicəni seçin',
   },
   en: {
     agenda: 'Agenda',
@@ -88,6 +102,13 @@ const translations: TranslationsType = {
     patientNotFound: 'Patient Not Found',
     patientNotFoundMessage: 'Please double-check the spelling or try another search term.',
     treatmentNotFound: 'Treatment Not Found',
+    date: 'Date',
+    time: 'Time',
+    actions: 'Actions',
+    pickDate: 'Pick a date',
+    pickTime: 'Pick a time',
+    enterActions: 'Enter actions',
+    selectTreatment: 'Select a treatment',
   },
   ru: {
     agenda: 'Встречи',
@@ -115,6 +136,13 @@ const translations: TranslationsType = {
     patientNotFound: 'Пациент не найден',
     patientNotFoundMessage: 'Пожалуйста, проверьте правильность написания или попробуйте другой поисковый запрос.',
     treatmentNotFound: 'Лечение не найдено',
+    date: 'Дата',
+    time: 'Время',
+    actions: 'Действия',
+    pickDate: 'Выберите дату',
+    pickTime: 'Выберите время',
+    enterActions: 'Введите действия',
+    selectTreatment: 'Выберите лечение',
   }
 }
 

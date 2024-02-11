@@ -16,6 +16,7 @@ import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
+import { translate } from '../helpers/Translator'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -157,8 +158,8 @@ export default function AppointmentForm(props: Props) {
           <DateInput
             ref={dateInputRef}
             style={{ flex: 1 }}
-            label='Date'
-            placeholder='Pick a date'
+            label={translate('date')}
+            placeholder={translate('pickDate')}
             date={initialDateTime}
             showError={showDatePickerError}
             onChange={() => setShowDatePickerError(false)}
@@ -167,8 +168,8 @@ export default function AppointmentForm(props: Props) {
           <TimeInput
             ref={timeInputRef}
             style={{ flex: 1 }}
-            label='Time'
-            placeholder='Pick a time'
+            label={translate('time')}
+            placeholder={translate('pickTime')}
             time={initialDateTime}
             showError={showTimePickerError}
             onChange={() => setShowTimePickerError(false)}
@@ -176,8 +177,8 @@ export default function AppointmentForm(props: Props) {
           />
         </View>
         <MyInput
-          label='Actions'
-          placeholder='Enter actions...'
+          label={translate('actions')}
+          placeholder={translate('enterActions')}
           multiline={true}
           value={actions}
           onChange={handleActionsChange}
@@ -189,15 +190,15 @@ export default function AppointmentForm(props: Props) {
         {treatmentEditable ? (
           <TouchableInput
             onPress={handleTreatmentChange}
-            label='Treatment'
-            placeholder='Select'
+            label={translate('treatment')}
+            placeholder={translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
           />
         ) : (
           <TouchableWithoutFeedbackInput
-            label='Treatment'
-            placeholder='Select'
+            label={'treatment'}
+            placeholder={translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
           />
