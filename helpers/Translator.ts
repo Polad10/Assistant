@@ -38,6 +38,8 @@ type TranslationKeys = {
   monthNames: string[]
   monthNamesShort: string[]
   today: string
+  delete: string
+  cancel: string
 }
 
 type TranslationsType = {
@@ -111,6 +113,8 @@ const translations: TranslationsType = {
       'Dek'
     ],
     today: 'Bu gün',
+    delete: 'Sil',
+    cancel: 'Ləğv et'
   },
   en: {
     agenda: 'Agenda',
@@ -176,6 +180,8 @@ const translations: TranslationsType = {
       'Dec'
     ],
     today: 'Today',
+    delete: 'Delete',
+    cancel: 'Cancel'
   },
   ru: {
     agenda: 'Встречи',
@@ -241,6 +247,8 @@ const translations: TranslationsType = {
       'Дек'
     ],
     today: 'Сегодня',
+    delete: 'Удалить',
+    cancel: 'Отменить'
   }
 }
 

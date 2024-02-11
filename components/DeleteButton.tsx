@@ -3,6 +3,7 @@ import { Button } from '@rneui/themed'
 import { useContext } from 'react'
 import { DeviceEventEmitter, SafeAreaView, StyleSheet } from 'react-native'
 import { ThemeContext } from '../contexts/ThemeContext'
+import { translate } from '../helpers/Translator'
 
 export default function DeleteButton() {
   const { showActionSheetWithOptions } = useActionSheet()
@@ -13,7 +14,7 @@ export default function DeleteButton() {
   }
 
   function promptToConfirm() {
-    const options = ['Delete', 'Cancel']
+    const options = [translate('delete'), translate('cancel')]
     const destructiveButtonIndex = 0
     const cancelButtonIndex = 1
 
@@ -38,7 +39,7 @@ export default function DeleteButton() {
   return (
     <SafeAreaView>
       <Button titleStyle={{ color: themeContext.warning }} style={styles.button} type='clear' onPress={promptToConfirm}>
-        Delete
+        {translate('delete')}
       </Button>
     </SafeAreaView>
   )

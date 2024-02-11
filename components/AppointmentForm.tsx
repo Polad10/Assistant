@@ -197,7 +197,7 @@ export default function AppointmentForm(props: Props) {
           />
         ) : (
           <TouchableWithoutFeedbackInput
-            label={'treatment'}
+            label={translate('treatment')}
             placeholder={translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
