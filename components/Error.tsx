@@ -1,3 +1,4 @@
+import { translate } from '../helpers/Translator'
 import UserMessageView from './UserMessageView'
 import ErrorIllustration from './illustrations/ErrorIllustration'
 
@@ -9,9 +10,9 @@ export default function Error(props: Props) {
   return (
     <UserMessageView
       illustration={<ErrorIllustration />}
-      title='Oops!'
-      subtitle="Something went wrong. Don't worry, let's try again."
-      btnTitle='Try Again'
+      title={translate('oops')}
+      subtitle={translate('tryAgainMessage')}
+      btnTitle={translate('tryAgain')}
       onBtnPress={props.onBtnPress}
     />
   )

@@ -40,6 +40,9 @@ type TranslationKeys = {
   today: string
   delete: string
   cancel: string
+  oops: string
+  tryAgain: string
+  tryAgainMessage: string
 }
 
 type TranslationsType = {
@@ -114,7 +117,10 @@ const translations: TranslationsType = {
     ],
     today: 'Bu gün',
     delete: 'Sil',
-    cancel: 'Ləğv et'
+    cancel: 'Ləğv et',
+    oops: 'Vay!',
+    tryAgain: 'Yenidən Sına',
+    tryAgainMessage: 'Nə isə səhv getdi. Narahat olma, bir daha cəhd edək.',
   },
   en: {
     agenda: 'Agenda',
@@ -181,7 +187,10 @@ const translations: TranslationsType = {
     ],
     today: 'Today',
     delete: 'Delete',
-    cancel: 'Cancel'
+    cancel: 'Cancel',
+    oops: 'Oops!',
+    tryAgain: 'Try Again',
+    tryAgainMessage: "Something went wrong. Don't worry, let's try again.",
   },
   ru: {
     agenda: 'Встречи',
@@ -248,7 +257,10 @@ const translations: TranslationsType = {
     ],
     today: 'Сегодня',
     delete: 'Удалить',
-    cancel: 'Отменить'
+    cancel: 'Отменить',
+    oops: 'Упс!',
+    tryAgain: 'Попробуй Снова',
+    tryAgainMessage: 'Что-то пошло не так. Не волнуйся, попробуем еще раз.',
   }
 }
 
