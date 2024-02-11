@@ -19,7 +19,7 @@ export default function MyAgendaList(props: Props) {
     return (
       <View>
         <AgendaItem appointment={item} />
-        <Divider color={themeContext.border} style={styles.divider} />
+        <Divider color={themeContext.border} />
       </View>
     )
   }, [])
