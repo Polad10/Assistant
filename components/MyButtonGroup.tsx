@@ -1,5 +1,4 @@
 import { ButtonGroup, ButtonGroupProps } from '@rneui/themed'
-import { Colors } from '../types/Colors'
 import { StyleSheet } from 'react-native'
 import { useContext } from 'react'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
