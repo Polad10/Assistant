@@ -86,7 +86,7 @@ const translations: TranslationsType = {
     enterActions: 'Tədbirləri daxil edin',
     selectTreatment: 'Müalicəni seçin',
     dayNames: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
-    dayNamesShort: ['B.', 'B.e.', 'Ç.a.', 'Ç.', 'C.a.', 'C.', 'Ş.'],
+    dayNamesShort: ['B.', 'B.E.', 'Ç.A.', 'Ç.', 'C.A.', 'C.', 'Ş.'],
     monthNames: [
       'Yanvar',
       'Fevral',
