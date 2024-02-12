@@ -24,6 +24,7 @@ import NoAppointments from './no-data/NoAppointments'
 import NoTreatments from './no-data/NoTreatments'
 import NoPayments from './no-data/NoPayments'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { translate } from '../helpers/Translator'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const context = useContext(DataContext)!
@@ -34,7 +35,7 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
+      headerRight: () => <HeaderButton title={translate('edit')} onPress={handleEdit} />,
     })
   }, [])
 
