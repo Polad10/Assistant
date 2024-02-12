@@ -136,7 +136,7 @@ export default function AppointmentForm(props: Props) {
   useEffect(() => {
     if (appointment) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])

@@ -44,6 +44,7 @@ type TranslationKeys = {
   tryAgain: string
   tryAgainMessage: string
   edit: string
+  save: string
 }
 
 type TranslationsType = {
@@ -123,6 +124,7 @@ const translations: TranslationsType = {
     tryAgain: 'Yenidən Sına',
     tryAgainMessage: 'Nə isə səhv getdi. Narahat olma, bir daha cəhd edək.',
     edit: 'Dəyiş',
+    save: 'Yadda Saxla',
   },
   en: {
     agenda: 'Agenda',
@@ -194,6 +196,7 @@ const translations: TranslationsType = {
     tryAgain: 'Try Again',
     tryAgainMessage: "Something went wrong. Don't worry, let's try again.",
     edit: 'Edit',
+    save: 'Save',
   },
   ru: {
     agenda: 'Встречи',
@@ -265,6 +268,7 @@ const translations: TranslationsType = {
     tryAgain: 'Попробуй Снова',
     tryAgainMessage: 'Что-то пошло не так. Не волнуйся, попробуем еще раз.',
     edit: 'Изменить',
+    save: 'Сохранить',
   }
 }
 
