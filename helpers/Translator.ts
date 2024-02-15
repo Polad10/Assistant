@@ -55,6 +55,7 @@ type TranslationKeys = {
   enterPhoneNr: string
   extraInfo: string
   enterExtraInfo: string
+  enterPatientName: string
 }
 
 type TranslationsType = {
@@ -66,11 +67,11 @@ type TranslationsType = {
 const translations: TranslationsType = {
   az: {
     agenda: 'Gündəm',
-    patients: 'Xəstələr',
+    patients: 'Pasientlər',
     settings: 'Parametrlər',
     back: 'Geri',
     treatments: 'Müalicələr',
-    patient: 'Xəstə',
+    patient: 'Pasient',
     treatment: 'Müalicə',
     appointment: 'Görüş',
     payment: 'Ödəniş',
@@ -78,16 +79,16 @@ const translations: TranslationsType = {
     noAppointments: 'Görüş Yoxdur',
     noAppointmentsMessage: "Gününüzü planlaşdırmaq üçün, '+' düyməsini klikləyib yeni görüş əlavə edin.",
     addAppointment: 'Görüş Əlavə Et',
-    noPatients: 'Xəstə Yoxdur',
-    noPatientsMessage: "Yeni xəstələr əlavə etmək və onların qeydlərini idarə etmək üçün '+' düyməsini klikləyin.",
-    addPatient: 'Xəstə Əlavə Et',
+    noPatients: 'Pasient Yoxdur',
+    noPatientsMessage: "Yeni pasientlər əlavə etmək üçün '+' düyməsini klikləyin.",
+    addPatient: 'Pasient Əlavə Et',
     noPayments: 'Ödəniş Yoxdur',
     noPaymentsMessage: "Müalicəniz üçün ödəniş əlavə etmək üçün '+' düyməsini klikləyin.",
     addPayment: 'Ödəniş Əlavə Et',
     noTreatments: 'Müalicə Yoxdur',
-    noTreatmentsMessage: "Xəstəniz üçün müalicə əlavə etmək üçün '+' düyməsini klikləyin.",
+    noTreatmentsMessage: "Pasient üçün müalicə əlavə etmək üçün '+' düyməsini klikləyin.",
     addTreatment: 'Müalicə Əlavə Et',
-    patientNotFound: 'Xəstə Tapılmadı',
+    patientNotFound: 'Pasient Tapılmadı',
     patientNotFoundMessage: 'Lütfən, orfoqrafiyanı bir daha yoxlayın və ya başqa axtarış terminini yoxlayın.',
     treatmentNotFound: 'Müalicə Tapılmadı',
     date: 'Tarix',
@@ -145,6 +146,7 @@ const translations: TranslationsType = {
     enterPhoneNr: 'Telefon nömrəsini daxil edin',
     extraInfo: 'Əlavə məlumat',
     enterExtraInfo: 'Əlavə məlumat daxil edin',
+    enterPatientName: 'Pasientin adını daxil edin',
   },
   en: {
     agenda: 'Agenda',
@@ -161,7 +163,7 @@ const translations: TranslationsType = {
     noAppointmentsMessage: "To plan your day, click the '+' button to add a new appointment.",
     addAppointment: 'Add Appointment',
     noPatients: 'No Patients',
-    noPatientsMessage: "Click the '+' button to add new patients and start managing their records.",
+    noPatientsMessage: "Click the '+' button to add new patients.",
     addPatient: 'Add Patient',
     noPayments: 'No Payments',
     noPaymentsMessage: "Click the '+' button to add a payment for your treatment.",
@@ -227,6 +229,7 @@ const translations: TranslationsType = {
     enterPhoneNr: 'Enter phone number',
     extraInfo: 'Extra Info',
     enterExtraInfo: 'Enter extra info',
+    enterPatientName: 'Enter patient name',
   },
   ru: {
     agenda: 'Встречи',
@@ -309,6 +312,7 @@ const translations: TranslationsType = {
     enterPhoneNr: 'Введите номер телефона',
     extraInfo: 'Дополнительная информация',
     enterExtraInfo: 'Введите дополнительную информацию',
+    enterPatientName: 'Введите имя пациента',
   }
 }
 

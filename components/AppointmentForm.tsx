@@ -178,7 +178,7 @@ export default function AppointmentForm(props: Props) {
         </View>
         <MyInput
           label={translate('actions')}
-          placeholder={translate('enterActions')}
+          placeholder={`${translate('enterActions')}...`}
           multiline={true}
           value={actions}
           onChange={handleActionsChange}
