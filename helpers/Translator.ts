@@ -58,6 +58,7 @@ type TranslationKeys = {
   enterPatientName: string
   amount: string
   enterAmount: string
+  create: string
 }
 
 type TranslationsType = {
@@ -151,6 +152,7 @@ const translations: TranslationsType = {
     enterPatientName: 'Pasientin adını daxil edin',
     amount: 'Məbləğ',
     enterAmount: 'Məbləği daxil edin',
+    create: 'Yarat',
   },
   en: {
     agenda: 'Agenda',
@@ -236,6 +238,7 @@ const translations: TranslationsType = {
     enterPatientName: 'Enter patient name',
     amount: 'Amount',
     enterAmount: 'Enter Amount',
+    create: 'Create',
   },
   ru: {
     agenda: 'Встречи',
@@ -321,6 +324,7 @@ const translations: TranslationsType = {
     enterPatientName: 'Введите имя пациента',
     amount: 'Сумма оплаты',
     enterAmount: 'Введите сумму оплаты',
+    create: 'Создать'
   }
 }
 

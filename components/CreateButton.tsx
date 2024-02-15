@@ -2,6 +2,7 @@ import { Button, ButtonProps } from '@rneui/themed'
 import { useContext } from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
 import { ThemeContext } from '../contexts/ThemeContext'
+import { translate } from '../helpers/Translator'
 
 export default function CreateButton(props: ButtonProps) {
   const themeContext = useContext(ThemeContext)!
@@ -9,7 +10,7 @@ export default function CreateButton(props: ButtonProps) {
   return (
     <SafeAreaView style={styles.buttonView}>
       <Button {...props} color={themeContext.accent} style={styles.button} buttonStyle={styles.buttonStyle}>
-        Create
+        {translate('create')}
       </Button>
     </SafeAreaView>
   )
