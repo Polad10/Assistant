@@ -8,6 +8,7 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { language } from '../helpers/Translator'
 
 type Props = {
   payment: Payment
@@ -20,7 +21,7 @@ export default function PaymentItem(props: Props) {
 
   const context = useContext(DataContext)!
 
-  const date = DateTime.fromISO(props.payment.date).toFormat('MMMM d, yyyy')
+  const date = DateTime.fromISO(props.payment.date).setLocale(language).toFormat('MMMM d, yyyy')
   const treatment = context.treatments?.find((t) => t.id === props.payment.treatment_id)
 
   return (
