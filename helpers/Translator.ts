@@ -1,6 +1,6 @@
 import { I18n } from "i18n-js"
 
-type TranslationKeys = {
+export type TranslationKeys = {
   agenda: string
   patients: string
   settings: string
@@ -62,6 +62,13 @@ type TranslationKeys = {
   general: string
   language: string
   theme: string
+  finished: string
+  ongoing: string
+  price: string
+  payments: string
+  of: string
+  start: string
+  end: string
 }
 
 type TranslationsType = {
@@ -159,6 +166,13 @@ const translations: TranslationsType = {
     general: 'Ümumi',
     language: 'Dil',
     theme: 'Tema',
+    finished: 'Bitib',
+    ongoing: 'Davam edir',
+    price: 'Qiymət',
+    payments: 'Ödəniş',
+    of: '/',
+    start: 'Başlanğıc',
+    end: 'Bitiş',
   },
   en: {
     agenda: 'Agenda',
@@ -248,6 +262,13 @@ const translations: TranslationsType = {
     general: 'General',
     language: 'Language',
     theme: 'Theme',
+    finished: 'Finished',
+    ongoing: 'Ongoing',
+    price: 'Price',
+    payments: 'Payments',
+    of: 'of',
+    start: 'Start',
+    end: 'End',
   },
   ru: {
     agenda: 'Встречи',
@@ -337,6 +358,13 @@ const translations: TranslationsType = {
     general: 'Общие',
     language: 'Язык',
     theme: 'Тема',
+    finished: 'Закончено',
+    ongoing: 'В процессе',
+    price: 'Цена',
+    payments: 'Оплаты',
+    of: 'из',
+    start: 'Начало',
+    end: 'Конец',
   }
 }
 

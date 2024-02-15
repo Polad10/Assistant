@@ -21,6 +21,7 @@ import { getTreatmentPayments } from '../helpers/PaymentHelper'
 import NoPayments from './no-data/NoPayments'
 import NoAppointments from './no-data/NoAppointments'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { TranslationKeys, translate } from '../helpers/Translator'
 
 type StyleProps = {
   themeContext: ThemeContextType
@@ -41,7 +42,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton title='Edit' onPress={handleEdit} />,
+      headerRight: () => <HeaderButton title={translate('edit')} onPress={handleEdit} />,
     })
   }, [])
 
@@ -118,7 +119,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         <Text style={styles(styleProps).title}>{treatment.title}</Text>
         <View style={styles(styleProps).statusView}>
           <Chip
-            title={status}
+            title={translate(status.toLowerCase() as keyof TranslationKeys)}
             type='outline'
             titleStyle={styles(styleProps).status}
             buttonStyle={styles(styleProps).statusButton}

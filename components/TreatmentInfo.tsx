@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { getTotalPayment } from '../helpers/PaymentHelper'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { language, translate } from '../helpers/Translator'
 
 type Props = {
   treatment: Treatment
@@ -36,14 +37,17 @@ export default function TreatmentInfo(props: Props) {
         <View style={{ flex: 1 }}>
           <View style={styles(themeContext).priceDetailsView}>
             <View>
-              <Text style={styles(themeContext).text}>Price</Text>
+              <Text style={styles(themeContext).text}>{translate('price')}</Text>
               <Text style={[styles(themeContext).paymentsNrText, styles(themeContext).halfOpacity]}>
-                {payments.length} Payments
+                {payments.length} {translate('payments')}
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>{totalPayment} ₼ </Text>
-              <Text style={[styles(themeContext).valueText, styles(themeContext).halfOpacity]}> of </Text>
+              <Text style={[styles(themeContext).valueText, styles(themeContext).halfOpacity]}>
+                {' '}
+                {translate('of')}{' '}
+              </Text>
               <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}> {treatment.price} ₼</Text>
             </View>
           </View>
@@ -52,7 +56,7 @@ export default function TreatmentInfo(props: Props) {
       </View>
       <View style={{ flexDirection: 'row' }}>
         <View style={[styles(themeContext).startDateView, styles(themeContext).card, styles(themeContext).rounded]}>
-          <Text style={styles(themeContext).text}>Start</Text>
+          <Text style={styles(themeContext).text}>{translate('start')}</Text>
           <Icon
             name='hourglass-start'
             type='font-awesome'
@@ -61,11 +65,11 @@ export default function TreatmentInfo(props: Props) {
             containerStyle={styles(themeContext).dateIconContainer}
           />
           <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
-            {DateTime.fromISO(treatment.start_date).toFormat('MMMM d, yyyy')}
+            {DateTime.fromISO(treatment.start_date).setLocale(language).toFormat('MMMM d, yyyy')}
           </Text>
         </View>
         <View style={[styles(themeContext).endDateView, styles(themeContext).card, styles(themeContext).rounded]}>
-          <Text style={styles(themeContext).text}>End</Text>
+          <Text style={styles(themeContext).text}>{translate('end')}</Text>
           <Icon
             name='hourglass-end'
             type='font-awesome'
@@ -74,7 +78,9 @@ export default function TreatmentInfo(props: Props) {
             containerStyle={styles(themeContext).dateIconContainer}
           />
           <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
-            {treatment.end_date ? DateTime.fromISO(treatment.end_date).toFormat('MMMM d, yyyy') : '-'}
+            {treatment.end_date
+              ? DateTime.fromISO(treatment.end_date).setLocale(language).toFormat('MMMM d, yyyy')
+              : '-'}
           </Text>
         </View>
       </View>
