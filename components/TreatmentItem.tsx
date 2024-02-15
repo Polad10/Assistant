@@ -11,6 +11,7 @@ import { treatmentFinished } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import { Status } from '../enums/Status'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { TranslationKeys, translate } from '../helpers/Translator'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -50,7 +51,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
               </ListItem.Subtitle>
             </View>
             <Chip
-              title={status}
+              title={translate(status.toLowerCase() as keyof TranslationKeys)}
               type='outline'
               titleStyle={styles(styleProps).status}
               buttonStyle={styles(styleProps).statusButton}
