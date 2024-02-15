@@ -2,10 +2,10 @@ import { useContext } from 'react'
 import MainView from './MainView'
 import { Icon, ListItem, Text } from '@rneui/themed'
 import { ThemeContext } from '../contexts/ThemeContext'
-import { View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { TouchableHighlight } from 'react-native-gesture-handler'
+import { translate } from '../helpers/Translator'
 
 export default function Settings() {
   const navigation = useNavigation<RootStackScreenProps<'Settings'>['navigation']>()
@@ -14,7 +14,7 @@ export default function Settings() {
   return (
     <MainView style={{ paddingTop: 20 }}>
       <Text style={{ color: themeContext.neutral, fontSize: 16, opacity: 0.5, marginBottom: 5, marginLeft: 10 }}>
-        Common
+        {translate('general')}
       </Text>
       <ListItem
         containerStyle={{ backgroundColor: themeContext.secondary, borderColor: themeContext.border }}
@@ -24,7 +24,7 @@ export default function Settings() {
       >
         <Icon name='language-outline' type='ionicon' color={themeContext.neutral} />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>Language</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('language')}</ListItem.Title>
         </ListItem.Content>
         <ListItem.Content right>
           <ListItem.Title style={{ color: themeContext.neutral, opacity: 0.5 }}>English</ListItem.Title>
@@ -38,7 +38,7 @@ export default function Settings() {
       >
         <Icon name='color-palette-outline' type='ionicon' color={themeContext.neutral} />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>Theme</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('theme')}</ListItem.Title>
         </ListItem.Content>
         <ListItem.Content right>
           <ListItem.Title style={{ color: themeContext.neutral, opacity: 0.5 }}>Dark</ListItem.Title>
