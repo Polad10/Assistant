@@ -45,6 +45,16 @@ type TranslationKeys = {
   tryAgainMessage: string
   edit: string
   save: string
+  firstName: string
+  enterFirstName: string
+  lastName: string
+  enterLastName: string
+  city: string
+  enterCity: string
+  phoneNr: string
+  enterPhoneNr: string
+  extraInfo: string
+  enterExtraInfo: string
 }
 
 type TranslationsType = {
@@ -125,6 +135,16 @@ const translations: TranslationsType = {
     tryAgainMessage: 'Nə isə səhv getdi. Narahat olma, bir daha cəhd edək.',
     edit: 'Dəyiş',
     save: 'Yadda Saxla',
+    firstName: 'Ad',
+    enterFirstName: 'Adı daxil edin',
+    lastName: 'Soyad',
+    enterLastName: 'Soyadı daxil edin',
+    city: 'Şəhər',
+    enterCity: 'Şəhəri daxil edin',
+    phoneNr: 'Telefon nömrəsi',
+    enterPhoneNr: 'Telefon nömrəsini daxil edin',
+    extraInfo: 'Əlavə məlumat',
+    enterExtraInfo: 'Əlavə məlumat daxil edin',
   },
   en: {
     agenda: 'Agenda',
@@ -197,6 +217,16 @@ const translations: TranslationsType = {
     tryAgainMessage: "Something went wrong. Don't worry, let's try again.",
     edit: 'Edit',
     save: 'Save',
+    firstName: 'First Name',
+    enterFirstName: 'Enter first name',
+    lastName: 'Last Name',
+    enterLastName: 'Enter last name',
+    city: 'City',
+    enterCity: 'Enter city',
+    phoneNr: 'Phone Number',
+    enterPhoneNr: 'Enter phone number',
+    extraInfo: 'Extra Info',
+    enterExtraInfo: 'Enter extra info',
   },
   ru: {
     agenda: 'Встречи',
@@ -269,6 +299,16 @@ const translations: TranslationsType = {
     tryAgainMessage: 'Что-то пошло не так. Не волнуйся, попробуем еще раз.',
     edit: 'Изменить',
     save: 'Сохранить',
+    firstName: 'Имя',
+    enterFirstName: 'Введите имя',
+    lastName: 'Фамилия',
+    enterLastName: 'Введите фамилию',
+    city: 'Город',
+    enterCity: 'Введите город',
+    phoneNr: 'Номер телефона',
+    enterPhoneNr: 'Введите номер телефона',
+    extraInfo: 'Дополнительная информация',
+    enterExtraInfo: 'Введите дополнительную информацию',
   }
 }
 

@@ -8,6 +8,7 @@ import HeaderButton from './HeaderButton'
 import { Patient, PatientRequest } from '../modals/Patient'
 import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
+import { translate } from '../helpers/Translator'
 
 type Props = {
   patient?: Patient
@@ -65,7 +66,7 @@ export default function PatientForm(props: Props) {
   useEffect(() => {
     if (props.patient) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -96,39 +97,39 @@ export default function PatientForm(props: Props) {
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
       <MainView style={styles.mainView}>
         <MyInput
-          label='First Name'
-          placeholder='Enter first name'
+          label={translate('firstName')}
+          placeholder={translate('enterFirstName')}
           value={firstName}
           showError={showFirstNameInputError}
           onChange={handleFirstNameChange}
           onFocus={() => setFocusedInputIndex(0)}
         />
         <MyInput
-          label='Last Name'
-          placeholder='Enter last name'
+          label={translate('lastName')}
+          placeholder={translate('enterLastName')}
           value={lastName}
           showError={showLastNameInputError}
           onChange={handleLastNameChange}
           onFocus={() => setFocusedInputIndex(1)}
         />
         <MyInput
-          label='City'
-          placeholder='Enter city'
+          label={translate('city')}
+          placeholder={translate('enterCity')}
           value={city}
           onChange={handleCityChange}
           onFocus={() => setFocusedInputIndex(2)}
         />
         <MyInput
-          label='Phone Number'
-          placeholder='Enter phone number'
+          label={translate('phoneNr')}
+          placeholder={translate('enterPhoneNr')}
           keyboardType='phone-pad'
           value={phoneNr}
           onChange={handlePhoneNrChange}
           onFocus={() => setFocusedInputIndex(3)}
         />
         <MyInput
-          label='Extra Info'
-          placeholder='Enter extra info...'
+          label={translate('extraInfo')}
+          placeholder={translate('enterExtraInfo')}
           multiline={true}
           value={extraInfo}
           onChange={handleExtraInfoChange}
