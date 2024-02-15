@@ -17,6 +17,7 @@ import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext } from '../contexts/ThemeContext'
+import { translate } from '../helpers/Translator'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -93,7 +94,7 @@ export default function PaymentForm(props: Props) {
   useEffect(() => {
     if (props.payment) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -131,16 +132,16 @@ export default function PaymentForm(props: Props) {
       <MainView style={{ paddingTop: 20 }}>
         <DateInput
           ref={dateInputRef}
-          label='Date'
-          placeholder='Pick a date'
+          label={translate('date')}
+          placeholder={translate('pickDate')}
           date={dateInitialVal}
           showError={showDatePickerError}
           onChange={() => setShowDatePickerError(false)}
           onFocus={() => setFocusedInputIndex(0)}
         />
         <MyInput
-          label='Amount'
-          placeholder='Enter amount'
+          label={translate('amount')}
+          placeholder={translate('enterAmount')}
           value={amount}
           showError={showAmountInputError}
           onChange={handleAmountChange}
@@ -152,15 +153,15 @@ export default function PaymentForm(props: Props) {
         {treatmentEditable ? (
           <TouchableInput
             onPress={handleTreatmentChange}
-            label='Treatment'
-            placeholder='Select'
+            label={translate('treatment')}
+            placeholder={translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
           />
         ) : (
           <TouchableWithoutFeedbackInput
-            label='Treatment'
-            placeholder='Select'
+            label={translate('treatment')}
+            placeholder={translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
           />

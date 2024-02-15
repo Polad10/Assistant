@@ -56,6 +56,8 @@ type TranslationKeys = {
   extraInfo: string
   enterExtraInfo: string
   enterPatientName: string
+  amount: string
+  enterAmount: string
 }
 
 type TranslationsType = {
@@ -147,6 +149,8 @@ const translations: TranslationsType = {
     extraInfo: 'Əlavə məlumat',
     enterExtraInfo: 'Əlavə məlumat daxil edin',
     enterPatientName: 'Pasientin adını daxil edin',
+    amount: 'Məbləğ',
+    enterAmount: 'Məbləği daxil edin',
   },
   en: {
     agenda: 'Agenda',
@@ -230,6 +234,8 @@ const translations: TranslationsType = {
     extraInfo: 'Extra Info',
     enterExtraInfo: 'Enter extra info',
     enterPatientName: 'Enter patient name',
+    amount: 'Amount',
+    enterAmount: 'Enter Amount',
   },
   ru: {
     agenda: 'Встречи',
@@ -313,6 +319,8 @@ const translations: TranslationsType = {
     extraInfo: 'Дополнительная информация',
     enterExtraInfo: 'Введите дополнительную информацию',
     enterPatientName: 'Введите имя пациента',
+    amount: 'Сумма оплаты',
+    enterAmount: 'Введите сумму оплаты',
   }
 }
 
