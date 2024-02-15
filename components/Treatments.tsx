@@ -11,6 +11,7 @@ import { searchTreatments } from '../helpers/Searcher'
 import MyFAB from './MyFAB'
 import { useNavigation } from '@react-navigation/native'
 import NoTreatments from './no-data/NoTreatments'
+import { translate } from '../helpers/Translator'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
   const context = useContext(DataContext)!
@@ -66,7 +67,11 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
     if (treatmentsInitial.length > 0) {
       return (
         <MainView>
-          <MySearchBar placeholder='Enter patient name...' searchEventName={searchEventName} ref={ref} />
+          <MySearchBar
+            placeholder={`${translate('enterPatientName')}...`}
+            searchEventName={searchEventName}
+            ref={ref}
+          />
           <TreatmentList pageName='Treatments' treatments={treatments ?? []} />
           <MyFAB onPress={() => navigation.navigate('NewTreatment', { patient: patient })} />
         </MainView>
