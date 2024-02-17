@@ -6,6 +6,7 @@ import { TouchableHighlight } from 'react-native'
 import UkFlag from './flags/UkFlag'
 import AzFlag from './flags/AzFlag'
 import RuFlag from './flags/RuFlag'
+import { translate } from '../helpers/Translator'
 
 export default function Languages() {
   const themeContext = useContext(ThemeContext)!
@@ -29,7 +30,7 @@ export default function Languages() {
       >
         <AzFlag />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>Azerbaijani</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('azerbaijani')}</ListItem.Title>
         </ListItem.Content>
         {selectedLanguage == 'az' && <CheckedIcon />}
       </ListItem>
@@ -41,7 +42,7 @@ export default function Languages() {
       >
         <UkFlag />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>English</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('english')}</ListItem.Title>
         </ListItem.Content>
         {selectedLanguage == 'uk' && <CheckedIcon />}
       </ListItem>
@@ -53,7 +54,7 @@ export default function Languages() {
       >
         <RuFlag />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>Russian</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('russian')}</ListItem.Title>
         </ListItem.Content>
         {selectedLanguage == 'ru' && <CheckedIcon />}
       </ListItem>

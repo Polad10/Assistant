@@ -5,11 +5,14 @@ import { ThemeContext } from '../contexts/ThemeContext'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { TouchableHighlight } from 'react-native-gesture-handler'
-import { translate } from '../helpers/Translator'
+import { TranslationKeys, language, translate } from '../helpers/Translator'
+import { GetFullLanguageName } from '../helpers/LanguageHelper'
 
 export default function Settings() {
   const navigation = useNavigation<RootStackScreenProps<'Settings'>['navigation']>()
   const themeContext = useContext(ThemeContext)!
+
+  const selectedLanguage = translate(GetFullLanguageName(language)!.toLowerCase() as keyof TranslationKeys)
 
   return (
     <MainView style={{ paddingTop: 20 }}>
@@ -27,7 +30,7 @@ export default function Settings() {
           <ListItem.Title style={{ color: themeContext.neutral }}>{translate('language')}</ListItem.Title>
         </ListItem.Content>
         <ListItem.Content right>
-          <ListItem.Title style={{ color: themeContext.neutral, opacity: 0.5 }}>English</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral, opacity: 0.5 }}>{selectedLanguage}</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron size={20} />
       </ListItem>
@@ -41,7 +44,7 @@ export default function Settings() {
           <ListItem.Title style={{ color: themeContext.neutral }}>{translate('theme')}</ListItem.Title>
         </ListItem.Content>
         <ListItem.Content right>
-          <ListItem.Title style={{ color: themeContext.neutral, opacity: 0.5 }}>Dark</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral, opacity: 0.5 }}>{translate('dark')}</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron size={20} />
       </ListItem>
