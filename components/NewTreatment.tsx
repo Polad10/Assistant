@@ -9,6 +9,7 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { translate } from '../helpers/Translator'
 
 export default function NewTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
@@ -23,7 +24,7 @@ export default function NewTreatment() {
       setLoading(true)
       const newTreatment = await context.createTreatment(treatment)
 
-      showSuccessMessage('Treatment added')
+      showSuccessMessage(translate('treatmentAdded'))
 
       if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
         DeviceEventEmitter.emit('treatmentCreated', newTreatment)

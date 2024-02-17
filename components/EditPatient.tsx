@@ -10,6 +10,7 @@ import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { translate } from '../helpers/Translator'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
@@ -27,7 +28,7 @@ export default function EditPatient() {
       setLoading(true)
       await context.updatePatient(patient)
 
-      showMessage('Saved')
+      showMessage(translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -51,7 +52,7 @@ export default function EditPatient() {
       setLoading(true)
       await context.deletePatient(patientId)
 
-      showDangerMessage('Patient deleted')
+      showDangerMessage(translate('patientDeleted'))
       navigation.popToTop()
     } catch (ex) {
       setError(true)

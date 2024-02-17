@@ -9,6 +9,7 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { translate } from '../helpers/Translator'
 
 export default function NewPayment() {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
@@ -26,7 +27,7 @@ export default function NewPayment() {
       setLoading(true)
       await context.createPayment(payment)
 
-      showSuccessMessage('Payment added')
+      showSuccessMessage(translate('paymentAdded'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

@@ -69,6 +69,15 @@ export type TranslationKeys = {
   of: string
   start: string
   end: string
+  saved: string
+  appointmentAdded: string
+  patientAdded: string
+  treatmentAdded: string
+  paymentAdded: string
+  appointmentDeleted: string
+  patientDeleted: string
+  treatmentDeleted: string
+  paymentDeleted: string
 }
 
 type TranslationsType = {
@@ -173,6 +182,15 @@ const translations: TranslationsType = {
     of: '/',
     start: 'Başlanğıc',
     end: 'Bitiş',
+    saved: 'Yadda saxlanıldı',
+    appointmentAdded: 'Görüş əlavə edildi',
+    patientAdded: 'Pasient əlavə edildi',
+    treatmentAdded: 'Müalicə əlavə edildi',
+    paymentAdded: 'Ödəniş əlavə edildi',
+    appointmentDeleted: 'Görüş silindi',
+    patientDeleted: 'Pasient silindi',
+    treatmentDeleted: 'Müalicə silindi',
+    paymentDeleted: 'Ödəniş silindi',
   },
   en: {
     agenda: 'Agenda',
@@ -269,6 +287,15 @@ const translations: TranslationsType = {
     of: 'of',
     start: 'Start',
     end: 'End',
+    saved: 'Saved',
+    appointmentAdded: 'Appointment added',
+    patientAdded: 'Patient added',
+    treatmentAdded: 'Treatment added',
+    paymentAdded: 'Payment added',
+    appointmentDeleted: 'Appointment deleted',
+    patientDeleted: 'Patient deleted',
+    treatmentDeleted: 'Treatment deleted',
+    paymentDeleted: 'Payment deleted',
   },
   ru: {
     agenda: 'Встречи',
@@ -365,6 +392,15 @@ const translations: TranslationsType = {
     of: 'из',
     start: 'Начало',
     end: 'Конец',
+    saved: 'Сохранено',
+    appointmentAdded: 'Встреча добавлена',
+    patientAdded: 'Пациент добавлен',
+    treatmentAdded: 'Лечение добавлено',
+    paymentAdded: 'Оплата добавлена',
+    appointmentDeleted: 'Встреча удалена',
+    patientDeleted: 'Пациент удален',
+    treatmentDeleted: 'Лечение удалено',
+    paymentDeleted: 'Оплата удалена',
   }
 }
 

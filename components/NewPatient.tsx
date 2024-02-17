@@ -9,6 +9,7 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { translate } from '../helpers/Translator'
 
 export default function NewPatient() {
   const navigation = useNavigation<RootStackScreenProps<'NewPatient'>['navigation']>()
@@ -22,7 +23,7 @@ export default function NewPatient() {
       setLoading(true)
       const newPatient = await context.createPatient(patient)
 
-      showSuccessMessage('Patient added')
+      showSuccessMessage(translate('patientAdded'))
 
       if (DeviceEventEmitter.listenerCount('patientCreated') > 0) {
         DeviceEventEmitter.emit('patientCreated', newPatient)

@@ -9,6 +9,7 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { translate } from '../helpers/Translator'
 
 export default function NewAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'NewAppointment'>['navigation']>()
@@ -26,7 +27,7 @@ export default function NewAppointment() {
       setLoading(true)
       await context.createAppointment(appointment)
 
-      showSuccessMessage('Appointment added')
+      showSuccessMessage(translate('appointmentAdded'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

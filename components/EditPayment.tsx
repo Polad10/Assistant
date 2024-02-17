@@ -10,6 +10,7 @@ import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './Error'
+import { translate } from '../helpers/Translator'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
@@ -27,7 +28,7 @@ export default function EditPayment() {
       setLoading(true)
       await context.updatePayment(payment)
 
-      showMessage('Saved')
+      showMessage(translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -41,7 +42,7 @@ export default function EditPayment() {
       setLoading(true)
       await context.deletePayment(paymentId)
 
-      showDangerMessage('Payment deleted')
+      showDangerMessage(translate('paymentDeleted'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
