@@ -159,7 +159,7 @@ export default function AppointmentForm(props: Props) {
             ref={dateInputRef}
             style={{ flex: 1 }}
             label={translate('date')}
-            placeholder={translate('pickDate')}
+            placeholder={DateTime.local().toISODate() ?? undefined}
             date={initialDateTime}
             showError={showDatePickerError}
             onChange={() => setShowDatePickerError(false)}
@@ -169,7 +169,7 @@ export default function AppointmentForm(props: Props) {
             ref={timeInputRef}
             style={{ flex: 1 }}
             label={translate('time')}
-            placeholder={translate('pickTime')}
+            placeholder={DateTime.local().toLocaleString(DateTime.TIME_24_SIMPLE) ?? undefined}
             time={initialDateTime}
             showError={showTimePickerError}
             onChange={() => setShowTimePickerError(false)}
@@ -178,7 +178,7 @@ export default function AppointmentForm(props: Props) {
         </View>
         <MyInput
           label={translate('actions')}
-          placeholder={`${translate('enterActions')}...`}
+          placeholder={`${translate('enterActions')}`}
           multiline={true}
           value={actions}
           onChange={handleActionsChange}

@@ -17,6 +17,7 @@ import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { translate } from '../helpers/Translator'
 
 type StyleProps = {
   patientEditable: boolean
@@ -119,7 +120,7 @@ export default function TreatmentForm(props: Props) {
   useEffect(() => {
     if (props.treatment) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title='Save' onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -170,8 +171,8 @@ export default function TreatmentForm(props: Props) {
           <DateInput
             ref={startDateInputRef}
             style={{ flex: 1 }}
-            label='Start date'
-            placeholder='Pick a date'
+            label={translate('startDate')}
+            placeholder={DateTime.local().toISODate() ?? undefined}
             date={startDateInitialVal}
             showError={showStartDatePickerError}
             onChange={() => setShowStartDatePickerError(false)}
@@ -180,23 +181,23 @@ export default function TreatmentForm(props: Props) {
           <DateInput
             ref={endDateInputRef}
             style={{ flex: 1 }}
-            label='End date'
-            placeholder='Pick a date'
+            label={translate('endDate')}
+            placeholder={DateTime.local().plus({ month: 1 }).toISODate() ?? undefined}
             date={endDateInitialVal}
             onFocus={() => setFocusedInputIndex(0)}
           />
         </View>
         <MyInput
-          label='Title'
-          placeholder='Enter title'
+          label={translate('title')}
+          placeholder={translate('enterTitle')}
           value={title}
           showError={showTitleInputError}
           onChange={handleTitleChange}
           onFocus={() => setFocusedInputIndex(1)}
         />
         <MyInput
-          label='Price'
-          placeholder='Enter price'
+          label={translate('price')}
+          placeholder={translate('enterAmount')}
           value={price}
           showError={showPriceInputError}
           onChange={handlePriceChange}
@@ -207,15 +208,15 @@ export default function TreatmentForm(props: Props) {
         {styleProps.patientEditable ? (
           <TouchableInput
             onPress={handlePatientChange}
-            label='Patient'
-            placeholder='Select'
+            label={translate('patient')}
+            placeholder={translate('selectPatient')}
             value={getSelectedPatientFullName()}
             showError={showPatientInputError}
           />
         ) : (
           <TouchableWithoutFeedbackInput
-            label='Patient'
-            placeholder='Select'
+            label={translate('patient')}
+            placeholder={translate('selectPatient')}
             value={getSelectedPatientFullName()}
             showError={showPatientInputError}
           />

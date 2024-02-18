@@ -129,7 +129,7 @@ export default function PatientForm(props: Props) {
         />
         <MyInput
           label={translate('extraInfo')}
-          placeholder={`${translate('enterExtraInfo')}...`}
+          placeholder={`${translate('enterExtraInfo')}`}
           multiline={true}
           value={extraInfo}
           onChange={handleExtraInfoChange}

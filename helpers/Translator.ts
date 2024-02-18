@@ -29,7 +29,6 @@ export type TranslationKeys = {
   date: string
   time: string
   actions: string
-  pickDate: string
   pickTime: string
   enterActions: string
   selectTreatment: string
@@ -83,6 +82,11 @@ export type TranslationKeys = {
   russian: string
   dark: string
   light: string
+  startDate: string
+  endDate: string
+  title: string
+  enterTitle: string
+  selectPatient: string
 }
 
 type TranslationsType = {
@@ -121,9 +125,8 @@ const translations: TranslationsType = {
     date: 'Tarix',
     time: 'Vaxt',
     actions: 'Tədbirlər',
-    pickDate: 'Tarix seçin',
     pickTime: 'Vaxt seçin',
-    enterActions: 'Tədbirləri daxil edin',
+    enterActions: 'Dişlərin təmizlənməsi, diş kronlarının qoyulması.',
     selectTreatment: 'Müalicəni seçin',
     dayNames: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
     dayNamesShort: ['B.', 'B.E.', 'Ç.A.', 'Ç.', 'C.A.', 'C.', 'Ş.'],
@@ -164,18 +167,18 @@ const translations: TranslationsType = {
     edit: 'Dəyiş',
     save: 'Yadda Saxla',
     firstName: 'Ad',
-    enterFirstName: 'Adı daxil edin',
+    enterFirstName: 'Yeganə',
     lastName: 'Soyad',
-    enterLastName: 'Soyadı daxil edin',
+    enterLastName: 'Məmmədova',
     city: 'Şəhər',
-    enterCity: 'Şəhəri daxil edin',
+    enterCity: 'Bakı',
     phoneNr: 'Telefon nömrəsi',
-    enterPhoneNr: 'Telefon nömrəsini daxil edin',
+    enterPhoneNr: '050 123 45 67',
     extraInfo: 'Əlavə məlumat',
-    enterExtraInfo: 'Əlavə məlumat daxil edin',
+    enterExtraInfo: 'Poladın dostu.',
     enterPatientName: 'Pasientin adını daxil edin',
     amount: 'Məbləğ',
-    enterAmount: 'Məbləği daxil edin',
+    enterAmount: '100',
     create: 'Yarat',
     general: 'Ümumi',
     language: 'Dil',
@@ -201,6 +204,11 @@ const translations: TranslationsType = {
     russian: 'Rus',
     dark: 'Tünd',
     light: 'Açıq',
+    startDate: 'Başlanğıc tarixi',
+    endDate: 'Bitmə tarixi',
+    title: 'Başlıq',
+    enterTitle: 'Dişlərin təmizlənməsi və yoxlanılması',
+    selectPatient: 'Pasienti seçin',
   },
   en: {
     agenda: 'Agenda',
@@ -231,9 +239,8 @@ const translations: TranslationsType = {
     date: 'Date',
     time: 'Time',
     actions: 'Actions',
-    pickDate: 'Pick a date',
     pickTime: 'Pick a time',
-    enterActions: 'Enter actions',
+    enterActions: 'Teeth cleaning, dental crowns placement.',
     selectTreatment: 'Select a treatment',
     dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -274,18 +281,18 @@ const translations: TranslationsType = {
     edit: 'Edit',
     save: 'Save',
     firstName: 'First Name',
-    enterFirstName: 'Enter first name',
+    enterFirstName: 'Egana',
     lastName: 'Last Name',
-    enterLastName: 'Enter last name',
+    enterLastName: 'Mammadova',
     city: 'City',
-    enterCity: 'Enter city',
+    enterCity: 'Baku',
     phoneNr: 'Phone Number',
-    enterPhoneNr: 'Enter phone number',
+    enterPhoneNr: '050 123 45 67',
     extraInfo: 'Extra Info',
-    enterExtraInfo: 'Enter extra info',
-    enterPatientName: 'Enter patient name',
+    enterExtraInfo: 'A friend of Polad.',
+    enterPatientName: "Enter patient's name",
     amount: 'Amount',
-    enterAmount: 'Enter Amount',
+    enterAmount: '100',
     create: 'Create',
     general: 'General',
     language: 'Language',
@@ -311,6 +318,11 @@ const translations: TranslationsType = {
     russian: 'Russian',
     dark: 'Dark',
     light: 'Light',
+    startDate: 'Start date',
+    endDate: 'End date',
+    title: 'Title',
+    enterTitle: 'Dental cleaning and check-up',
+    selectPatient: 'Select patient',
   },
   ru: {
     agenda: 'Встречи',
@@ -341,9 +353,8 @@ const translations: TranslationsType = {
     date: 'Дата',
     time: 'Время',
     actions: 'Действия',
-    pickDate: 'Выберите дату',
     pickTime: 'Выберите время',
-    enterActions: 'Введите действия',
+    enterActions: 'Чистка зубов, установка зубных коронок.',
     selectTreatment: 'Выберите лечение',
     dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
     dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
@@ -384,18 +395,18 @@ const translations: TranslationsType = {
     edit: 'Изменить',
     save: 'Сохранить',
     firstName: 'Имя',
-    enterFirstName: 'Введите имя',
+    enterFirstName: 'Егана',
     lastName: 'Фамилия',
-    enterLastName: 'Введите фамилию',
+    enterLastName: 'Мамедова',
     city: 'Город',
-    enterCity: 'Введите город',
+    enterCity: 'Баку',
     phoneNr: 'Номер телефона',
-    enterPhoneNr: 'Введите номер телефона',
+    enterPhoneNr: '050 123 45 67',
     extraInfo: 'Дополнительная информация',
-    enterExtraInfo: 'Введите дополнительную информацию',
+    enterExtraInfo: 'Друг Полада.',
     enterPatientName: 'Введите имя пациента',
     amount: 'Сумма оплаты',
-    enterAmount: 'Введите сумму оплаты',
+    enterAmount: '100',
     create: 'Создать',
     general: 'Общие',
     language: 'Язык',
@@ -421,6 +432,11 @@ const translations: TranslationsType = {
     russian: 'Русский',
     dark: 'Темная',
     light: 'Светлая',
+    startDate: 'Дата начала',
+    endDate: 'Дата завершения',
+    title: 'Заголовок',
+    enterTitle: 'Чистка и осмотр зубов',
+    selectPatient: 'Выберите пациента',
   }
 }
 

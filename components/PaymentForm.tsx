@@ -133,7 +133,7 @@ export default function PaymentForm(props: Props) {
         <DateInput
           ref={dateInputRef}
           label={translate('date')}
-          placeholder={translate('pickDate')}
+          placeholder={DateTime.local().toISODate() ?? undefined}
           date={dateInitialVal}
           showError={showDatePickerError}
           onChange={() => setShowDatePickerError(false)}
