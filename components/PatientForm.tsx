@@ -3,12 +3,14 @@ import MainView from './MainView'
 import { DeviceEventEmitter, NativeSyntheticEvent, StyleSheet, TextInputChangeEventData } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import HeaderButton from './HeaderButton'
 import { Patient, PatientRequest } from '../modals/Patient'
 import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { translate } from '../helpers/Translator'
+import DateInput, { DateInputRefType } from './DateInput'
+import { DateTime } from 'luxon'
 
 type Props = {
   patient?: Patient
@@ -29,11 +31,17 @@ export default function PatientForm(props: Props) {
 
   const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
+  const dateInputRef = useRef<DateInputRefType>()
+  let dobInitialVal = props.patient?.dob ? new Date(props.patient.dob) : undefined
+
   const handleSave = useCallback(async () => {
     if (validate()) {
+      const dob = dateInputRef.current?.getDate()
+
       const newPatientRequest: PatientRequest = {
         first_name: firstName!,
         last_name: lastName!,
+        dob: dob ? DateTime.fromJSDate(dob).toISODate() : dob,
         city: city,
         phone: phoneNr,
         extra_info: extraInfo,
@@ -112,12 +120,19 @@ export default function PatientForm(props: Props) {
           onChange={handleLastNameChange}
           onFocus={() => setFocusedInputIndex(1)}
         />
+        <DateInput
+          ref={dateInputRef}
+          label={translate('dob')}
+          placeholder={DateTime.local().minus({ years: 10 }).toISODate() ?? undefined}
+          date={dobInitialVal}
+          onFocus={() => setFocusedInputIndex(2)}
+        />
         <MyInput
           label={translate('city')}
           placeholder={translate('enterCity')}
           value={city}
           onChange={handleCityChange}
-          onFocus={() => setFocusedInputIndex(2)}
+          onFocus={() => setFocusedInputIndex(3)}
         />
         <MyInput
           label={translate('phoneNr')}
@@ -125,7 +140,7 @@ export default function PatientForm(props: Props) {
           keyboardType='phone-pad'
           value={phoneNr}
           onChange={handlePhoneNrChange}
-          onFocus={() => setFocusedInputIndex(3)}
+          onFocus={() => setFocusedInputIndex(4)}
         />
         <MyInput
           label={translate('extraInfo')}
@@ -134,7 +149,7 @@ export default function PatientForm(props: Props) {
           value={extraInfo}
           onChange={handleExtraInfoChange}
           style={{ minHeight: 100 }}
-          onFocus={() => setFocusedInputIndex(4)}
+          onFocus={() => setFocusedInputIndex(5)}
         />
         {!props.patient && <CreateButton onPress={handleSave} />}
       </MainView>

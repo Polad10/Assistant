@@ -24,7 +24,9 @@ import NoAppointments from './no-data/NoAppointments'
 import NoTreatments from './no-data/NoTreatments'
 import NoPayments from './no-data/NoPayments'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { translate } from '../helpers/Translator'
+import { language, translate } from '../helpers/Translator'
+import { DateTime } from 'luxon'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
   const context = useContext(DataContext)!
@@ -122,6 +124,12 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
         <View style={styles(themeContext).infoField}>
           <IonIcons name='home-outline' size={22} style={styles(themeContext).infoIcon} />
           <Text style={styles(themeContext).text}>{patient.city || '-'}</Text>
+        </View>
+        <View style={styles(themeContext).infoField}>
+          <MaterialCommunityIcons name='cake-variant-outline' size={22} style={styles(themeContext).infoIcon} />
+          <Text style={styles(themeContext).text}>
+            {patient.dob ? DateTime.fromISO(patient.dob).setLocale(language).toFormat('MMMM d, yyyy') : '-'}
+          </Text>
         </View>
         <View style={styles(themeContext).infoField}>
           <IonIcons name='call-outline' size={22} style={styles(themeContext).infoIcon} />

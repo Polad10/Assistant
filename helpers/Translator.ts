@@ -87,6 +87,7 @@ export type TranslationKeys = {
   title: string
   enterTitle: string
   selectPatient: string
+  dob: string
 }
 
 type TranslationsType = {
@@ -209,6 +210,7 @@ const translations: TranslationsType = {
     title: 'Başlıq',
     enterTitle: 'Dişlərin təmizlənməsi və yoxlanılması',
     selectPatient: 'Pasienti seçin',
+    dob: 'Doğum tarixi',
   },
   en: {
     agenda: 'Agenda',
@@ -323,6 +325,7 @@ const translations: TranslationsType = {
     title: 'Title',
     enterTitle: 'Dental cleaning and check-up',
     selectPatient: 'Select patient',
+    dob: 'Date of birth',
   },
   ru: {
     agenda: 'Встречи',
@@ -437,6 +440,7 @@ const translations: TranslationsType = {
     title: 'Заголовок',
     enterTitle: 'Чистка и осмотр зубов',
     selectPatient: 'Выберите пациента',
+    dob: 'Дата рождения',
   }
 }
 

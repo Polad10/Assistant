@@ -1,6 +1,7 @@
 interface BasePatient {
   first_name: string
   last_name: string
+  dob: string | null | undefined
   city: string | null | undefined
   phone: string | null | undefined
   extra_info: string | null | undefined
