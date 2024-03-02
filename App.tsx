@@ -2,7 +2,7 @@ import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import Patients from './components/Patients'
 import Appointments from './components/Appointments'
@@ -27,6 +27,12 @@ import { StyleSheet } from 'react-native'
 import Settings from './components/Settings'
 import Languages from './components/Languages'
 import { translate } from './helpers/Translator'
+import { getApp, getApps, initializeApp } from 'firebase/app'
+import * as firebaseAuth from 'firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import LoadingView from './components/LoadingView'
+//import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import Login from './components/Login'
 
 type Tabs = {
   Appointments: undefined
@@ -91,18 +97,56 @@ function Home() {
   )
 }
 
+// const appsNr = getApps().length
+// const app = appsNr === 0 ? initializeApp(firebaseConfig) : getApp()
+// const reactNativePersistence = (firebaseAuth as any).getReactNativePersistence
+// const auth =
+//   appsNr === 0
+//     ? firebaseAuth.initializeAuth(app, { persistence: reactNativePersistence(AsyncStorage) })
+//     : firebaseAuth.getAuth()
+
 export default function App() {
-  return (
-    <RootSiblingParent>
-      <ActionSheetProvider>
-        <DataProvider>
-          <ThemeProvider>
-            <Navigation />
-          </ThemeProvider>
-        </DataProvider>
-      </ActionSheetProvider>
-    </RootSiblingParent>
-  )
+  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<firebaseAuth.User | null>(null)
+
+  // firebaseAuth.onAuthStateChanged(auth, (user) => {
+  //   setUser(user)
+  //   setLoading(false)
+  //   console.log(user)
+  // })
+
+  // useEffect(() => {
+  //   GoogleSignin.configure({ webClientId: '809179991975-vtahfrcq27e5vi5knb1ugppvp111hf9q.apps.googleusercontent.com' })
+  // }, [])
+
+  // async function handleLogin() {
+  //   const newUser = await firebaseAuth.createUserWithEmailAndPassword(auth, 'samadzada.polad@gmail.com', 'Test123')
+  // }
+
+  // async function handleGoogleLogin() {
+  //   await GoogleSignin.hasPlayServices()
+  //   const userInfo = await GoogleSignin.signIn()
+  //   const credential = firebaseAuth.GoogleAuthProvider.credential(userInfo.idToken)
+  //   firebaseAuth.signInWithCredential(auth, credential)
+  // }
+
+  function getContent() {
+    if (loading) {
+      return <LoadingView />
+    } else {
+      return (
+        <RootSiblingParent>
+          <ActionSheetProvider>
+            <DataProvider>
+              <ThemeProvider>{user ? <Navigation /> : <Login />}</ThemeProvider>
+            </DataProvider>
+          </ActionSheetProvider>
+        </RootSiblingParent>
+      )
+    }
+  }
+
+  return getContent()
 }
 
 function Navigation() {

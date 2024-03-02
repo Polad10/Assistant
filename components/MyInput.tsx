@@ -34,9 +34,11 @@ export default function MyInput(props: Props) {
       inputStyle={styles(styleProps).input}
       labelStyle={styles(styleProps).label}
       inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
+      containerStyle={props.containerStyle}
       selectionColor={props.selectionColor || themeContext.neutral}
       onFocus={handleFocus}
       onBlur={() => setFocused(false)}
+      renderErrorMessage={false}
     />
   )
 }
@@ -54,6 +56,8 @@ const styles = (styleProps: StyleProps) =>
       borderWidth: 1,
       borderRadius: 10,
       borderColor: styleProps.showError ? 'red' : styleProps.themeContext.border,
+      marginBottom: 20,
+      marginLeft: 0,
     },
     focused: {
       borderColor: 'grey',

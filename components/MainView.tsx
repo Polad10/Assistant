@@ -12,7 +12,7 @@ export default function MainView(props: Props) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={[props.style, styles(themeContext).mainView]}>{props.children}</View>
+      <View style={[styles(themeContext).mainView, props.style]}>{props.children}</View>
     </TouchableWithoutFeedback>
   )
 }
