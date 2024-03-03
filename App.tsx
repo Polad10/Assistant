@@ -33,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import LoadingView from './components/LoadingView'
 //import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import Welcome from './components/Welcome'
+import Login from './components/Login'
 
 type Tabs = {
   Appointments: undefined
@@ -107,7 +108,6 @@ function Home() {
 
 export default function App() {
   const [loading, setLoading] = useState(false)
-  const [user, setUser] = useState<firebaseAuth.User | null>(null)
 
   // firebaseAuth.onAuthStateChanged(auth, (user) => {
   //   setUser(user)
@@ -138,7 +138,9 @@ export default function App() {
         <RootSiblingParent>
           <ActionSheetProvider>
             <DataProvider>
-              <ThemeProvider>{user ? <Navigation /> : <Welcome />}</ThemeProvider>
+              <ThemeProvider>
+                <Navigation />
+              </ThemeProvider>
             </DataProvider>
           </ActionSheetProvider>
         </RootSiblingParent>
@@ -151,6 +153,7 @@ export default function App() {
 
 function Navigation() {
   const themeContext = useContext(ThemeContext)!
+  const [user, setUser] = useState<firebaseAuth.User | null>(null)
 
   return (
     <NavigationContainer>
@@ -164,79 +167,89 @@ function Navigation() {
           headerTintColor: themeContext.accent,
         }}
       >
-        <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
-        <Stack.Group
-          screenOptions={{
-            presentation: 'modal',
-            headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
-          }}
-        >
-          <Stack.Screen
-            name='Patients'
-            component={Patients}
-            options={{ headerTitle: translate('patients').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='Treatments'
-            component={Treatments}
-            options={{ headerTitle: translate('treatments').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='Patient'
-            component={Patient}
-            options={{ headerTitle: translate('patient').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='Treatment'
-            component={Treatment}
-            options={{ headerTitle: translate('treatment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='NewAppointment'
-            component={NewAppointment}
-            options={{ headerTitle: translate('appointment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='NewTreatment'
-            component={NewTreatment}
-            options={{ headerTitle: translate('treatment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='NewPatient'
-            component={NewPatient}
-            options={{ headerTitle: translate('patient').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='EditAppointment'
-            component={EditAppointment}
-            options={{ headerTitle: translate('appointment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='EditPatient'
-            component={EditPatient}
-            options={{ headerTitle: translate('patient').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='EditTreatment'
-            component={EditTreatment}
-            options={{ headerTitle: translate('treatment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='EditPayment'
-            component={EditPayment}
-            options={{ headerTitle: translate('payment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='NewPayment'
-            component={NewPayment}
-            options={{ headerTitle: translate('payment').toUpperCase() }}
-          />
-          <Stack.Screen
-            name='Languages'
-            component={Languages}
-            options={{ headerTitle: translate('languages').toUpperCase() }}
-          />
-        </Stack.Group>
+        {user ? (
+          <Stack.Group>
+            <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Group
+              screenOptions={{
+                presentation: 'modal',
+                headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
+              }}
+            >
+              <Stack.Screen
+                name='Patients'
+                component={Patients}
+                options={{ headerTitle: translate('patients').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='Treatments'
+                component={Treatments}
+                options={{ headerTitle: translate('treatments').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='Patient'
+                component={Patient}
+                options={{ headerTitle: translate('patient').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='Treatment'
+                component={Treatment}
+                options={{ headerTitle: translate('treatment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='NewAppointment'
+                component={NewAppointment}
+                options={{ headerTitle: translate('appointment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='NewTreatment'
+                component={NewTreatment}
+                options={{ headerTitle: translate('treatment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='NewPatient'
+                component={NewPatient}
+                options={{ headerTitle: translate('patient').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='EditAppointment'
+                component={EditAppointment}
+                options={{ headerTitle: translate('appointment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='EditPatient'
+                component={EditPatient}
+                options={{ headerTitle: translate('patient').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='EditTreatment'
+                component={EditTreatment}
+                options={{ headerTitle: translate('treatment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='EditPayment'
+                component={EditPayment}
+                options={{ headerTitle: translate('payment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='NewPayment'
+                component={NewPayment}
+                options={{ headerTitle: translate('payment').toUpperCase() }}
+              />
+              <Stack.Screen
+                name='Languages'
+                component={Languages}
+                options={{ headerTitle: translate('languages').toUpperCase() }}
+              />
+            </Stack.Group>
+          </Stack.Group>
+        ) : (
+          <Stack.Group>
+            <Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
+            <Stack.Screen name='Login' component={Login} options={{ headerTitle: 'Log in' }} />
+          </Stack.Group>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   )

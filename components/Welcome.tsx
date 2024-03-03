@@ -2,15 +2,16 @@ import { useContext } from 'react'
 import MainView from './MainView'
 import { Button, Text } from '@rneui/themed'
 import { ThemeContext } from '../contexts/ThemeContext'
-import { KeyboardAvoidingView, SafeAreaView, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import MyInput from './MyInput'
 import Background from './illustrations/Background'
-import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import WelcomeIllustration from './illustrations/WelcomeIllustration'
+import { useNavigation } from '@react-navigation/native'
+import { RootStackScreenProps } from '../types/Navigation'
 
 export default function Welcome() {
   const themeContext = useContext(ThemeContext)!
+  const navigation = useNavigation<RootStackScreenProps<'Welcome'>['navigation']>()
 
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 20, backgroundColor: '#7600eb' }}>
@@ -25,7 +26,13 @@ export default function Welcome() {
       </View>
       <SafeAreaView style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
-          <Button title='Log in' size='lg' buttonStyle={{ borderRadius: 10, width: 300 }} color={themeContext.accent} />
+          <Button
+            title='Log in'
+            size='lg'
+            buttonStyle={{ borderRadius: 10, width: 300 }}
+            color={themeContext.accent}
+            onPress={() => navigation.navigate('Login')}
+          />
           <Button
             title='Sign up'
             size='lg'

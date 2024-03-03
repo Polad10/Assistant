@@ -19,6 +19,8 @@ export type RootStackParamList = {
   NewPayment: { treatmentId?: number, patient?: Patient }
   Settings: undefined
   Languages: undefined
+  Welcome: undefined
+  Login: undefined
 }
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>
