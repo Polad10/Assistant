@@ -32,7 +32,7 @@ import * as firebaseAuth from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LoadingView from './components/LoadingView'
 //import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import Login from './components/Login'
+import Welcome from './components/Welcome'
 
 type Tabs = {
   Appointments: undefined
@@ -138,7 +138,7 @@ export default function App() {
         <RootSiblingParent>
           <ActionSheetProvider>
             <DataProvider>
-              <ThemeProvider>{user ? <Navigation /> : <Login />}</ThemeProvider>
+              <ThemeProvider>{user ? <Navigation /> : <Welcome />}</ThemeProvider>
             </DataProvider>
           </ActionSheetProvider>
         </RootSiblingParent>
