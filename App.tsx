@@ -106,7 +106,7 @@ function Home() {
 //     : firebaseAuth.getAuth()
 
 export default function App() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [user, setUser] = useState<firebaseAuth.User | null>(null)
 
   // firebaseAuth.onAuthStateChanged(auth, (user) => {
