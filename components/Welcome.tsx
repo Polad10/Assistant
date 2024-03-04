@@ -45,6 +45,7 @@ export default function Welcome() {
               borderColor: themeContext.info,
             }}
             titleStyle={{ color: themeContext.info }}
+            onPress={() => navigation.navigate('Signup')}
           />
         </View>
         <View style={{ alignItems: 'center', marginTop: 30 }}>

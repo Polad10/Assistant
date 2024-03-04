@@ -34,6 +34,7 @@ import LoadingView from './components/LoadingView'
 //import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import Welcome from './components/Welcome'
 import Login from './components/Login'
+import Signup from './components/Signup'
 
 type Tabs = {
   Appointments: undefined
@@ -247,7 +248,8 @@ function Navigation() {
         ) : (
           <Stack.Group>
             <Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
-            <Stack.Screen name='Login' component={Login} options={{ headerTitle: 'Log in' }} />
+            <Stack.Screen name='Login' component={Login} options={{ headerTitle: 'LOG IN' }} />
+            <Stack.Screen name='Signup' component={Signup} options={{ headerTitle: 'SIGN UP' }} />
           </Stack.Group>
         )}
       </Stack.Navigator>
