@@ -22,5 +22,7 @@ const styles = (themeContext: ThemeContextType) =>
     mainView: {
       flex: 1,
       backgroundColor: themeContext.primary,
+      paddingTop: 20,
+      paddingHorizontal: 10,
     },
   })

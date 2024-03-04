@@ -35,6 +35,7 @@ import LoadingView from './components/LoadingView'
 import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import ForgotPassword from './components/ForgotPassword'
 
 type Tabs = {
   Appointments: undefined
@@ -250,6 +251,11 @@ function Navigation() {
             <Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
             <Stack.Screen name='Login' component={Login} options={{ headerTitle: 'LOG IN' }} />
             <Stack.Screen name='Signup' component={Signup} options={{ headerTitle: 'SIGN UP' }} />
+            <Stack.Screen
+              name='ForgotPassword'
+              component={ForgotPassword}
+              options={{ headerTitle: 'RESET PASSWORD' }}
+            />
           </Stack.Group>
         )}
       </Stack.Navigator>
