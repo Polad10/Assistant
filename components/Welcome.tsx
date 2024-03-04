@@ -14,7 +14,7 @@ export default function Welcome() {
   const navigation = useNavigation<RootStackScreenProps<'Welcome'>['navigation']>()
 
   return (
-    <MainView style={{ paddingTop: 20, paddingHorizontal: 20, backgroundColor: '#7600eb' }}>
+    <MainView>
       <Background />
       <View style={{ height: '30%', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
