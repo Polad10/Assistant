@@ -1,6 +1,6 @@
 import { translate } from '../../helpers/Translator'
 import NotFoundIllustration from '../illustrations/NotFoundIllustration'
-import UserMessageView from '../UserMessageView'
+import UserMessageView from './UserMessageView'
 
 export default function TreatmentsNotFound() {
   return (

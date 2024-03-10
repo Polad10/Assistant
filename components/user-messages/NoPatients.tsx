@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../../types/Navigation'
-import UserMessageView from '../UserMessageView'
+import UserMessageView from './UserMessageView'
 import PatientsIllustration from '../illustrations/PatientsIllustration'
 import { translate } from '../../helpers/Translator'
 

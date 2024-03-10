@@ -1,19 +1,78 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import MainView from './MainView'
 import { Button, Text } from '@rneui/themed'
 import { ThemeContext } from '../contexts/ThemeContext'
 import MyInput from './MyInput'
+import { showDangerMessage } from '../helpers/ToastHelper'
+import Toast from 'react-native-root-toast'
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+import { useNavigation } from '@react-navigation/native'
+import { RootStackScreenProps } from '../types/Navigation'
 
 export default function ForgotPassword() {
   const themeContext = useContext(ThemeContext)!
+  const navigation = useNavigation<RootStackScreenProps<'ForgotPassword'>['navigation']>()
+  const auth = getAuth()
+
+  const [email, setEmail] = useState('')
+  const [showEmailInputError, setShowEmailInputError] = useState(false)
+
+  async function resetPassword() {
+    if (validate()) {
+      try {
+        await sendPasswordResetEmail(auth, email)
+        navigation.navigate('EmailSent', { email: email })
+      } catch (error: any) {
+        switch (error.code) {
+          case 'auth/invalid-email':
+            setShowEmailInputError(true)
+            showDangerMessage('Email is invalid', Toast.positions.TOP)
+            break
+          default:
+            navigation.navigate('EmailSent', { email: email })
+        }
+      }
+    } else {
+      showDangerMessage('Please fill in all required fields', Toast.positions.TOP)
+    }
+  }
+
+  function validate() {
+    let valid = true
+
+    if (!email) {
+      setShowEmailInputError(true)
+      valid = false
+    }
+
+    return valid
+  }
+
+  function handleEmailChange(val: string) {
+    setShowEmailInputError(false)
+    setEmail(val)
+  }
 
   return (
-    <MainView>
+    <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <Text style={{ color: themeContext.neutral, fontSize: 17, marginBottom: 20, lineHeight: 24 }}>
         {`Enter the email address you registered with. \nWe'll send you an email in order to let you choose a new password.`}
       </Text>
-      <MyInput label='Email' placeholder='youremail@example.com' />
-      <Button title='Reset password' size='lg' buttonStyle={{ borderRadius: 10 }} color={themeContext.accent} />
+      <MyInput
+        label='Email'
+        placeholder='youremail@example.com'
+        keyboardType='email-address'
+        showError={showEmailInputError}
+        onChangeText={handleEmailChange}
+        autoCapitalize='none'
+      />
+      <Button
+        title='Reset password'
+        size='lg'
+        buttonStyle={{ borderRadius: 10 }}
+        color={themeContext.accent}
+        onPress={resetPassword}
+      />
     </MainView>
   )
 }

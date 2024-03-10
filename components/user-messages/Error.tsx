@@ -1,6 +1,6 @@
-import { translate } from '../helpers/Translator'
+import { translate } from '../../helpers/Translator'
 import UserMessageView from './UserMessageView'
-import ErrorIllustration from './illustrations/ErrorIllustration'
+import ErrorIllustration from '../illustrations/ErrorIllustration'
 
 type Props = {
   onBtnPress: () => void

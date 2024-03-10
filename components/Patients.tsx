@@ -9,9 +9,9 @@ import { DeviceEventEmitter, View } from 'react-native'
 import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
-import NoPatients from './no-data/NoPatients'
+import NoPatients from './user-messages/NoPatients'
 import LoadingView from './LoadingView'
-import Error from './Error'
+import Error from './user-messages/Error'
 import { translate } from '../helpers/Translator'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {

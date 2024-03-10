@@ -2,7 +2,7 @@ import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import Patients from './components/Patients'
 import Appointments from './components/Appointments'
@@ -27,15 +27,15 @@ import { StyleSheet } from 'react-native'
 import Settings from './components/Settings'
 import Languages from './components/Languages'
 import { translate } from './helpers/Translator'
-import { getApp, getApps, initializeApp } from 'firebase/app'
 import * as firebaseAuth from 'firebase/auth'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import LoadingView from './components/LoadingView'
 //import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import ForgotPassword from './components/ForgotPassword'
+import './firebase'
+import { useAuthentication } from './helpers/hooks/useAuthentication'
+import EmailSent from './components/user-messages/EmailSent'
 
 type Tabs = {
   Appointments: undefined
@@ -109,8 +109,6 @@ function Home() {
 //     : firebaseAuth.getAuth()
 
 export default function App() {
-  const [loading, setLoading] = useState(false)
-
   // firebaseAuth.onAuthStateChanged(auth, (user) => {
   //   setUser(user)
   //   setLoading(false)
@@ -132,30 +130,22 @@ export default function App() {
   //   firebaseAuth.signInWithCredential(auth, credential)
   // }
 
-  function getContent() {
-    if (loading) {
-      return <LoadingView />
-    } else {
-      return (
-        <RootSiblingParent>
-          <ActionSheetProvider>
-            <DataProvider>
-              <ThemeProvider>
-                <Navigation />
-              </ThemeProvider>
-            </DataProvider>
-          </ActionSheetProvider>
-        </RootSiblingParent>
-      )
-    }
-  }
-
-  return getContent()
+  return (
+    <RootSiblingParent>
+      <ActionSheetProvider>
+        <DataProvider>
+          <ThemeProvider>
+            <Navigation />
+          </ThemeProvider>
+        </DataProvider>
+      </ActionSheetProvider>
+    </RootSiblingParent>
+  )
 }
 
 function Navigation() {
   const themeContext = useContext(ThemeContext)!
-  const [user, setUser] = useState<firebaseAuth.User | null>(null)
+  const { user } = useAuthentication()
 
   return (
     <NavigationContainer>
@@ -256,6 +246,7 @@ function Navigation() {
               component={ForgotPassword}
               options={{ headerTitle: 'RESET PASSWORD' }}
             />
+            <Stack.Screen name='EmailSent' component={EmailSent} options={{ headerTitle: 'EMAIL SENT' }} />
           </Stack.Group>
         )}
       </Stack.Navigator>

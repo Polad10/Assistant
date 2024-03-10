@@ -8,7 +8,7 @@ import { DeviceEventEmitter } from 'react-native'
 import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
-import Error from './Error'
+import Error from './user-messages/Error'
 import { translate } from '../helpers/Translator'
 
 export default function NewTreatment() {

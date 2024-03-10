@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { ReactNode, useContext } from 'react'
 import { Button } from '@rneui/themed'
-import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import { ThemeContext, ThemeContextType } from '../../contexts/ThemeContext'
 
 type Props = {
   illustration: ReactNode

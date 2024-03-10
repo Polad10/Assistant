@@ -1,5 +1,5 @@
 import { translate } from '../../helpers/Translator'
-import UserMessageView from '../UserMessageView'
+import UserMessageView from './UserMessageView'
 import PaymentsIllustration from '../illustrations/PaymentsIllustration'
 
 type Props = {

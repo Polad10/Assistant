@@ -10,7 +10,7 @@ import { TreatmentWithPatientName } from '../types/TreatmentWithPatientName'
 import { searchTreatments } from '../helpers/Searcher'
 import MyFAB from './MyFAB'
 import { useNavigation } from '@react-navigation/native'
-import NoTreatments from './no-data/NoTreatments'
+import NoTreatments from './user-messages/NoTreatments'
 import { translate } from '../helpers/Translator'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {

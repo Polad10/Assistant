@@ -5,7 +5,7 @@ import { ListRenderItemInfo, StyleSheet, View } from 'react-native'
 import PatientItem from './PatientItem'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
-import PatientsNotFound from './no-data/PatientsNotFound'
+import PatientsNotFound from './user-messages/PatientsNotFound'
 import { useContext } from 'react'
 import { ThemeContext } from '../contexts/ThemeContext'
 

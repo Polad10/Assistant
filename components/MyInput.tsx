@@ -33,7 +33,7 @@ export default function MyInput(props: Props) {
       rightIconContainerStyle={{ marginRight: 10, paddingRight: 0 }}
       inputStyle={styles(styleProps).input}
       labelStyle={styles(styleProps).label}
-      inputContainerStyle={[styles(styleProps).inputContainer, focused ? styles(styleProps).focused : null]}
+      inputContainerStyle={[focused ? styles(styleProps).focused : null, styles(styleProps).inputContainer]}
       containerStyle={{ paddingHorizontal: 0 }}
       selectionColor={props.selectionColor || themeContext.neutral}
       onFocus={handleFocus}
