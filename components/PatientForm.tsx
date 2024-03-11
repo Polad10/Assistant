@@ -11,6 +11,8 @@ import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { translate } from '../helpers/Translator'
 import DateInput, { DateInputRefType } from './DateInput'
 import { DateTime } from 'luxon'
+import { showDangerMessage } from '../helpers/ToastHelper'
+import Toast from 'react-native-root-toast'
 
 type Props = {
   patient?: Patient
@@ -52,6 +54,8 @@ export default function PatientForm(props: Props) {
       }
 
       DeviceEventEmitter.emit('patientSaved', newPatientRequest)
+    } else {
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [firstName, lastName, city, phoneNr, extraInfo])
 

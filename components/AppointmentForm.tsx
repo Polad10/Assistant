@@ -17,6 +17,8 @@ import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { translate } from '../helpers/Translator'
+import { showDangerMessage } from '../helpers/ToastHelper'
+import Toast from 'react-native-root-toast'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -72,6 +74,8 @@ export default function AppointmentForm(props: Props) {
       }
 
       DeviceEventEmitter.emit('appointmentSaved', newAppointmentRequest)
+    } else {
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [actions, selectedTreatment])
 

@@ -18,6 +18,8 @@ import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { translate } from '../helpers/Translator'
+import { showDangerMessage } from '../helpers/ToastHelper'
+import Toast from 'react-native-root-toast'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -65,6 +67,8 @@ export default function PaymentForm(props: Props) {
       }
 
       DeviceEventEmitter.emit('paymentSaved', newPaymentRequest)
+    } else {
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [amount, selectedTreatment])
 

@@ -18,6 +18,8 @@ import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import { translate } from '../helpers/Translator'
+import { showDangerMessage } from '../helpers/ToastHelper'
+import Toast from 'react-native-root-toast'
 
 type StyleProps = {
   patientEditable: boolean
@@ -86,6 +88,8 @@ export default function TreatmentForm(props: Props) {
       }
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
+    } else {
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [selectedPatient, title, price])
 
