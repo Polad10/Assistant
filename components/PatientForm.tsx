@@ -107,7 +107,7 @@ export default function PatientForm(props: Props) {
 
   return (
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={styles.mainView}>
+      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
         <MyInput
           label={translate('firstName')}
           placeholder={translate('enterFirstName')}
@@ -160,9 +160,3 @@ export default function PatientForm(props: Props) {
     </MyKeyboardAvoidingView>
   )
 }
-
-const styles = StyleSheet.create({
-  mainView: {
-    marginTop: 20,
-  },
-})

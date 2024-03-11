@@ -133,7 +133,7 @@ export default function PaymentForm(props: Props) {
 
   return (
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20 }}>
+      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
         <DateInput
           ref={dateInputRef}
           label={translate('date')}

@@ -157,11 +157,11 @@ export default function AppointmentForm(props: Props) {
 
   return (
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20 }}>
+      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
         <View style={{ flexDirection: 'row' }}>
           <DateInput
             ref={dateInputRef}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginRight: 5 }}
             label={translate('date')}
             placeholder={DateTime.local().toISODate() ?? undefined}
             date={initialDateTime}
@@ -171,7 +171,7 @@ export default function AppointmentForm(props: Props) {
           />
           <TimeInput
             ref={timeInputRef}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginLeft: 5 }}
             label={translate('time')}
             placeholder={DateTime.local().toLocaleString(DateTime.TIME_24_SIMPLE) ?? undefined}
             time={initialDateTime}

@@ -170,11 +170,11 @@ export default function TreatmentForm(props: Props) {
 
   return (
     <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20 }}>
+      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
         <View style={{ flexDirection: 'row' }}>
           <DateInput
             ref={startDateInputRef}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginRight: 5 }}
             label={translate('startDate')}
             placeholder={DateTime.local().toISODate() ?? undefined}
             date={startDateInitialVal}
@@ -184,7 +184,7 @@ export default function TreatmentForm(props: Props) {
           />
           <DateInput
             ref={endDateInputRef}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginLeft: 5 }}
             label={translate('endDate')}
             placeholder={DateTime.local().plus({ month: 1 }).toISODate() ?? undefined}
             date={endDateInitialVal}
