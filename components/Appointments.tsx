@@ -14,6 +14,7 @@ import Error from './user-messages/Error'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { Divider } from '@rneui/themed'
 import { configureCalendar } from '../helpers/CalendarConfig'
+import { DateTime } from 'luxon'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const context = useContext(DataContext)!
@@ -53,8 +54,13 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   useEffect(() => {
     const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
     setAgendaItems(groupedAppointments ? Object.fromEntries(groupedAppointments) : {})
+
     setAgendaKey(Math.random)
   }, [context.appointments])
+
+  useEffect(() => {
+    checkIfDayIsEmpty(DateTime.local().toISODate()!)
+  }, [agendaItems])
 
   const renderItem = (item: Appointment) => {
     return (
@@ -70,7 +76,11 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   function handleDayChange(dateData: DateData) {
-    if (agendaItems.hasOwnProperty(dateData.dateString)) {
+    checkIfDayIsEmpty(dateData.dateString)
+  }
+
+  function checkIfDayIsEmpty(date: string) {
+    if (agendaItems.hasOwnProperty(date)) {
       setDayIsEmpty(false)
     } else {
       setDayIsEmpty(true)
