@@ -9,6 +9,7 @@ import { RootStackScreenProps } from '../types/Navigation'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
+import { translate } from '../helpers/Translator'
 
 export default function Login() {
   const themeContext = useContext(ThemeContext)!
@@ -30,24 +31,21 @@ export default function Login() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage('Email is invalid', Toast.positions.TOP)
+            showDangerMessage(translate('emailIsInvalid'), Toast.positions.TOP)
             break
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-            showDangerMessage('Wrong email or password', Toast.positions.TOP)
+            showDangerMessage(translate('wrongEmailOrPassword'), Toast.positions.TOP)
             break
           case 'auth/too-many-requests':
-            showDangerMessage(
-              'Too many failed login attempts. Please reset your password or try again later.',
-              Toast.positions.TOP
-            )
+            showDangerMessage(translate('tooManyFailedLoginAttemptsMessage'), Toast.positions.TOP)
             break
           default:
-            showDangerMessage('Something went wrong. Please try again later.', Toast.positions.TOP)
+            showDangerMessage(translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
       }
     } else {
-      showDangerMessage('Please fill in all required fields', Toast.positions.TOP)
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 
@@ -80,25 +78,31 @@ export default function Login() {
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <MyInput
-        label='Email'
-        placeholder='youremail@example.com'
+        label={translate('email')}
+        placeholder={translate('enterEmail')}
         onChangeText={handleEmailChange}
         keyboardType='email-address'
         showError={showEmailInputError}
         autoCapitalize='none'
       />
       <MyInput
-        label='Password'
-        placeholder='YourPassword'
+        label={translate('password')}
+        placeholder={translate('enterPassword')}
         secureTextEntry={true}
         onChangeText={handlePasswordChange}
         showError={showPassowrdInputError}
       />
-      <Button title='Log in' size='lg' buttonStyle={{ borderRadius: 10 }} color={themeContext.accent} onPress={login} />
+      <Button
+        title={translate('login')}
+        size='lg'
+        buttonStyle={{ borderRadius: 10 }}
+        color={themeContext.accent}
+        onPress={login}
+      />
       <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
           <Text style={{ color: themeContext.neutral, textDecorationLine: 'underline', fontSize: 16 }}>
-            Forgot password?
+            {translate('forgotPassword')}
           </Text>
         </TouchableOpacity>
       </View>

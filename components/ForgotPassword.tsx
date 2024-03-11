@@ -8,6 +8,7 @@ import Toast from 'react-native-root-toast'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
+import { translate } from '../helpers/Translator'
 
 export default function ForgotPassword() {
   const themeContext = useContext(ThemeContext)!
@@ -26,14 +27,14 @@ export default function ForgotPassword() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage('Email is invalid', Toast.positions.TOP)
+            showDangerMessage(translate('emailIsInvalid'), Toast.positions.TOP)
             break
           default:
             navigation.navigate('EmailSent', { email: email })
         }
       }
     } else {
-      showDangerMessage('Please fill in all required fields', Toast.positions.TOP)
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 
@@ -56,18 +57,18 @@ export default function ForgotPassword() {
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <Text style={{ color: themeContext.neutral, fontSize: 17, marginBottom: 20, lineHeight: 24 }}>
-        {`Enter the email address you registered with. \nWe'll send you an email in order to let you choose a new password.`}
+        {translate('resetPasswordMessage')}
       </Text>
       <MyInput
-        label='Email'
-        placeholder='youremail@example.com'
+        label={translate('email')}
+        placeholder={translate('enterEmail')}
         keyboardType='email-address'
         showError={showEmailInputError}
         onChangeText={handleEmailChange}
         autoCapitalize='none'
       />
       <Button
-        title='Reset password'
+        title={translate('resetPassword')}
         size='lg'
         buttonStyle={{ borderRadius: 10 }}
         color={themeContext.accent}

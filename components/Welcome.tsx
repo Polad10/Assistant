@@ -8,6 +8,7 @@ import Background from './illustrations/Background'
 import WelcomeIllustration from './illustrations/WelcomeIllustration'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
+import { translate } from '../helpers/Translator'
 
 export default function Welcome() {
   const themeContext = useContext(ThemeContext)!
@@ -27,14 +28,14 @@ export default function Welcome() {
       <SafeAreaView style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
           <Button
-            title='Log in'
+            title={translate('login')}
             size='lg'
             buttonStyle={{ borderRadius: 10, width: 300 }}
             color={themeContext.accent}
             onPress={() => navigation.navigate('Login')}
           />
           <Button
-            title='Sign up'
+            title={translate('signUp')}
             size='lg'
             type='outline'
             buttonStyle={{
@@ -49,7 +50,9 @@ export default function Welcome() {
           />
         </View>
         <View style={{ alignItems: 'center', marginTop: 30 }}>
-          <Text style={{ color: themeContext.neutral, opacity: 0.5, marginBottom: 15 }}>Or connect using </Text>
+          <Text style={{ color: themeContext.neutral, opacity: 0.5, marginBottom: 15 }}>
+            {translate('orConnectUsing')}
+          </Text>
           <Button
             containerStyle={{ width: 300, borderRadius: 10 }}
             color='#dd4b39'

@@ -6,6 +6,7 @@ import MyInput from './MyInput'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
+import { translate } from '../helpers/Translator'
 
 export default function Signup() {
   const themeContext = useContext(ThemeContext)!
@@ -25,22 +26,22 @@ export default function Signup() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage('Email is invalid', Toast.positions.TOP)
+            showDangerMessage(translate('emailIsInvalid'), Toast.positions.TOP)
             break
           case 'auth/weak-password':
             setShowPasswordInputError(true)
-            showDangerMessage('Password should be at least 6 characters', Toast.positions.TOP)
+            showDangerMessage(translate('enterPassword'), Toast.positions.TOP)
             break
           case 'auth/email-already-in-use':
             setShowEmailInputError(true)
-            showDangerMessage('Email already in use. Please sign in instead.', Toast.positions.TOP)
+            showDangerMessage(translate('emailAlreadyInUseMessage'), Toast.positions.TOP)
             break
           default:
-            showDangerMessage('Something went wrong. Please try again later.', Toast.positions.TOP)
+            showDangerMessage(translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
       }
     } else {
-      showDangerMessage('Please fill in all required fields', Toast.positions.TOP)
+      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 
@@ -73,22 +74,22 @@ export default function Signup() {
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <MyInput
-        label='Email'
-        placeholder='youremail@example.com'
+        label={translate('email')}
+        placeholder={translate('enterEmail')}
         onChangeText={handleEmailChange}
         showError={showEmailInputError}
         keyboardType='email-address'
         autoCapitalize='none'
       />
       <MyInput
-        label='Password'
-        placeholder='YourPassword'
+        label={translate('password')}
+        placeholder={translate('enterPassword')}
         secureTextEntry={true}
         onChangeText={handlePasswordChange}
         showError={showPassowrdInputError}
       />
       <Button
-        title='Sign up'
+        title={translate('signUp')}
         size='lg'
         buttonStyle={{ borderRadius: 10 }}
         color={themeContext.accent}

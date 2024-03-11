@@ -88,6 +88,26 @@ export type TranslationKeys = {
   enterTitle: string
   selectPatient: string
   dob: string
+  login: string
+  signUp: string
+  orConnectUsing: string
+  resetPassword: string
+  email: string
+  password: string
+  enterEmail: string
+  enterPassword: string
+  forgotPassword: string
+  emailIsInvalid: string
+  wrongEmailOrPassword: string
+  tooManyFailedLoginAttemptsMessage: string
+  somethingWentWrongMessage: string
+  fillInAllRequiredFields: string
+  emailAlreadyInUseMessage: string
+  resetPasswordMessage: string
+  emailSent: string
+  checkYourEmail: string
+  weSentEmailTo: string
+  backToLogin: string
 }
 
 type TranslationsType = {
@@ -211,6 +231,26 @@ const translations: TranslationsType = {
     enterTitle: 'Dişlərin təmizlənməsi və yoxlanılması',
     selectPatient: 'Pasienti seçin',
     dob: 'Doğum tarixi',
+    login: 'Daxil ol',
+    signUp: 'Qeydiyyatdan keç',
+    orConnectUsing: 'Və ya aşağıdakılardan biri ilə qoşulun',
+    resetPassword: 'Şifrəni sıfırla',
+    email: 'E-poçt',
+    password: 'Şifrə',
+    enterEmail: 'e-poçtunuz@example.com',
+    enterPassword: 'Ən azı 6 simvol olmalıdır',
+    forgotPassword: 'Şifrəni unutmusan?',
+    emailIsInvalid: 'E-poçt yanlışdır',
+    wrongEmailOrPassword: 'Yanlış e-poçt və ya parol',
+    tooManyFailedLoginAttemptsMessage: 'Çox sayda uğursuz giriş cəhdi. Lütfən parolunuzu sıfırlayın və ya bir az sonra yenə cəhd edin.',
+    somethingWentWrongMessage: 'Nə isə səhv getdi. Zəhmət olmasa bir az sonra yenə cəhd edin.',
+    fillInAllRequiredFields: 'Lütfən bütün tələb olunan sahələri doldurun',
+    emailAlreadyInUseMessage: 'E-poçt artıq istifadədədir. Lütfən daxil olmağa çalışın.',
+    resetPasswordMessage: 'Qeydiyyatdan keçdiyiniz e-poçtu daxil edin. Yeni parol seçməyiniz üçün sizə e-məktub göndərəcəyik.',
+    emailSent: 'E-məktub göndərildi',
+    checkYourEmail: 'E-poçtunuzu yoxlayın',
+    weSentEmailTo: 'E-məktubu bu ünvana göndərdik',
+    backToLogin: 'Girişə qayıt',
   },
   en: {
     agenda: 'Agenda',
@@ -326,6 +366,26 @@ const translations: TranslationsType = {
     enterTitle: 'Dental cleaning and check-up',
     selectPatient: 'Select patient',
     dob: 'Date of birth',
+    login: 'Log in',
+    signUp: 'Sign up',
+    orConnectUsing: 'Or connect using',
+    resetPassword: 'Reset password',
+    email: 'Email',
+    password: 'Password',
+    enterEmail: 'your-email@example.com',
+    enterPassword: 'Must have at least 6 characters',
+    forgotPassword: 'Forgot password?',
+    emailIsInvalid: 'Email is invalid',
+    wrongEmailOrPassword: 'Wrong email or password',
+    tooManyFailedLoginAttemptsMessage: 'Too many failed login attempts. Please reset your password or try again later.',
+    somethingWentWrongMessage: 'Something went wrong. Please try again later.',
+    fillInAllRequiredFields: 'Please fill in all required fields',
+    emailAlreadyInUseMessage: 'Email already in use. Please sign in instead.',
+    resetPasswordMessage: "Enter the email address you registered with. We'll send you an email in order to let you choose a new password.",
+    emailSent: 'Email sent',
+    checkYourEmail: 'Check your email',
+    weSentEmailTo: 'We sent an email to',
+    backToLogin: 'Back to login',
   },
   ru: {
     agenda: 'Встречи',
@@ -441,6 +501,26 @@ const translations: TranslationsType = {
     enterTitle: 'Чистка и осмотр зубов',
     selectPatient: 'Выберите пациента',
     dob: 'Дата рождения',
+    login: 'Войти',
+    signUp: 'Зарегистрироваться',
+    orConnectUsing: 'Или подключитесь с помощью',
+    resetPassword: 'Сбросить пароль',
+    email: 'Эл. почта',
+    password: 'Пароль',
+    enterEmail: 'ваша-почта@example.com',
+    enterPassword: 'Должно быть не менее 6 символов',
+    forgotPassword: 'Забыли пароль?',
+    emailIsInvalid: 'Электронная почта недействительна',
+    wrongEmailOrPassword: 'Неверный адрес электронной почты или пароль.',
+    tooManyFailedLoginAttemptsMessage: 'Слишком много неудавшихся попыток входа. Пожалуйста сбросьте пароль или повторите попытку позже.',
+    somethingWentWrongMessage: 'Что-то пошло не так. Пожалуйста повторите попытку позже.',
+    fillInAllRequiredFields: 'Пожалуйста заполните все необходимые поля',
+    emailAlreadyInUseMessage: 'Электронная почта уже используется. Пожалуйста войдите в систему.',
+    resetPasswordMessage: 'Введите адрес электронной почты, с которым вы зарегистрировались. Мы отправим вам электронное письмо, чтобы вы могли выбрать новый пароль.',
+    emailSent: 'Письмо отправлено',
+    checkYourEmail: 'Проверьте свою электронную почту',
+    weSentEmailTo: 'Мы отправили электронное письмо на',
+    backToLogin: 'Вернуться к входу',
   }
 }
 

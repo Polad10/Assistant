@@ -239,14 +239,22 @@ function Navigation() {
         ) : (
           <Stack.Group>
             <Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
-            <Stack.Screen name='Login' component={Login} options={{ headerTitle: 'LOG IN' }} />
-            <Stack.Screen name='Signup' component={Signup} options={{ headerTitle: 'SIGN UP' }} />
+            <Stack.Screen name='Login' component={Login} options={{ headerTitle: translate('login').toUpperCase() }} />
+            <Stack.Screen
+              name='Signup'
+              component={Signup}
+              options={{ headerTitle: translate('signUp').toUpperCase() }}
+            />
             <Stack.Screen
               name='ForgotPassword'
               component={ForgotPassword}
-              options={{ headerTitle: 'RESET PASSWORD' }}
+              options={{ headerTitle: translate('resetPassword').toUpperCase() }}
             />
-            <Stack.Screen name='EmailSent' component={EmailSent} options={{ headerTitle: 'EMAIL SENT' }} />
+            <Stack.Screen
+              name='EmailSent'
+              component={EmailSent}
+              options={{ headerTitle: translate('emailSent').toUpperCase() }}
+            />
           </Stack.Group>
         )}
       </Stack.Navigator>
