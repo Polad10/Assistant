@@ -132,47 +132,46 @@ export default function PaymentForm(props: Props) {
   }
 
   return (
-    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
-        <DateInput
-          ref={dateInputRef}
-          label={translate('date')}
-          placeholder={DateTime.local().toISODate() ?? undefined}
-          date={dateInitialVal}
-          showError={showDatePickerError}
-          onChange={() => setShowDatePickerError(false)}
-          onFocus={() => setFocusedInputIndex(0)}
-        />
-        <MyInput
-          label={translate('amount')}
-          placeholder={translate('enterAmount')}
-          value={amount}
-          showError={showAmountInputError}
-          onChange={handleAmountChange}
-          keyboardType='decimal-pad'
-          rightIcon={<FontAwesome6 name='manat-sign' color={themeContext.neutral} size={20} />}
-          onFocus={() => setFocusedInputIndex(1)}
-        />
-
-        {treatmentEditable ? (
-          <TouchableInput
-            onPress={handleTreatmentChange}
-            label={translate('treatment')}
-            placeholder={translate('selectTreatment')}
-            value={selectedTreatment?.title}
-            showError={showTreatmentInputError}
+    <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
+      <MyKeyboardAvoidingView>
+        <MainView>
+          <DateInput
+            ref={dateInputRef}
+            label={translate('date')}
+            placeholder={DateTime.local().toISODate() ?? undefined}
+            date={dateInitialVal}
+            showError={showDatePickerError}
+            onChange={() => setShowDatePickerError(false)}
           />
-        ) : (
-          <TouchableWithoutFeedbackInput
-            label={translate('treatment')}
-            placeholder={translate('selectTreatment')}
-            value={selectedTreatment?.title}
-            showError={showTreatmentInputError}
+          <MyInput
+            label={translate('amount')}
+            placeholder={translate('enterAmount')}
+            value={amount}
+            showError={showAmountInputError}
+            onChange={handleAmountChange}
+            keyboardType='decimal-pad'
+            rightIcon={<FontAwesome6 name='manat-sign' color={themeContext.neutral} size={20} />}
           />
-        )}
 
-        {!props.payment && <CreateButton onPress={handleSave} />}
-      </MainView>
-    </MyKeyboardAvoidingView>
+          {treatmentEditable ? (
+            <TouchableInput
+              onPress={handleTreatmentChange}
+              label={translate('treatment')}
+              placeholder={translate('selectTreatment')}
+              value={selectedTreatment?.title}
+              showError={showTreatmentInputError}
+            />
+          ) : (
+            <TouchableWithoutFeedbackInput
+              label={translate('treatment')}
+              placeholder={translate('selectTreatment')}
+              value={selectedTreatment?.title}
+              showError={showTreatmentInputError}
+            />
+          )}
+        </MainView>
+      </MyKeyboardAvoidingView>
+      {!props.payment && <CreateButton onPress={handleSave} />}
+    </MainView>
   )
 }

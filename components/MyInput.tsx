@@ -39,6 +39,8 @@ export default function MyInput(props: Props) {
       onFocus={handleFocus}
       onBlur={() => setFocused(false)}
       renderErrorMessage={false}
+      returnKeyType={props.returnKeyType || 'done'}
+      autoCorrect={false}
     />
   )
 }

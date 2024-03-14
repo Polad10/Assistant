@@ -1,17 +1,32 @@
-import { ReactNode, useCallback, useEffect, useRef } from 'react'
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
+import { useKeyboard } from '@react-native-community/hooks'
+import { PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StatusBar, TextInput } from 'react-native'
+import { useHeaderHeight } from '@react-navigation/elements'
 
-type Props = {
-  children: ReactNode
-  focusedInputIndex: number
-}
-
-export default function MyKeyboardAvoidingView(props: Props) {
+export default function MyKeyboardAvoidingView(props: PropsWithChildren) {
   const scrollRef = useRef<ScrollView>(null)
+  const keyboard = useKeyboard()
+  const headerHeight = useHeaderHeight()
 
-  const scrollToInput = useCallback(() => {
-    scrollRef.current?.scrollTo({ x: 0, y: 120 * props.focusedInputIndex })
-  }, [props.focusedInputIndex])
+  const [scrollOffset, setScrollOffset] = useState(0)
+
+  function scrollToInput() {
+    const { height: windowHeight } = Dimensions.get('window')
+    const keyboardHeight = keyboard.keyboardHeight
+    const currentlyFocusedInputRef = TextInput.State.currentlyFocusedInput()
+    currentlyFocusedInputRef.measure((x, y, width, height, pageX, pageY) => {
+      const availableSpace = windowHeight - keyboardHeight
+      const availableSpaceMiddle = availableSpace / 2
+
+      const scrollY = pageY - availableSpaceMiddle
+
+      scrollRef.current?.scrollTo({ x: 0, y: scrollOffset + scrollY })
+    })
+  }
+
+  function handleScroll(event: any) {
+    setScrollOffset(event.nativeEvent.contentOffset.y)
+  }
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -27,9 +42,14 @@ export default function MyKeyboardAvoidingView(props: Props) {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior='padding'
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 150 : -300}
+      keyboardVerticalOffset={50 + headerHeight + (StatusBar.currentHeight ?? 0)}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} ref={scrollRef}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        ref={scrollRef}
+        onScroll={handleScroll}
+        scrollEventThrottle={50}
+      >
         {props.children}
       </ScrollView>
     </KeyboardAvoidingView>

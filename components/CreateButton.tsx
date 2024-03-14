@@ -18,8 +18,7 @@ export default function CreateButton(props: ButtonProps) {
 
 const styles = StyleSheet.create({
   buttonView: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    marginTop: 'auto',
   },
   button: {
     marginHorizontal: 10,

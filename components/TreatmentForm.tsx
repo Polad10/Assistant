@@ -169,65 +169,62 @@ export default function TreatmentForm(props: Props) {
   }
 
   return (
-    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <DateInput
-            ref={startDateInputRef}
-            style={{ flex: 1, marginRight: 5 }}
-            label={translate('startDate')}
-            placeholder={DateTime.local().toISODate() ?? undefined}
-            date={startDateInitialVal}
-            showError={showStartDatePickerError}
-            onChange={() => setShowStartDatePickerError(false)}
-            onFocus={() => setFocusedInputIndex(0)}
+    <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
+      <MyKeyboardAvoidingView>
+        <MainView>
+          <View style={{ flexDirection: 'row' }}>
+            <DateInput
+              ref={startDateInputRef}
+              style={{ flex: 1, marginRight: 5 }}
+              label={translate('startDate')}
+              placeholder={DateTime.local().toISODate() ?? undefined}
+              date={startDateInitialVal}
+              showError={showStartDatePickerError}
+              onChange={() => setShowStartDatePickerError(false)}
+            />
+            <DateInput
+              ref={endDateInputRef}
+              style={{ flex: 1, marginLeft: 5 }}
+              label={translate('endDate')}
+              placeholder={DateTime.local().plus({ month: 1 }).toISODate() ?? undefined}
+              date={endDateInitialVal}
+            />
+          </View>
+          <MyInput
+            label={translate('title')}
+            placeholder={translate('enterTitle')}
+            value={title}
+            showError={showTitleInputError}
+            onChange={handleTitleChange}
           />
-          <DateInput
-            ref={endDateInputRef}
-            style={{ flex: 1, marginLeft: 5 }}
-            label={translate('endDate')}
-            placeholder={DateTime.local().plus({ month: 1 }).toISODate() ?? undefined}
-            date={endDateInitialVal}
-            onFocus={() => setFocusedInputIndex(0)}
+          <MyInput
+            label={translate('price')}
+            placeholder={translate('enterAmount')}
+            value={price}
+            showError={showPriceInputError}
+            onChange={handlePriceChange}
+            keyboardType='decimal-pad'
+            rightIcon={<FontAwesome6 name='manat-sign' color={themeContext.neutral} size={20} />}
           />
-        </View>
-        <MyInput
-          label={translate('title')}
-          placeholder={translate('enterTitle')}
-          value={title}
-          showError={showTitleInputError}
-          onChange={handleTitleChange}
-          onFocus={() => setFocusedInputIndex(1)}
-        />
-        <MyInput
-          label={translate('price')}
-          placeholder={translate('enterAmount')}
-          value={price}
-          showError={showPriceInputError}
-          onChange={handlePriceChange}
-          keyboardType='decimal-pad'
-          rightIcon={<FontAwesome6 name='manat-sign' color={themeContext.neutral} size={20} />}
-          onFocus={() => setFocusedInputIndex(2)}
-        />
-        {styleProps.patientEditable ? (
-          <TouchableInput
-            onPress={handlePatientChange}
-            label={translate('patient')}
-            placeholder={translate('selectPatient')}
-            value={getSelectedPatientFullName()}
-            showError={showPatientInputError}
-          />
-        ) : (
-          <TouchableWithoutFeedbackInput
-            label={translate('patient')}
-            placeholder={translate('selectPatient')}
-            value={getSelectedPatientFullName()}
-            showError={showPatientInputError}
-          />
-        )}
-
-        {!props.treatment && <CreateButton onPress={handleSave} />}
-      </MainView>
-    </MyKeyboardAvoidingView>
+          {styleProps.patientEditable ? (
+            <TouchableInput
+              onPress={handlePatientChange}
+              label={translate('patient')}
+              placeholder={translate('selectPatient')}
+              value={getSelectedPatientFullName()}
+              showError={showPatientInputError}
+            />
+          ) : (
+            <TouchableWithoutFeedbackInput
+              label={translate('patient')}
+              placeholder={translate('selectPatient')}
+              value={getSelectedPatientFullName()}
+              showError={showPatientInputError}
+            />
+          )}
+        </MainView>
+      </MyKeyboardAvoidingView>
+      {!props.treatment && <CreateButton onPress={handleSave} />}
+    </MainView>
   )
 }

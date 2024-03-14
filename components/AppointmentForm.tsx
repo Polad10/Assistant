@@ -156,8 +156,8 @@ export default function AppointmentForm(props: Props) {
   }, [])
 
   return (
-    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
+    <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
+      <MyKeyboardAvoidingView>
         <View style={{ flexDirection: 'row' }}>
           <DateInput
             ref={dateInputRef}
@@ -167,7 +167,6 @@ export default function AppointmentForm(props: Props) {
             date={initialDateTime}
             showError={showDatePickerError}
             onChange={() => setShowDatePickerError(false)}
-            onFocus={() => setFocusedInputIndex(0)}
           />
           <TimeInput
             ref={timeInputRef}
@@ -177,7 +176,6 @@ export default function AppointmentForm(props: Props) {
             time={initialDateTime}
             showError={showTimePickerError}
             onChange={() => setShowTimePickerError(false)}
-            onFocus={() => setFocusedInputIndex(0)}
           />
         </View>
         <MyInput
@@ -188,7 +186,7 @@ export default function AppointmentForm(props: Props) {
           onChange={handleActionsChange}
           showError={showActionsInputError}
           style={{ minHeight: 100 }}
-          onFocus={() => setFocusedInputIndex(1)}
+          returnKeyType='default'
         />
 
         {treatmentEditable ? (
@@ -207,9 +205,8 @@ export default function AppointmentForm(props: Props) {
             showError={showTreatmentInputError}
           />
         )}
-
-        {!appointment && <CreateButton onPress={handleSave} />}
-      </MainView>
-    </MyKeyboardAvoidingView>
+      </MyKeyboardAvoidingView>
+      {!appointment && <CreateButton onPress={handleSave} />}
+    </MainView>
   )
 }

@@ -106,15 +106,14 @@ export default function PatientForm(props: Props) {
   }
 
   return (
-    <MyKeyboardAvoidingView focusedInputIndex={focusedInputIndex}>
-      <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
+    <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
+      <MyKeyboardAvoidingView>
         <MyInput
           label={translate('firstName')}
           placeholder={translate('enterFirstName')}
           value={firstName}
           showError={showFirstNameInputError}
           onChange={handleFirstNameChange}
-          onFocus={() => setFocusedInputIndex(0)}
         />
         <MyInput
           label={translate('lastName')}
@@ -122,21 +121,18 @@ export default function PatientForm(props: Props) {
           value={lastName}
           showError={showLastNameInputError}
           onChange={handleLastNameChange}
-          onFocus={() => setFocusedInputIndex(1)}
         />
         <DateInput
           ref={dateInputRef}
           label={translate('dob')}
           placeholder={DateTime.local().minus({ years: 10 }).toISODate() ?? undefined}
           date={dobInitialVal}
-          onFocus={() => setFocusedInputIndex(2)}
         />
         <MyInput
           label={translate('city')}
           placeholder={translate('enterCity')}
           value={city}
           onChange={handleCityChange}
-          onFocus={() => setFocusedInputIndex(3)}
         />
         <MyInput
           label={translate('phoneNr')}
@@ -144,7 +140,6 @@ export default function PatientForm(props: Props) {
           keyboardType='phone-pad'
           value={phoneNr}
           onChange={handlePhoneNrChange}
-          onFocus={() => setFocusedInputIndex(4)}
         />
         <MyInput
           label={translate('extraInfo')}
@@ -153,10 +148,10 @@ export default function PatientForm(props: Props) {
           value={extraInfo}
           onChange={handleExtraInfoChange}
           style={{ minHeight: 100 }}
-          onFocus={() => setFocusedInputIndex(5)}
+          returnKeyType='default'
         />
-        {!props.patient && <CreateButton onPress={handleSave} />}
-      </MainView>
-    </MyKeyboardAvoidingView>
+      </MyKeyboardAvoidingView>
+      {!props.patient && <CreateButton onPress={handleSave} />}
+    </MainView>
   )
 }
