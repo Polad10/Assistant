@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { translate } from '../helpers/Translator'
+import { Api } from '../helpers/Api'
 
 export default function Signup() {
   const themeContext = useContext(ThemeContext)!
@@ -21,7 +22,10 @@ export default function Signup() {
   async function signUp() {
     if (validate()) {
       try {
-        await createUserWithEmailAndPassword(auth, email, password)
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+
+        const api = new Api(userCredential.user)
+        await api.signUp()
       } catch (error: any) {
         switch (error.code) {
           case 'auth/invalid-email':

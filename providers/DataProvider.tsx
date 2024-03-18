@@ -1,10 +1,11 @@
-import axios from 'axios'
 import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
-import { ReactNode, useState } from 'react'
-import { Patient, PatientRequest } from '../modals/Patient'
-import { Appointment, AppointmentRequest } from '../modals/Appointment'
-import { Treatment, TreatmentRequest } from '../modals/Treatment'
-import { Payment, PaymentRequest } from '../modals/Payment'
+import { ReactNode, useContext, useEffect, useState } from 'react'
+import { PatientRequest } from '../modals/Patient'
+import { AppointmentRequest } from '../modals/Appointment'
+import { TreatmentRequest } from '../modals/Treatment'
+import { PaymentRequest } from '../modals/Payment'
+import { AuthContext } from '../contexts/AuthContext'
+import { Api } from '../helpers/Api'
 
 interface DataProviderProps {
   children: ReactNode
@@ -15,41 +16,42 @@ export default function DataProvider({ children }: DataProviderProps) {
   const [appointments, setAppointments] = useState<AppointmentsType>(null)
   const [treatments, setTreatments] = useState<TreatmentsType>(null)
   const [payments, setPayments] = useState<PaymentsType>(null)
+  const [api, setApi] = useState<Api>()
 
-  const apiBaseUrl = 'http://192.168.1.236:3000'
-  const patientsApi = `${apiBaseUrl}/patients`
-  const appointmentsApi = `${apiBaseUrl}/appointments`
-  const treatmentsApi = `${apiBaseUrl}/treatments`
-  const paymentsApi = `${apiBaseUrl}/payments`
+  const authContext = useContext(AuthContext)!
 
-  axios.defaults.timeout = 2000
+  useEffect(() => {
+    if (authContext.user) {
+      setApi(new Api(authContext.user))
+    }
+  }, [authContext.user])
 
   async function fetchPatients() {
-    const patients = (await axios.get<Patient[]>(patientsApi)).data
+    const patients = await api!.fetchPatients()
 
     setPatients(patients)
   }
 
   async function fetchAppointments() {
-    const appointments = (await axios.get<Appointment[]>(appointmentsApi)).data
+    const appointments = await api!.fetchAppointments()
 
     setAppointments(appointments)
   }
 
   async function fetchTreatments() {
-    const treatments = (await axios.get<Treatment[]>(treatmentsApi)).data
+    const treatments = await api!.fetchTreatments()
 
     setTreatments(treatments)
   }
 
   async function fetchPayments() {
-    const payments = (await axios.get<Payment[]>(paymentsApi)).data
+    const payments = await api!.fetchPayments()
 
     setPayments(payments)
   }
 
   async function createAppointment(appointment: AppointmentRequest) {
-    const createdAppointment = (await axios.post<Appointment>(appointmentsApi, appointment)).data
+    const createdAppointment = await api!.createAppointment(appointment)
 
     setAppointments((prevAppointments) => {
       const appointmentsNew = prevAppointments ? [...prevAppointments] : []
@@ -62,7 +64,8 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function updateAppointment(appointment: AppointmentRequest) {
-    const updatedAppointment = (await axios.put<Appointment>(appointmentsApi, appointment)).data
+    const idToken = await authContext.user?.getIdToken()
+    const updatedAppointment = await api!.updateAppointment(appointment)
 
     setAppointments((prevAppointments) => {
       const appointmentsNew = prevAppointments ? [...prevAppointments].filter((a) => a.id !== appointment.id) : []
@@ -75,9 +78,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function deleteAppointment(appointmentId: number) {
-    const url = `${appointmentsApi}/${appointmentId}`
-
-    await axios.delete(url)
+    await api!.deleteAppointment(appointmentId)
 
     setAppointments((prevAppointments) => {
       return prevAppointments ? [...prevAppointments].filter((a) => a.id !== appointmentId) : []
@@ -85,7 +86,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function createPatient(patient: PatientRequest) {
-    const createdPatient = (await axios.post<Patient>(patientsApi, patient)).data
+    const createdPatient = await api!.createPatient(patient)
 
     setPatients((prevPatients) => {
       const patientsNew = prevPatients ? [...prevPatients] : []
@@ -98,7 +99,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function updatePatient(patient: PatientRequest) {
-    const updatedPatient = (await axios.put<Patient>(patientsApi, patient)).data
+    const updatedPatient = await api!.updatePatient(patient)
 
     setPatients((prevPatients) => {
       const patientsNew = prevPatients ? [...prevPatients].filter((p) => p.id !== patient.id) : []
@@ -111,9 +112,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function deletePatient(patientId: number) {
-    const url = `${patientsApi}/${patientId}`
-
-    await axios.delete(url)
+    await api!.deletePatient(patientId)
 
     setPatients((prevPatients) => {
       return prevPatients ? [...prevPatients].filter((p) => p.id !== patientId) : []
@@ -125,7 +124,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function createTreatment(treatment: TreatmentRequest) {
-    const createdTreatment = (await axios.post<Treatment>(treatmentsApi, treatment)).data
+    const createdTreatment = await api!.createTreatment(treatment)
 
     setTreatments((prevTreatments) => {
       const treatmentsNew = prevTreatments ? [...prevTreatments] : []
@@ -138,7 +137,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function updateTreatment(treatment: TreatmentRequest) {
-    const updatedTreatment = (await axios.put<Treatment>(treatmentsApi, treatment)).data
+    const updatedTreatment = await api!.updateTreatment(treatment)
 
     setTreatments((prevTreatments) => {
       const treatmentsNew = prevTreatments ? [...prevTreatments].filter((t) => t.id !== treatment.id) : []
@@ -151,9 +150,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function deleteTreatment(treatmentId: number) {
-    const url = `${treatmentsApi}/${treatmentId}`
-
-    await axios.delete(url)
+    await api!.deleteTreatment(treatmentId)
 
     setTreatments((prevTreatments) => {
       return prevTreatments ? [...prevTreatments].filter((t) => t.id !== treatmentId) : []
@@ -164,7 +161,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function createPayment(payment: PaymentRequest) {
-    const createdPayment = (await axios.post<Payment>(paymentsApi, payment)).data
+    const createdPayment = await api!.createPayment(payment)
 
     setPayments((prevPayments) => {
       const paymentsNew = prevPayments ? [...prevPayments] : []
@@ -177,7 +174,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function updatePayment(payment: PaymentRequest) {
-    const updatedPayment = (await axios.put<Payment>(paymentsApi, payment)).data
+    const updatedPayment = await api!.updatePayment(payment)
 
     setPayments((prevPayments) => {
       const paymentsNew = prevPayments ? [...prevPayments].filter((p) => p.id !== payment.id) : []
@@ -190,9 +187,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function deletePayment(paymentId: number) {
-    const url = `${paymentsApi}/${paymentId}`
-
-    await axios.delete(url)
+    await api!.deletePayment(paymentId)
 
     setPayments((prevPayments) => {
       return prevPayments ? [...prevPayments].filter((p) => p.id !== paymentId) : []

@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler'
+import './firebase'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -33,9 +34,9 @@ import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import ForgotPassword from './components/ForgotPassword'
-import './firebase'
-import { useAuthentication } from './helpers/hooks/useAuthentication'
 import EmailSent from './components/user-messages/EmailSent'
+import { AuthContext } from './contexts/AuthContext'
+import AuthProvider from './providers/AuthProvider'
 
 type Tabs = {
   Appointments: undefined
@@ -100,28 +101,10 @@ function Home() {
   )
 }
 
-// const appsNr = getApps().length
-// const app = appsNr === 0 ? initializeApp(firebaseConfig) : getApp()
-// const reactNativePersistence = (firebaseAuth as any).getReactNativePersistence
-// const auth =
-//   appsNr === 0
-//     ? firebaseAuth.initializeAuth(app, { persistence: reactNativePersistence(AsyncStorage) })
-//     : firebaseAuth.getAuth()
-
 export default function App() {
-  // firebaseAuth.onAuthStateChanged(auth, (user) => {
-  //   setUser(user)
-  //   setLoading(false)
-  //   console.log(user)
-  // })
-
   // useEffect(() => {
   //   GoogleSignin.configure({ webClientId: '809179991975-vtahfrcq27e5vi5knb1ugppvp111hf9q.apps.googleusercontent.com' })
   // }, [])
-
-  // async function handleLogin() {
-  //   const newUser = await firebaseAuth.createUserWithEmailAndPassword(auth, 'samadzada.polad@gmail.com', 'Test123')
-  // }
 
   // async function handleGoogleLogin() {
   //   await GoogleSignin.hasPlayServices()
@@ -133,11 +116,13 @@ export default function App() {
   return (
     <RootSiblingParent>
       <ActionSheetProvider>
-        <DataProvider>
-          <ThemeProvider>
-            <Navigation />
-          </ThemeProvider>
-        </DataProvider>
+        <AuthProvider>
+          <DataProvider>
+            <ThemeProvider>
+              <Navigation />
+            </ThemeProvider>
+          </DataProvider>
+        </AuthProvider>
       </ActionSheetProvider>
     </RootSiblingParent>
   )
@@ -145,7 +130,7 @@ export default function App() {
 
 function Navigation() {
   const themeContext = useContext(ThemeContext)!
-  const { user } = useAuthentication()
+  const authContext = useContext(AuthContext)!
 
   return (
     <NavigationContainer>
@@ -159,7 +144,7 @@ function Navigation() {
           headerTintColor: themeContext.accent,
         }}
       >
-        {user ? (
+        {authContext.user ? (
           <Stack.Group>
             <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
             <Stack.Screen name='Login' component={Login} />
