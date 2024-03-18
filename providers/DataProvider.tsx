@@ -17,6 +17,7 @@ export default function DataProvider({ children }: DataProviderProps) {
   const [treatments, setTreatments] = useState<TreatmentsType>(null)
   const [payments, setPayments] = useState<PaymentsType>(null)
   const [api, setApi] = useState<Api>()
+  const [loading, setLoading] = useState(false)
 
   const authContext = useContext(AuthContext)!
 
@@ -214,6 +215,9 @@ export default function DataProvider({ children }: DataProviderProps) {
 
         api,
         setApi,
+
+        loading,
+        setLoading,
 
         patients,
         appointments,

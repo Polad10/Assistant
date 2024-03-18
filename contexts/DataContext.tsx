@@ -35,6 +35,9 @@ export interface DataContextType {
   api: Api | undefined
   setApi: Dispatch<SetStateAction<Api | undefined>>
 
+  loading: boolean
+  setLoading: Dispatch<SetStateAction<boolean>>
+
   patients: PatientsType
   appointments: AppointmentsType
   treatments: TreatmentsType

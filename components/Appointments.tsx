@@ -13,6 +13,7 @@ import { ThemeContext } from '../contexts/ThemeContext'
 import { Divider } from '@rneui/themed'
 import { configureCalendar } from '../helpers/CalendarConfig'
 import { DateTime } from 'luxon'
+import LoadingView from './LoadingView'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
   const context = useContext(DataContext)!
@@ -47,7 +48,11 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
+    return context.loading ? (
+      <LoadingView />
+    ) : (
+      <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
+    )
   }
 
   function handleDayChange(dateData: DateData) {

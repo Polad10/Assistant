@@ -11,6 +11,7 @@ import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
 import NoPatients from './user-messages/NoPatients'
 import { translate } from '../helpers/Translator'
+import LoadingView from './LoadingView'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)!
@@ -32,7 +33,9 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   )
 
   function getPatientsContentView() {
-    if (patientsInitial.length > 0) {
+    if (context.loading) {
+      return <LoadingView />
+    } else if (patientsInitial.length > 0) {
       return (
         <MainView>
           <MySearchBar
