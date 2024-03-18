@@ -5,44 +5,15 @@ import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { Patient } from '../modals/Patient'
-import { DeviceEventEmitter, View } from 'react-native'
+import { DeviceEventEmitter } from 'react-native'
 import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
 import NoPatients from './user-messages/NoPatients'
-import LoadingView from './LoadingView'
-import Error from './user-messages/Error'
 import { translate } from '../helpers/Translator'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
   const context = useContext(DataContext)!
-
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true)
-
-      await context.fetchTreatments()
-      await context.fetchPayments()
-      await context.fetchAppointments()
-      await context.fetchPatients()
-    } catch (ex) {
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  async function retryAfterError() {
-    setError(false)
-    await fetchData()
-  }
 
   const searchEventName = 'searchPatient'
 
@@ -61,11 +32,7 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   )
 
   function getPatientsContentView() {
-    if (error) {
-      return <Error onBtnPress={retryAfterError} />
-    } else if (loading) {
-      return <LoadingView />
-    } else if (patientsInitial.length > 0) {
+    if (patientsInitial.length > 0) {
       return (
         <MainView>
           <MySearchBar

@@ -1,8 +1,9 @@
+import { Api } from '../helpers/Api'
 import { Appointment, AppointmentRequest } from '../modals/Appointment'
 import { Patient, PatientRequest } from '../modals/Patient'
 import { Payment, PaymentRequest } from '../modals/Payment'
 import { Treatment, TreatmentRequest } from '../modals/Treatment'
-import { createContext } from 'react'
+import { Dispatch, SetStateAction, createContext } from 'react'
 
 export type PatientsType = Patient[] | null
 export type AppointmentsType = Appointment[] | null
@@ -30,6 +31,9 @@ export interface DataContextType {
   createPayment: (payment: PaymentRequest) => Promise<Payment>
   updatePayment: (payment: PaymentRequest) => Promise<Payment>
   deletePayment: (paymentId: number) => Promise<void>
+
+  api: Api | undefined
+  setApi: Dispatch<SetStateAction<Api | undefined>>
 
   patients: PatientsType
   appointments: AppointmentsType

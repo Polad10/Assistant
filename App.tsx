@@ -3,7 +3,7 @@ import './firebase'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import Patients from './components/Patients'
 import Appointments from './components/Appointments'
@@ -37,6 +37,10 @@ import ForgotPassword from './components/ForgotPassword'
 import EmailSent from './components/user-messages/EmailSent'
 import { AuthContext } from './contexts/AuthContext'
 import AuthProvider from './providers/AuthProvider'
+import { DataContext } from './contexts/DataContext'
+import Error from './components/user-messages/Error'
+import { Api } from './helpers/Api'
+import LoadingView from './components/LoadingView'
 
 type Tabs = {
   Appointments: undefined
@@ -48,57 +52,103 @@ const Tab = createBottomTabNavigator<Tabs>()
 const Stack = createStackNavigator<RootStackParamList>()
 
 function Home() {
-  const themeContext = useContext(ThemeContext)!
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name='Appointments'
-        component={Appointments}
-        options={{
-          tabBarIcon: (props) => (
-            <IonIcons name='calendar-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
-          ),
-          tabBarActiveTintColor: themeContext.accent,
-          tabBarStyle: { backgroundColor: themeContext.primary },
-          title: translate('agenda'),
-          headerTitle: translate('agenda').toUpperCase(),
-          headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
-          headerStyle: { backgroundColor: themeContext.primary },
-        }}
-      />
-      <Tab.Screen
-        name='Patients'
-        component={Patients}
-        options={{
-          tabBarIcon: (props) => (
-            <IonIcons name='people-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
-          ),
-          tabBarActiveTintColor: themeContext.accent,
-          tabBarStyle: { backgroundColor: themeContext.primary },
-          title: translate('patients'),
-          headerTitle: translate('patients').toUpperCase(),
-          headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
-          headerStyle: { backgroundColor: themeContext.primary },
-        }}
-      />
-      <Tab.Screen
-        name='Settings'
-        component={Settings}
-        options={{
-          tabBarIcon: (props) => (
-            <IonIcons name='cog-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
-          ),
-          tabBarActiveTintColor: themeContext.accent,
-          tabBarStyle: { backgroundColor: themeContext.primary },
-          title: translate('settings'),
-          headerTitle: translate('settings').toUpperCase(),
-          headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
-          headerStyle: { backgroundColor: themeContext.primary },
-        }}
-      />
-    </Tab.Navigator>
-  )
+  const themeContext = useContext(ThemeContext)!
+  const authContext = useContext(AuthContext)!
+  const context = useContext(DataContext)!
+
+  useEffect(() => {
+    if (authContext.user) {
+      context.setApi(new Api(authContext.user))
+    }
+  }, [authContext.user])
+
+  useEffect(() => {
+    if (context.api) {
+      fetchData()
+    }
+  }, [context.api])
+
+  async function retryAfterError() {
+    setError(false)
+    await fetchData()
+  }
+
+  async function fetchData() {
+    try {
+      setLoading(true)
+      await context.fetchTreatments()
+      await context.fetchPatients()
+      await context.fetchPayments()
+      await context.fetchAppointments()
+    } catch (ex) {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function getContent() {
+    if (error) {
+      return <Error onBtnPress={retryAfterError} />
+    } else if (loading) {
+      return <LoadingView />
+    } else {
+      return (
+        <Tab.Navigator>
+          <Tab.Screen
+            name='Appointments'
+            component={Appointments}
+            options={{
+              tabBarIcon: (props) => (
+                <IonIcons name='calendar-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
+              ),
+              tabBarActiveTintColor: themeContext.accent,
+              tabBarStyle: { backgroundColor: themeContext.primary },
+              title: translate('agenda'),
+              headerTitle: translate('agenda').toUpperCase(),
+              headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
+              headerStyle: { backgroundColor: themeContext.primary },
+            }}
+          />
+          <Tab.Screen
+            name='Patients'
+            component={Patients}
+            options={{
+              tabBarIcon: (props) => (
+                <IonIcons name='people-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
+              ),
+              tabBarActiveTintColor: themeContext.accent,
+              tabBarStyle: { backgroundColor: themeContext.primary },
+              title: translate('patients'),
+              headerTitle: translate('patients').toUpperCase(),
+              headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
+              headerStyle: { backgroundColor: themeContext.primary },
+            }}
+          />
+          <Tab.Screen
+            name='Settings'
+            component={Settings}
+            options={{
+              tabBarIcon: (props) => (
+                <IonIcons name='cog-outline' size={25} color={props.focused ? themeContext.accent : 'grey'} />
+              ),
+              tabBarActiveTintColor: themeContext.accent,
+              tabBarStyle: { backgroundColor: themeContext.primary },
+              title: translate('settings'),
+              headerTitle: translate('settings').toUpperCase(),
+              headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
+              headerStyle: { backgroundColor: themeContext.primary },
+            }}
+          />
+        </Tab.Navigator>
+      )
+    }
+  }
+
+  return getContent()
 }
 
 export default function App() {

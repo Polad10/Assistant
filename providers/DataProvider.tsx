@@ -20,12 +20,6 @@ export default function DataProvider({ children }: DataProviderProps) {
 
   const authContext = useContext(AuthContext)!
 
-  useEffect(() => {
-    if (authContext.user) {
-      setApi(new Api(authContext.user))
-    }
-  }, [authContext.user])
-
   async function fetchPatients() {
     const patients = await api!.fetchPatients()
 
@@ -217,6 +211,9 @@ export default function DataProvider({ children }: DataProviderProps) {
         createPayment,
         updatePayment,
         deletePayment,
+
+        api,
+        setApi,
 
         patients,
         appointments,

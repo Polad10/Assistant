@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native'
 import { Agenda, DateData } from 'react-native-calendars'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
 import MyFAB from './MyFAB'
 import { RootStackScreenProps } from '../types/Navigation'
@@ -9,8 +9,6 @@ import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
 import { Appointment } from '../modals/Appointment'
 import NoAppointments from './user-messages/NoAppointments'
-import LoadingView from './LoadingView'
-import Error from './user-messages/Error'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { Divider } from '@rneui/themed'
 import { configureCalendar } from '../helpers/CalendarConfig'
@@ -22,34 +20,11 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
 
   const [agendaKey, setAgendaKey] = useState(Math.random())
   const [agendaItems, setAgendaItems] = useState({})
-  const [loading, setLoading] = useState(true)
   const [dayIsEmpty, setDayIsEmpty] = useState(false)
-  const [error, setError] = useState(false)
 
   useEffect(() => {
     configureCalendar()
-    fetchData()
   }, [])
-
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true)
-
-      await context.fetchTreatments()
-      await context.fetchPatients()
-      await context.fetchPayments()
-      await context.fetchAppointments()
-    } catch (ex) {
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }, [context.appointments])
-
-  async function retryAfterError() {
-    setError(false)
-    await fetchData()
-  }
 
   useEffect(() => {
     const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
@@ -72,7 +47,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return loading ? <View></View> : <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
+    return <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />
   }
 
   function handleDayChange(dateData: DateData) {
@@ -88,36 +63,31 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   function getContent() {
-    if (error) {
-      return <Error onBtnPress={retryAfterError} />
-    } else {
-      return (
-        <MainView>
-          <Agenda
-            key={agendaKey}
-            items={agendaItems}
-            renderItem={renderItem}
-            renderDay={() => <View></View>}
-            renderEmptyData={renderEmptyData}
-            showOnlySelectedDayItems={true}
-            onDayPress={handleDayChange}
-            theme={{
-              calendarBackground: themeContext.primary,
-              monthTextColor: themeContext.neutral,
-              todayTextColor: themeContext.accent,
-              selectedDayBackgroundColor: themeContext.accent,
-              reservationsBackgroundColor: themeContext.primary,
-              agendaDayNumColor: themeContext.info,
-              agendaDayTextColor: themeContext.info,
-              agendaTodayColor: themeContext.primary,
-              dotColor: themeContext.info,
-            }}
-          />
-          {!dayIsEmpty && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
-          {loading && <LoadingView />}
-        </MainView>
-      )
-    }
+    return (
+      <MainView>
+        <Agenda
+          key={agendaKey}
+          items={agendaItems}
+          renderItem={renderItem}
+          renderDay={() => <View></View>}
+          renderEmptyData={renderEmptyData}
+          showOnlySelectedDayItems={true}
+          onDayPress={handleDayChange}
+          theme={{
+            calendarBackground: themeContext.primary,
+            monthTextColor: themeContext.neutral,
+            todayTextColor: themeContext.accent,
+            selectedDayBackgroundColor: themeContext.accent,
+            reservationsBackgroundColor: themeContext.primary,
+            agendaDayNumColor: themeContext.info,
+            agendaDayTextColor: themeContext.info,
+            agendaTodayColor: themeContext.primary,
+            dotColor: themeContext.info,
+          }}
+        />
+        {!dayIsEmpty && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
+      </MainView>
+    )
   }
 
   return getContent()
