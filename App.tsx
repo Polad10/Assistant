@@ -41,6 +41,7 @@ import { DataContext } from './contexts/DataContext'
 import Error from './components/user-messages/Error'
 import { Api } from './helpers/Api'
 import LoadingView from './components/LoadingView'
+import MainView from './components/MainView'
 
 type Tabs = {
   Appointments: undefined
@@ -91,7 +92,11 @@ function Home() {
 
   function getContent() {
     if (error) {
-      return <Error onBtnPress={retryAfterError} />
+      return (
+        <MainView>
+          <Error onBtnPress={retryAfterError} />
+        </MainView>
+      )
     } else {
       return (
         <Tab.Navigator>
