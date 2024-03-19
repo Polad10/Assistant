@@ -6,11 +6,11 @@ import { TouchableHighlight } from 'react-native'
 import UkFlag from './flags/UkFlag'
 import AzFlag from './flags/AzFlag'
 import RuFlag from './flags/RuFlag'
-import { translate } from '../helpers/Translator'
+import { GetFullLanguageName } from '../helpers/LanguageHelper'
 
 export default function Languages() {
   const themeContext = useContext(ThemeContext)!
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('uk')
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('az')
 
   const CheckedIcon = () => {
     return (
@@ -30,21 +30,21 @@ export default function Languages() {
       >
         <AzFlag />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('azerbaijani')}</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{GetFullLanguageName('az')}</ListItem.Title>
         </ListItem.Content>
         {selectedLanguage == 'az' && <CheckedIcon />}
       </ListItem>
       <ListItem
         containerStyle={{ backgroundColor: themeContext.secondary, borderColor: themeContext.border }}
         bottomDivider
-        onPress={() => setSelectedLanguage('uk')}
+        onPress={() => setSelectedLanguage('en')}
         Component={TouchableHighlight}
       >
         <UkFlag />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('english')}</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{GetFullLanguageName('en')}</ListItem.Title>
         </ListItem.Content>
-        {selectedLanguage == 'uk' && <CheckedIcon />}
+        {selectedLanguage == 'en' && <CheckedIcon />}
       </ListItem>
       <ListItem
         containerStyle={{ backgroundColor: themeContext.secondary, borderColor: themeContext.border }}
@@ -54,7 +54,7 @@ export default function Languages() {
       >
         <RuFlag />
         <ListItem.Content>
-          <ListItem.Title style={{ color: themeContext.neutral }}>{translate('russian')}</ListItem.Title>
+          <ListItem.Title style={{ color: themeContext.neutral }}>{GetFullLanguageName('ru')}</ListItem.Title>
         </ListItem.Content>
         {selectedLanguage == 'ru' && <CheckedIcon />}
       </ListItem>

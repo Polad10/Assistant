@@ -5,14 +5,14 @@ import { ThemeContext } from '../contexts/ThemeContext'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { TouchableHighlight } from 'react-native-gesture-handler'
-import { TranslationKeys, language, translate } from '../helpers/Translator'
+import { language, translate } from '../helpers/Translator'
 import { GetFullLanguageName } from '../helpers/LanguageHelper'
 
 export default function Settings() {
   const navigation = useNavigation<RootStackScreenProps<'Settings'>['navigation']>()
   const themeContext = useContext(ThemeContext)!
 
-  const selectedLanguage = translate(GetFullLanguageName(language)!.toLowerCase() as keyof TranslationKeys)
+  const selectedLanguage = GetFullLanguageName(language)
 
   return (
     <MainView style={{ paddingTop: 20 }}>

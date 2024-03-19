@@ -77,9 +77,6 @@ export type TranslationKeys = {
   patientDeleted: string
   treatmentDeleted: string
   paymentDeleted: string
-  english: string
-  azerbaijani: string
-  russian: string
   dark: string
   light: string
   startDate: string
@@ -220,9 +217,6 @@ const translations: TranslationsType = {
     patientDeleted: 'Pasient silindi',
     treatmentDeleted: 'Müalicə silindi',
     paymentDeleted: 'Ödəniş silindi',
-    english: 'Ingilis',
-    azerbaijani: 'Azərbaycan',
-    russian: 'Rus',
     dark: 'Tünd',
     light: 'Açıq',
     startDate: 'Başlanğıc tarixi',
@@ -355,9 +349,6 @@ const translations: TranslationsType = {
     patientDeleted: 'Patient deleted',
     treatmentDeleted: 'Treatment deleted',
     paymentDeleted: 'Payment deleted',
-    english: 'English',
-    azerbaijani: 'Azerbaijani',
-    russian: 'Russian',
     dark: 'Dark',
     light: 'Light',
     startDate: 'Start date',
@@ -490,9 +481,6 @@ const translations: TranslationsType = {
     patientDeleted: 'Пациент удален',
     treatmentDeleted: 'Лечение удалено',
     paymentDeleted: 'Оплата удалена',
-    english: 'Английский',
-    azerbaijani: 'Азербайджанский',
-    russian: 'Русский',
     dark: 'Темная',
     light: 'Светлая',
     startDate: 'Дата начала',
@@ -524,7 +512,7 @@ const translations: TranslationsType = {
   }
 }
 
-export let language = 'az'
+export let language = 'ru'
 
 const translator = new I18n(translations)
 translator.locale = language

@@ -3,8 +3,8 @@ export function GetFullLanguageName(languageCode: string) {
     case 'en':
       return 'English'
     case 'az':
-      return 'Azerbaijani'
+      return 'Azərbaycan'
     case 'ru':
-      return 'Russian'
+      return 'Русский'
   }
 }
