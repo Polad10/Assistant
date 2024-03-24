@@ -3,13 +3,14 @@ import MainView from './MainView'
 import { Button, Text } from '@rneui/themed'
 import { ThemeContext } from '../contexts/ThemeContext'
 import MyInput from './MyInput'
-import { TouchableOpacity, View } from 'react-native'
+import { Keyboard, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { translate } from '../helpers/Translator'
+import LoadingView from './LoadingView'
 
 export default function Login() {
   const themeContext = useContext(ThemeContext)!
@@ -18,6 +19,7 @@ export default function Login() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const [showEmailInputError, setShowEmailInputError] = useState(false)
   const [showPassowrdInputError, setShowPasswordInputError] = useState(false)
@@ -25,6 +27,9 @@ export default function Login() {
   async function login() {
     if (validate()) {
       try {
+        setLoading(true)
+        Keyboard.dismiss()
+
         await signInWithEmailAndPassword(auth, email, password)
         navigation.replace('Home')
       } catch (error: any) {
@@ -43,6 +48,8 @@ export default function Login() {
           default:
             showDangerMessage(translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
+      } finally {
+        setLoading(false)
       }
     } else {
       showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
@@ -106,6 +113,7 @@ export default function Login() {
           </Text>
         </TouchableOpacity>
       </View>
+      {loading && <LoadingView />}
     </MainView>
   )
 }

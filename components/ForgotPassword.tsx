@@ -9,6 +9,8 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { translate } from '../helpers/Translator'
+import { Keyboard } from 'react-native'
+import LoadingView from './LoadingView'
 
 export default function ForgotPassword() {
   const themeContext = useContext(ThemeContext)!
@@ -17,10 +19,14 @@ export default function ForgotPassword() {
 
   const [email, setEmail] = useState('')
   const [showEmailInputError, setShowEmailInputError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   async function resetPassword() {
     if (validate()) {
       try {
+        setLoading(true)
+        Keyboard.dismiss()
+
         await sendPasswordResetEmail(auth, email)
         navigation.navigate('EmailSent', { email: email })
       } catch (error: any) {
@@ -32,6 +38,8 @@ export default function ForgotPassword() {
           default:
             navigation.navigate('EmailSent', { email: email })
         }
+      } finally {
+        setLoading(false)
       }
     } else {
       showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
@@ -74,6 +82,7 @@ export default function ForgotPassword() {
         color={themeContext.accent}
         onPress={resetPassword}
       />
+      {loading && <LoadingView />}
     </MainView>
   )
 }

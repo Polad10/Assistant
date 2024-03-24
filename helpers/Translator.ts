@@ -512,7 +512,7 @@ const translations: TranslationsType = {
   }
 }
 
-export let language = 'ru'
+export let language = 'az'
 
 const translator = new I18n(translations)
 translator.locale = language

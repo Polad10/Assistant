@@ -8,6 +8,8 @@ import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { translate } from '../helpers/Translator'
 import { Api } from '../helpers/Api'
+import LoadingView from './LoadingView'
+import { Keyboard } from 'react-native'
 
 export default function Signup() {
   const themeContext = useContext(ThemeContext)!
@@ -15,6 +17,7 @@ export default function Signup() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const [showEmailInputError, setShowEmailInputError] = useState(false)
   const [showPassowrdInputError, setShowPasswordInputError] = useState(false)
@@ -22,6 +25,9 @@ export default function Signup() {
   async function signUp() {
     if (validate()) {
       try {
+        setLoading(true)
+        Keyboard.dismiss()
+
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
 
         const api = new Api(userCredential.user)
@@ -43,6 +49,8 @@ export default function Signup() {
           default:
             showDangerMessage(translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
+      } finally {
+        setLoading(false)
       }
     } else {
       showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
@@ -99,6 +107,7 @@ export default function Signup() {
         color={themeContext.accent}
         onPress={signUp}
       />
+      {loading && <LoadingView />}
     </MainView>
   )
 }
