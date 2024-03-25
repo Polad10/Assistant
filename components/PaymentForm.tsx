@@ -17,9 +17,9 @@ import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext } from '../contexts/ThemeContext'
-import { translate } from '../helpers/Translator'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -32,10 +32,13 @@ export default function PaymentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
 
   const themeContext = useContext(ThemeContext)!
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const treatmentId = props.payment?.treatment_id || props.treatmentId
-  const treatment = context.treatments?.find((t) => t.id === treatmentId)
+  const treatment = dataContext.treatments?.find((t) => t.id === treatmentId)
 
   const treatmentEditable = !treatment
 
@@ -47,8 +50,6 @@ export default function PaymentForm(props: Props) {
   const [showAmountInputError, setShowAmountInputError] = useState(false)
   const [showDatePickerError, setShowDatePickerError] = useState(false)
   const [showTreatmentInputError, setShowTreatmentInputError] = useState(false)
-
-  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const dateInputRef = useRef<DateInputRefType>()
 
@@ -68,7 +69,7 @@ export default function PaymentForm(props: Props) {
 
       DeviceEventEmitter.emit('paymentSaved', newPaymentRequest)
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [amount, selectedTreatment])
 
@@ -98,7 +99,7 @@ export default function PaymentForm(props: Props) {
   useEffect(() => {
     if (props.payment) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translator.translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -137,15 +138,15 @@ export default function PaymentForm(props: Props) {
         <MainView>
           <DateInput
             ref={dateInputRef}
-            label={translate('date')}
+            label={translator.translate('date')}
             placeholder={DateTime.local().toISODate() ?? undefined}
             date={dateInitialVal}
             showError={showDatePickerError}
             onChange={() => setShowDatePickerError(false)}
           />
           <MyInput
-            label={translate('amount')}
-            placeholder={translate('enterAmount')}
+            label={translator.translate('amount')}
+            placeholder={translator.translate('enterAmount')}
             value={amount}
             showError={showAmountInputError}
             onChange={handleAmountChange}
@@ -156,15 +157,15 @@ export default function PaymentForm(props: Props) {
           {treatmentEditable ? (
             <TouchableInput
               onPress={handleTreatmentChange}
-              label={translate('treatment')}
-              placeholder={translate('selectTreatment')}
+              label={translator.translate('treatment')}
+              placeholder={translator.translate('selectTreatment')}
               value={selectedTreatment?.title}
               showError={showTreatmentInputError}
             />
           ) : (
             <TouchableWithoutFeedbackInput
-              label={translate('treatment')}
-              placeholder={translate('selectTreatment')}
+              label={translator.translate('treatment')}
+              placeholder={translator.translate('selectTreatment')}
               value={selectedTreatment?.title}
               showError={showTreatmentInputError}
             />

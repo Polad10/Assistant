@@ -14,25 +14,27 @@ import { Divider } from '@rneui/themed'
 import { configureCalendar } from '../helpers/CalendarConfig'
 import { DateTime } from 'luxon'
 import LoadingView from './LoadingView'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
 
   const [agendaKey, setAgendaKey] = useState(Math.random())
   const [agendaItems, setAgendaItems] = useState({})
   const [dayIsEmpty, setDayIsEmpty] = useState(false)
 
   useEffect(() => {
-    configureCalendar()
-  }, [])
+    configureCalendar(localizationContext.language)
+  }, [localizationContext.language])
 
   useEffect(() => {
-    const groupedAppointments = context.appointments ? getGroupedAppointments(context.appointments) : null
+    const groupedAppointments = dataContext.appointments ? getGroupedAppointments(dataContext.appointments) : null
     setAgendaItems(groupedAppointments ? Object.fromEntries(groupedAppointments) : {})
 
     setAgendaKey(Math.random)
-  }, [context.appointments])
+  }, [dataContext.appointments])
 
   useEffect(() => {
     checkIfDayIsEmpty(DateTime.local().toISODate()!)
@@ -48,7 +50,7 @@ export default function Appointments({ navigation }: RootStackScreenProps<'Appoi
   }
 
   const renderEmptyData = () => {
-    return context.loading ? (
+    return dataContext.loading ? (
       <LoadingView />
     ) : (
       <NoAppointments addBtnOnPress={() => navigation.navigate('NewAppointment')} />

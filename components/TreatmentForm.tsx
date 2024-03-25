@@ -17,9 +17,9 @@ import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { translate } from '../helpers/Translator'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type StyleProps = {
   patientEditable: boolean
@@ -34,8 +34,11 @@ type Props = {
 
 export default function TreatmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
@@ -48,7 +51,7 @@ export default function TreatmentForm(props: Props) {
   let patient = props.patient
 
   if (props.treatment) {
-    patient = context.patients?.find((p) => p.id === props.treatment?.patient_id)
+    patient = dataContext.patients?.find((p) => p.id === props.treatment?.patient_id)
     startDateInitialVal = new Date(props.treatment.start_date)
 
     if (props.treatment.end_date) {
@@ -59,8 +62,6 @@ export default function TreatmentForm(props: Props) {
   const [selectedPatient, setSelectedPatient] = useState(patient)
   const [title, setTitle] = useState(props.treatment?.title)
   const [price, setPrice] = useState(props.treatment?.price.toString())
-
-  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const startDateInputRef = useRef<DateInputRefType>()
   const endDateInputRef = useRef<DateInputRefType>()
@@ -89,7 +90,7 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [selectedPatient, title, price])
 
@@ -124,7 +125,7 @@ export default function TreatmentForm(props: Props) {
   useEffect(() => {
     if (props.treatment) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translator.translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -176,7 +177,7 @@ export default function TreatmentForm(props: Props) {
             <DateInput
               ref={startDateInputRef}
               style={{ flex: 1, marginRight: 5 }}
-              label={translate('startDate')}
+              label={translator.translate('startDate')}
               placeholder={DateTime.local().toISODate() ?? undefined}
               date={startDateInitialVal}
               showError={showStartDatePickerError}
@@ -185,21 +186,21 @@ export default function TreatmentForm(props: Props) {
             <DateInput
               ref={endDateInputRef}
               style={{ flex: 1, marginLeft: 5 }}
-              label={translate('endDate')}
+              label={translator.translate('endDate')}
               placeholder={DateTime.local().plus({ month: 1 }).toISODate() ?? undefined}
               date={endDateInitialVal}
             />
           </View>
           <MyInput
-            label={translate('title')}
-            placeholder={translate('enterTitle')}
+            label={translator.translate('title')}
+            placeholder={translator.translate('enterTitle')}
             value={title}
             showError={showTitleInputError}
             onChange={handleTitleChange}
           />
           <MyInput
-            label={translate('price')}
-            placeholder={translate('enterAmount')}
+            label={translator.translate('price')}
+            placeholder={translator.translate('enterAmount')}
             value={price}
             showError={showPriceInputError}
             onChange={handlePriceChange}
@@ -209,15 +210,15 @@ export default function TreatmentForm(props: Props) {
           {styleProps.patientEditable ? (
             <TouchableInput
               onPress={handlePatientChange}
-              label={translate('patient')}
-              placeholder={translate('selectPatient')}
+              label={translator.translate('patient')}
+              placeholder={translator.translate('selectPatient')}
               value={getSelectedPatientFullName()}
               showError={showPatientInputError}
             />
           ) : (
             <TouchableWithoutFeedbackInput
-              label={translate('patient')}
-              placeholder={translate('selectPatient')}
+              label={translator.translate('patient')}
+              placeholder={translator.translate('selectPatient')}
               value={getSelectedPatientFullName()}
               showError={showPatientInputError}
             />

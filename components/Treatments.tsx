@@ -11,11 +11,14 @@ import { searchTreatments } from '../helpers/Searcher'
 import MyFAB from './MyFAB'
 import { useNavigation } from '@react-navigation/native'
 import NoTreatments from './user-messages/NoTreatments'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
-  const context = useContext(DataContext)!
   const navigation = useNavigation<RootStackScreenProps<'Treatments'>['navigation']>()
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
   const searchEventName = 'searchTreatment'
 
   const [treatments, setTreatments] = useState<TreatmentWithPatientName[]>([])
@@ -37,12 +40,12 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
   useEffect(() => {
     ref.current?.clear()
 
-    const treatments = patient ? getPatientTreatments(context.treatments ?? [], patient.id) : context.treatments
+    const treatments = patient ? getPatientTreatments(dataContext.treatments ?? [], patient.id) : dataContext.treatments
     const ongoingTreatments = getOngoingTreatments(treatments ?? [])
 
     const treatmentsWithPatientName: TreatmentWithPatientName[] =
       ongoingTreatments?.map((t) => {
-        const patient = context.patients?.find((p) => p.id === t.patient_id)
+        const patient = dataContext.patients?.find((p) => p.id === t.patient_id)
 
         return {
           patientFirstName: patient?.first_name,
@@ -53,7 +56,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
 
     setTreatments(treatmentsWithPatientName)
     setTreatmentsInitial(treatmentsWithPatientName)
-  }, [context.treatments])
+  }, [dataContext.treatments])
 
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener(searchEventName, handleSearch)
@@ -68,7 +71,7 @@ export default function Treatments({ route }: RootStackScreenProps<'Treatments'>
       return (
         <MainView>
           <MySearchBar
-            placeholder={`${translate('enterPatientName')}...`}
+            placeholder={`${translator.translate('enterPatientName')}...`}
             searchEventName={searchEventName}
             ref={ref}
           />

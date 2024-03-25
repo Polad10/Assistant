@@ -8,14 +8,17 @@ import Toast from 'react-native-root-toast'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
-import { translate } from '../helpers/Translator'
 import { Keyboard } from 'react-native'
 import LoadingView from './LoadingView'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function ForgotPassword() {
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
   const navigation = useNavigation<RootStackScreenProps<'ForgotPassword'>['navigation']>()
   const auth = getAuth()
+
+  const translator = localizationContext.translator
 
   const [email, setEmail] = useState('')
   const [showEmailInputError, setShowEmailInputError] = useState(false)
@@ -33,7 +36,7 @@ export default function ForgotPassword() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage(translate('emailIsInvalid'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
             break
           default:
             navigation.navigate('EmailSent', { email: email })
@@ -42,7 +45,7 @@ export default function ForgotPassword() {
         setLoading(false)
       }
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 
@@ -65,18 +68,18 @@ export default function ForgotPassword() {
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <Text style={{ color: themeContext.neutral, fontSize: 17, marginBottom: 20, lineHeight: 24 }}>
-        {translate('resetPasswordMessage')}
+        {translator.translate('resetPasswordMessage')}
       </Text>
       <MyInput
-        label={translate('email')}
-        placeholder={translate('enterEmail')}
+        label={translator.translate('email')}
+        placeholder={translator.translate('enterEmail')}
         keyboardType='email-address'
         showError={showEmailInputError}
         onChangeText={handleEmailChange}
         autoCapitalize='none'
       />
       <Button
-        title={translate('resetPassword')}
+        title={translator.translate('resetPassword')}
         size='lg'
         buttonStyle={{ borderRadius: 10 }}
         color={themeContext.accent}

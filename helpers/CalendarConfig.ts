@@ -1,30 +1,34 @@
 import { LocaleConfig } from "react-native-calendars"
-import { language, translateForLanguage } from "./Translator"
+import { Translator } from "./Translator"
 
-export function configureCalendar() {
+export function configureCalendar(defaultLocale: string) {
+  const azTranslator = new Translator('az')
+  const enTranslator = new Translator('en')
+  const ruTranslator = new Translator('ru')
+
   LocaleConfig.locales.az = {
-    monthNames: translateForLanguage('monthNames', 'az'),
-    monthNamesShort: translateForLanguage('monthNamesShort', 'az'),
-    dayNames: translateForLanguage('dayNames', 'az'),
-    dayNamesShort: translateForLanguage('dayNamesShort', 'az'),
-    today: translateForLanguage('today', 'az')
+    monthNames: azTranslator.translate('monthNames'),
+    monthNamesShort: azTranslator.translate('monthNamesShort'),
+    dayNames: azTranslator.translate('dayNames'),
+    dayNamesShort: azTranslator.translate('dayNamesShort'),
+    today: azTranslator.translate('today')
   }
 
   LocaleConfig.locales.en = {
-    monthNames: translateForLanguage('monthNames', 'en'),
-    monthNamesShort: translateForLanguage('monthNamesShort', 'en'),
-    dayNames: translateForLanguage('dayNames', 'en'),
-    dayNamesShort: translateForLanguage('dayNamesShort', 'en'),
-    today: translateForLanguage('today', 'en')
+    monthNames: enTranslator.translate('monthNames'),
+    monthNamesShort: enTranslator.translate('monthNamesShort'),
+    dayNames: enTranslator.translate('dayNames'),
+    dayNamesShort: enTranslator.translate('dayNamesShort'),
+    today: enTranslator.translate('today')
   }
 
   LocaleConfig.locales.ru = {
-    monthNames: translateForLanguage('monthNames', 'ru'),
-    monthNamesShort: translateForLanguage('monthNamesShort', 'ru'),
-    dayNames: translateForLanguage('dayNames', 'ru'),
-    dayNamesShort: translateForLanguage('dayNamesShort', 'ru'),
-    today: translateForLanguage('today', 'ru')
+    monthNames: ruTranslator.translate('monthNames'),
+    monthNamesShort: ruTranslator.translate('monthNamesShort'),
+    dayNames: ruTranslator.translate('dayNames'),
+    dayNamesShort: ruTranslator.translate('dayNamesShort'),
+    today: ruTranslator.translate('today')
   }
 
-  LocaleConfig.defaultLocale = language
+  LocaleConfig.defaultLocale = defaultLocale
 }

@@ -7,10 +7,33 @@ import UkFlag from './flags/UkFlag'
 import AzFlag from './flags/AzFlag'
 import RuFlag from './flags/RuFlag'
 import { GetFullLanguageName } from '../helpers/LanguageHelper'
+import { DataContext } from '../contexts/DataContext'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Languages() {
   const themeContext = useContext(ThemeContext)!
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('az')
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(localizationContext.language)
+
+  async function updateLanguage(language: string) {
+    try {
+      setSelectedLanguage(language)
+
+      if (dataContext.setting) {
+        const setting = { ...dataContext.setting, language }
+
+        await dataContext.updateSetting(setting)
+      } else {
+        const setting = { language }
+
+        await dataContext.createSetting(setting)
+      }
+    } catch (ex) {
+      // it is okay if settings were not synced to db
+    }
+  }
 
   const CheckedIcon = () => {
     return (
@@ -25,7 +48,7 @@ export default function Languages() {
       <ListItem
         containerStyle={{ backgroundColor: themeContext.secondary, borderColor: themeContext.border }}
         bottomDivider
-        onPress={() => setSelectedLanguage('az')}
+        onPress={() => updateLanguage('az')}
         Component={TouchableHighlight}
       >
         <AzFlag />
@@ -37,7 +60,7 @@ export default function Languages() {
       <ListItem
         containerStyle={{ backgroundColor: themeContext.secondary, borderColor: themeContext.border }}
         bottomDivider
-        onPress={() => setSelectedLanguage('en')}
+        onPress={() => updateLanguage('en')}
         Component={TouchableHighlight}
       >
         <UkFlag />
@@ -49,7 +72,7 @@ export default function Languages() {
       <ListItem
         containerStyle={{ backgroundColor: themeContext.secondary, borderColor: themeContext.border }}
         bottomDivider
-        onPress={() => setSelectedLanguage('ru')}
+        onPress={() => updateLanguage('ru')}
         Component={TouchableHighlight}
       >
         <RuFlag />

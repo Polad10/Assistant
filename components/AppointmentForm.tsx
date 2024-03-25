@@ -16,9 +16,9 @@ import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../modals/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
-import { translate } from '../helpers/Translator'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -29,14 +29,17 @@ type Props = {
 
 export default function AppointmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   let treatment = props.treatment
   let appointment = props.appointment
   const patient = props.patient
 
   if (appointment) {
-    treatment = context.treatments?.find((t) => t.id === appointment?.treatment_id)
+    treatment = dataContext.treatments?.find((t) => t.id === appointment?.treatment_id)
   }
 
   const treatmentEditable = !treatment
@@ -50,8 +53,6 @@ export default function AppointmentForm(props: Props) {
 
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
-
-  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const dateInputRef = useRef<DateInputRefType>()
   const timeInputRef = useRef<TimeInputRefType>()
@@ -75,7 +76,7 @@ export default function AppointmentForm(props: Props) {
 
       DeviceEventEmitter.emit('appointmentSaved', newAppointmentRequest)
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [actions, selectedTreatment])
 
@@ -140,7 +141,7 @@ export default function AppointmentForm(props: Props) {
   useEffect(() => {
     if (appointment) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translator.translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -162,7 +163,7 @@ export default function AppointmentForm(props: Props) {
           <DateInput
             ref={dateInputRef}
             style={{ flex: 1, marginRight: 5 }}
-            label={translate('date')}
+            label={translator.translate('date')}
             placeholder={DateTime.local().toISODate() ?? undefined}
             date={initialDateTime}
             showError={showDatePickerError}
@@ -171,7 +172,7 @@ export default function AppointmentForm(props: Props) {
           <TimeInput
             ref={timeInputRef}
             style={{ flex: 1, marginLeft: 5 }}
-            label={translate('time')}
+            label={translator.translate('time')}
             placeholder={DateTime.local().toLocaleString(DateTime.TIME_24_SIMPLE) ?? undefined}
             time={initialDateTime}
             showError={showTimePickerError}
@@ -179,8 +180,8 @@ export default function AppointmentForm(props: Props) {
           />
         </View>
         <MyInput
-          label={translate('actions')}
-          placeholder={`${translate('enterActions')}`}
+          label={translator.translate('actions')}
+          placeholder={`${translator.translate('enterActions')}`}
           multiline={true}
           value={actions}
           onChange={handleActionsChange}
@@ -192,15 +193,15 @@ export default function AppointmentForm(props: Props) {
         {treatmentEditable ? (
           <TouchableInput
             onPress={handleTreatmentChange}
-            label={translate('treatment')}
-            placeholder={translate('selectTreatment')}
+            label={translator.translate('treatment')}
+            placeholder={translator.translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
           />
         ) : (
           <TouchableWithoutFeedbackInput
-            label={translate('treatment')}
-            placeholder={translate('selectTreatment')}
+            label={translator.translate('treatment')}
+            placeholder={translator.translate('selectTreatment')}
             value={selectedTreatment?.title}
             showError={showTreatmentInputError}
           />

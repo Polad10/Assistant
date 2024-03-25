@@ -6,14 +6,17 @@ import MyInput from './MyInput'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
-import { translate } from '../helpers/Translator'
 import { Api } from '../helpers/Api'
 import LoadingView from './LoadingView'
 import { Keyboard } from 'react-native'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Signup() {
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
   const auth = getAuth()
+
+  const translator = localizationContext.translator
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,24 +39,24 @@ export default function Signup() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage(translate('emailIsInvalid'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
             break
           case 'auth/weak-password':
             setShowPasswordInputError(true)
-            showDangerMessage(translate('enterPassword'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('enterPassword'), Toast.positions.TOP)
             break
           case 'auth/email-already-in-use':
             setShowEmailInputError(true)
-            showDangerMessage(translate('emailAlreadyInUseMessage'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('emailAlreadyInUseMessage'), Toast.positions.TOP)
             break
           default:
-            showDangerMessage(translate('somethingWentWrongMessage'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
       } finally {
         setLoading(false)
       }
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 
@@ -86,22 +89,22 @@ export default function Signup() {
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <MyInput
-        label={translate('email')}
-        placeholder={translate('enterEmail')}
+        label={translator.translate('email')}
+        placeholder={translator.translate('enterEmail')}
         onChangeText={handleEmailChange}
         showError={showEmailInputError}
         keyboardType='email-address'
         autoCapitalize='none'
       />
       <MyInput
-        label={translate('password')}
-        placeholder={translate('enterPassword')}
+        label={translator.translate('password')}
+        placeholder={translator.translate('enterPassword')}
         secureTextEntry={true}
         onChangeText={handlePasswordChange}
         showError={showPassowrdInputError}
       />
       <Button
-        title={translate('signUp')}
+        title={translator.translate('signUp')}
         size='lg'
         buttonStyle={{ borderRadius: 10 }}
         color={themeContext.accent}

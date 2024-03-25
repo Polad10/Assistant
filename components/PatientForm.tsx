@@ -3,16 +3,16 @@ import MainView from './MainView'
 import { DeviceEventEmitter, NativeSyntheticEvent, StyleSheet, TextInputChangeEventData } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import HeaderButton from './HeaderButton'
 import { Patient, PatientRequest } from '../modals/Patient'
 import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
-import { translate } from '../helpers/Translator'
 import DateInput, { DateInputRefType } from './DateInput'
 import { DateTime } from 'luxon'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type Props = {
   patient?: Patient
@@ -21,6 +21,9 @@ type Props = {
 
 export default function PatientForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [firstName, setFirstName] = useState(props.patient?.first_name)
   const [lastName, setLastName] = useState(props.patient?.last_name)
@@ -30,8 +33,6 @@ export default function PatientForm(props: Props) {
 
   const [showFirstNameInputError, setShowFirstNameInputError] = useState(false)
   const [showLastNameInputError, setShowLastNameInputError] = useState(false)
-
-  const [focusedInputIndex, setFocusedInputIndex] = useState(0)
 
   const dateInputRef = useRef<DateInputRefType>()
   let dobInitialVal = props.patient?.dob ? new Date(props.patient.dob) : undefined
@@ -55,7 +56,7 @@ export default function PatientForm(props: Props) {
 
       DeviceEventEmitter.emit('patientSaved', newPatientRequest)
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [firstName, lastName, city, phoneNr, extraInfo])
 
@@ -78,7 +79,7 @@ export default function PatientForm(props: Props) {
   useEffect(() => {
     if (props.patient) {
       navigation.setOptions({
-        headerRight: () => <HeaderButton title={translate('save')} onPress={handleSave} />,
+        headerRight: () => <HeaderButton title={translator.translate('save')} onPress={handleSave} />,
       })
     }
   }, [navigation, handleSave])
@@ -109,41 +110,41 @@ export default function PatientForm(props: Props) {
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <MyKeyboardAvoidingView>
         <MyInput
-          label={translate('firstName')}
-          placeholder={translate('enterFirstName')}
+          label={translator.translate('firstName')}
+          placeholder={translator.translate('enterFirstName')}
           value={firstName}
           showError={showFirstNameInputError}
           onChange={handleFirstNameChange}
         />
         <MyInput
-          label={translate('lastName')}
-          placeholder={translate('enterLastName')}
+          label={translator.translate('lastName')}
+          placeholder={translator.translate('enterLastName')}
           value={lastName}
           showError={showLastNameInputError}
           onChange={handleLastNameChange}
         />
         <DateInput
           ref={dateInputRef}
-          label={translate('dob')}
+          label={translator.translate('dob')}
           placeholder={DateTime.local().minus({ years: 10 }).toISODate() ?? undefined}
           date={dobInitialVal}
         />
         <MyInput
-          label={translate('city')}
-          placeholder={translate('enterCity')}
+          label={translator.translate('city')}
+          placeholder={translator.translate('enterCity')}
           value={city}
           onChange={handleCityChange}
         />
         <MyInput
-          label={translate('phoneNr')}
-          placeholder={translate('enterPhoneNr')}
+          label={translator.translate('phoneNr')}
+          placeholder={translator.translate('enterPhoneNr')}
           keyboardType='phone-pad'
           value={phoneNr}
           onChange={handlePhoneNrChange}
         />
         <MyInput
-          label={translate('extraInfo')}
-          placeholder={`${translate('enterExtraInfo')}`}
+          label={translator.translate('extraInfo')}
+          placeholder={`${translator.translate('enterExtraInfo')}`}
           multiline={true}
           value={extraInfo}
           onChange={handleExtraInfoChange}

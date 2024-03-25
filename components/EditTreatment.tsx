@@ -10,26 +10,29 @@ import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function EditTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'EditTreatment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditTreatment'>['route']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const treatmentId = route.params.treatmentId
-  const treatment = context.treatments?.find((t) => t.id === treatmentId)
-  const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
+  const treatment = dataContext.treatments?.find((t) => t.id === treatmentId)
+  const patient = dataContext.patients?.find((p) => p.id === treatment?.patient_id)
 
   const handleTreatmentSave = useCallback(async (treatment: TreatmentRequest) => {
     try {
       setLoading(true)
-      await context.updateTreatment(treatment)
+      await dataContext.updateTreatment(treatment)
 
-      showMessage(translate('saved'))
+      showMessage(translator.translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -52,9 +55,9 @@ export default function EditTreatment() {
     try {
       if (patient) {
         setLoading(true)
-        await context.deleteTreatment(treatmentId)
+        await dataContext.deleteTreatment(treatmentId)
 
-        showDangerMessage(translate('treatmentDeleted'))
+        showDangerMessage(translator.translate('treatmentDeleted'))
         navigation.navigate('Patient', { patientId: patient.id })
       }
     } catch (ex) {

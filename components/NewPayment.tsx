@@ -9,12 +9,15 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function NewPayment() {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewPayment'>['route']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -25,9 +28,9 @@ export default function NewPayment() {
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
     try {
       setLoading(true)
-      await context.createPayment(payment)
+      await dataContext.createPayment(payment)
 
-      showSuccessMessage(translate('paymentAdded'))
+      showSuccessMessage(translator.translate('paymentAdded'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

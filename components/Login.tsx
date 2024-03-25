@@ -9,13 +9,16 @@ import { RootStackScreenProps } from '../types/Navigation'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
-import { translate } from '../helpers/Translator'
 import LoadingView from './LoadingView'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Login() {
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
   const navigation = useNavigation<RootStackScreenProps<'Login'>['navigation']>()
   const auth = getAuth()
+
+  const translator = localizationContext.translator
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,23 +39,23 @@ export default function Login() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage(translate('emailIsInvalid'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
             break
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-            showDangerMessage(translate('wrongEmailOrPassword'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('wrongEmailOrPassword'), Toast.positions.TOP)
             break
           case 'auth/too-many-requests':
-            showDangerMessage(translate('tooManyFailedLoginAttemptsMessage'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('tooManyFailedLoginAttemptsMessage'), Toast.positions.TOP)
             break
           default:
-            showDangerMessage(translate('somethingWentWrongMessage'), Toast.positions.TOP)
+            showDangerMessage(translator.translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
       } finally {
         setLoading(false)
       }
     } else {
-      showDangerMessage(translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 
@@ -85,22 +88,22 @@ export default function Login() {
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
       <MyInput
-        label={translate('email')}
-        placeholder={translate('enterEmail')}
+        label={translator.translate('email')}
+        placeholder={translator.translate('enterEmail')}
         onChangeText={handleEmailChange}
         keyboardType='email-address'
         showError={showEmailInputError}
         autoCapitalize='none'
       />
       <MyInput
-        label={translate('password')}
-        placeholder={translate('enterPassword')}
+        label={translator.translate('password')}
+        placeholder={translator.translate('enterPassword')}
         secureTextEntry={true}
         onChangeText={handlePasswordChange}
         showError={showPassowrdInputError}
       />
       <Button
-        title={translate('login')}
+        title={translator.translate('login')}
         size='lg'
         buttonStyle={{ borderRadius: 10 }}
         color={themeContext.accent}
@@ -109,7 +112,7 @@ export default function Login() {
       <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 15 }}>
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
           <Text style={{ color: themeContext.neutral, textDecorationLine: 'underline', fontSize: 16 }}>
-            {translate('forgotPassword')}
+            {translator.translate('forgotPassword')}
           </Text>
         </TouchableOpacity>
       </View>

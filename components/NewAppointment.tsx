@@ -9,12 +9,15 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function NewAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'NewAppointment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewAppointment'>['route']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -25,9 +28,9 @@ export default function NewAppointment() {
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
     try {
       setLoading(true)
-      await context.createAppointment(appointment)
+      await dataContext.createAppointment(appointment)
 
-      showSuccessMessage(translate('appointmentAdded'))
+      showSuccessMessage(translator.translate('appointmentAdded'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

@@ -8,11 +8,14 @@ import Background from './illustrations/Background'
 import WelcomeIllustration from './illustrations/WelcomeIllustration'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Welcome() {
-  const themeContext = useContext(ThemeContext)!
   const navigation = useNavigation<RootStackScreenProps<'Welcome'>['navigation']>()
+  const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   return (
     <MainView>
@@ -28,14 +31,14 @@ export default function Welcome() {
       <SafeAreaView style={{ alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
           <Button
-            title={translate('login')}
+            title={translator.translate('login')}
             size='lg'
             buttonStyle={{ borderRadius: 10, width: 300 }}
             color={themeContext.accent}
             onPress={() => navigation.navigate('Login')}
           />
           <Button
-            title={translate('signUp')}
+            title={translator.translate('signUp')}
             size='lg'
             type='outline'
             buttonStyle={{
@@ -51,7 +54,7 @@ export default function Welcome() {
         </View>
         <View style={{ alignItems: 'center', marginTop: 30 }}>
           <Text style={{ color: themeContext.neutral, opacity: 0.5, marginBottom: 15 }}>
-            {translate('orConnectUsing')}
+            {translator.translate('orConnectUsing')}
           </Text>
           <Button
             containerStyle={{ width: 300, borderRadius: 10 }}

@@ -2,6 +2,7 @@ import { Api } from '../helpers/Api'
 import { Appointment, AppointmentRequest } from '../modals/Appointment'
 import { Patient, PatientRequest } from '../modals/Patient'
 import { Payment, PaymentRequest } from '../modals/Payment'
+import { Setting } from '../modals/Setting'
 import { Treatment, TreatmentRequest } from '../modals/Treatment'
 import { Dispatch, SetStateAction, createContext } from 'react'
 
@@ -9,12 +10,14 @@ export type PatientsType = Patient[] | null
 export type AppointmentsType = Appointment[] | null
 export type TreatmentsType = Treatment[] | null
 export type PaymentsType = Payment[] | null
+export type SettingType = Setting | null
 
 export interface DataContextType {
   fetchPatients: () => Promise<void>
   fetchAppointments: () => Promise<void>
   fetchTreatments: () => Promise<void>
   fetchPayments: () => Promise<void>
+  fetchSetting: () => Promise<void>
 
   createAppointment: (appointment: AppointmentRequest) => Promise<Appointment>
   updateAppointment: (appointment: AppointmentRequest) => Promise<Appointment>
@@ -32,6 +35,9 @@ export interface DataContextType {
   updatePayment: (payment: PaymentRequest) => Promise<Payment>
   deletePayment: (paymentId: number) => Promise<void>
 
+  createSetting: (setting: Setting) => Promise<void>
+  updateSetting: (setting: Setting) => Promise<void>
+
   api: Api | undefined
   setApi: Dispatch<SetStateAction<Api | undefined>>
 
@@ -42,6 +48,7 @@ export interface DataContextType {
   appointments: AppointmentsType
   treatments: TreatmentsType
   payments: PaymentsType
+  setting: SettingType
 }
 
 export const DataContext = createContext<DataContextType | undefined>(undefined)

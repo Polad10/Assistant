@@ -8,7 +8,7 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { language } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type Props = {
   payment: Payment
@@ -18,11 +18,11 @@ type Props = {
 export default function PaymentItem(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+  const dataContext = useContext(DataContext)!
 
-  const context = useContext(DataContext)!
-
-  const date = DateTime.fromISO(props.payment.date).setLocale(language).toFormat('MMMM d, yyyy')
-  const treatment = context.treatments?.find((t) => t.id === props.payment.treatment_id)
+  const date = DateTime.fromISO(props.payment.date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
+  const treatment = dataContext.treatments?.find((t) => t.id === props.payment.treatment_id)
 
   return (
     <TouchableHighlight onPress={() => navigation.navigate('EditPayment', { paymentId: props.payment.id })}>

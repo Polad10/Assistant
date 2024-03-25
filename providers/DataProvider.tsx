@@ -1,11 +1,19 @@
-import { AppointmentsType, DataContext, PatientsType, PaymentsType, TreatmentsType } from '../contexts/DataContext'
-import { ReactNode, useContext, useEffect, useState } from 'react'
+import {
+  AppointmentsType,
+  DataContext,
+  PatientsType,
+  PaymentsType,
+  SettingType,
+  TreatmentsType,
+} from '../contexts/DataContext'
+import { ReactNode, useContext, useState } from 'react'
 import { PatientRequest } from '../modals/Patient'
 import { AppointmentRequest } from '../modals/Appointment'
 import { TreatmentRequest } from '../modals/Treatment'
 import { PaymentRequest } from '../modals/Payment'
-import { AuthContext } from '../contexts/AuthContext'
 import { Api } from '../helpers/Api'
+import { Setting } from '../modals/Setting'
+import AsyncStorageHelper from '../helpers/AsyncStorageHelper'
 
 interface DataProviderProps {
   children: ReactNode
@@ -16,10 +24,10 @@ export default function DataProvider({ children }: DataProviderProps) {
   const [appointments, setAppointments] = useState<AppointmentsType>(null)
   const [treatments, setTreatments] = useState<TreatmentsType>(null)
   const [payments, setPayments] = useState<PaymentsType>(null)
+  const [setting, setSetting] = useState<SettingType>(null)
+
   const [api, setApi] = useState<Api>()
   const [loading, setLoading] = useState(false)
-
-  const authContext = useContext(AuthContext)!
 
   async function fetchPatients() {
     const patients = await api!.fetchPatients()
@@ -45,6 +53,13 @@ export default function DataProvider({ children }: DataProviderProps) {
     setPayments(payments)
   }
 
+  async function fetchSetting() {
+    const setting = (await AsyncStorageHelper.getSetting()) || (await api!.fetchSetting())
+
+    setSetting(setting)
+    AsyncStorageHelper.setSetting(setting)
+  }
+
   async function createAppointment(appointment: AppointmentRequest) {
     const createdAppointment = await api!.createAppointment(appointment)
 
@@ -59,7 +74,6 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function updateAppointment(appointment: AppointmentRequest) {
-    const idToken = await authContext.user?.getIdToken()
     const updatedAppointment = await api!.updateAppointment(appointment)
 
     setAppointments((prevAppointments) => {
@@ -189,6 +203,22 @@ export default function DataProvider({ children }: DataProviderProps) {
     })
   }
 
+  async function createSetting(setting: Setting) {
+    setSetting(setting)
+
+    await api!.createSetting(setting)
+
+    AsyncStorageHelper.setSetting(setting)
+  }
+
+  async function updateSetting(setting: Setting) {
+    setSetting(setting)
+
+    await api!.updateSetting(setting)
+
+    AsyncStorageHelper.setSetting(setting)
+  }
+
   return (
     <DataContext.Provider
       value={{
@@ -196,6 +226,7 @@ export default function DataProvider({ children }: DataProviderProps) {
         fetchAppointments,
         fetchTreatments,
         fetchPayments,
+        fetchSetting,
 
         createAppointment,
         updateAppointment,
@@ -213,6 +244,9 @@ export default function DataProvider({ children }: DataProviderProps) {
         updatePayment,
         deletePayment,
 
+        createSetting,
+        updateSetting,
+
         api,
         setApi,
 
@@ -223,6 +257,7 @@ export default function DataProvider({ children }: DataProviderProps) {
         appointments,
         treatments,
         payments,
+        setting,
       }}
     >
       {children}

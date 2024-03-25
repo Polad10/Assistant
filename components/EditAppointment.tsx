@@ -10,25 +10,28 @@ import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function EditAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'EditAppointment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditAppointment'>['route']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const { appointmentId } = route.params
-  const appointment = context.appointments?.find((a) => a.id === appointmentId)
+  const appointment = dataContext.appointments?.find((a) => a.id === appointmentId)
 
   const handleAppointmentSave = useCallback(async (appointment: AppointmentRequest) => {
     try {
       setLoading(true)
-      await context.updateAppointment(appointment)
+      await dataContext.updateAppointment(appointment)
 
-      showMessage(translate('saved'))
+      showMessage(translator.translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -40,9 +43,9 @@ export default function EditAppointment() {
   const handleDelete = useCallback(async () => {
     try {
       setLoading(true)
-      await context.deleteAppointment(appointmentId)
+      await dataContext.deleteAppointment(appointmentId)
 
-      showDangerMessage(translate('appointmentDeleted'))
+      showDangerMessage(translator.translate('appointmentDeleted'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

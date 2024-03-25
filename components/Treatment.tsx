@@ -21,7 +21,8 @@ import { getTreatmentPayments } from '../helpers/PaymentHelper'
 import NoPayments from './user-messages/NoPayments'
 import NoAppointments from './user-messages/NoAppointments'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { TranslationKeys, translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
+import { TranslationKeys } from '../localization/TranslationKeys'
 
 type StyleProps = {
   themeContext: ThemeContextType
@@ -29,12 +30,15 @@ type StyleProps = {
 }
 
 export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) {
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  const navigation = useNavigation<RootStackScreenProps<'Treatment'>['navigation']>()
+  const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
   const { treatmentId } = route.params
 
-  const navigation = useNavigation<RootStackScreenProps<'Treatment'>['navigation']>()
-  const context = useContext(DataContext)!
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
   function handleEdit() {
     navigation.navigate('EditTreatment', { treatmentId: treatmentId })
@@ -42,19 +46,19 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton title={translate('edit')} onPress={handleEdit} />,
+      headerRight: () => <HeaderButton title={translator.translate('edit')} onPress={handleEdit} />,
     })
   }, [])
 
-  const treatment = context.treatments?.find((t) => t.id === treatmentId)
+  const treatment = dataContext.treatments?.find((t) => t.id === treatmentId)
 
   if (!treatment) {
     return
   }
 
-  const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
-  const appointments = context.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
-  const payments = getTreatmentPayments(context.payments ?? [], treatment.id)
+  const patient = dataContext.patients?.find((p) => p.id === treatment?.patient_id)
+  const appointments = dataContext.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
+  const payments = getTreatmentPayments(dataContext.payments ?? [], treatment.id)
 
   const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)
@@ -119,7 +123,7 @@ export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) 
         <Text style={styles(styleProps).title}>{treatment.title}</Text>
         <View style={styles(styleProps).statusView}>
           <Chip
-            title={translate(status.toLowerCase() as keyof TranslationKeys)}
+            title={translator.translate(status.toLowerCase() as keyof TranslationKeys)}
             type='outline'
             titleStyle={styles(styleProps).status}
             buttonStyle={styles(styleProps).statusButton}

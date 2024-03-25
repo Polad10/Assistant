@@ -10,25 +10,28 @@ import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditPatient'>['route']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const patientId = route.params.patientId
-  const patient = context.patients?.find((p) => p.id === patientId)
+  const patient = dataContext.patients?.find((p) => p.id === patientId)
 
   const handlePatientSave = useCallback(async (patient: PatientRequest) => {
     try {
       setLoading(true)
-      await context.updatePatient(patient)
+      await dataContext.updatePatient(patient)
 
-      showMessage(translate('saved'))
+      showMessage(translator.translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -50,9 +53,9 @@ export default function EditPatient() {
   const handleDelete = useCallback(async () => {
     try {
       setLoading(true)
-      await context.deletePatient(patientId)
+      await dataContext.deletePatient(patientId)
 
-      showDangerMessage(translate('patientDeleted'))
+      showDangerMessage(translator.translate('patientDeleted'))
       navigation.popToTop()
     } catch (ex) {
       setError(true)

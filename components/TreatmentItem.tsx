@@ -11,7 +11,8 @@ import { treatmentFinished } from '../helpers/TreatmentHelper'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import { Status } from '../enums/Status'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { TranslationKeys, translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
+import { TranslationKeys } from '../localization/TranslationKeys'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -24,16 +25,20 @@ type StyleProps = {
 }
 
 export default function TreatmentItem(props: TreatmentItemProps) {
-  const themeContext = useContext(ThemeContext)!
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
-  const context = useContext(DataContext)
+
+  const themeContext = useContext(ThemeContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const styleProps: StyleProps = {
     themeContext: themeContext,
     finished: treatmentFinished(props.treatment),
   }
 
-  const patient = context?.patients?.find((p) => p.id === props.treatment.patient_id)
+  const patient = dataContext.patients?.find((p) => p.id === props.treatment.patient_id)
   const status = styleProps.finished ? Status.FINISHED : Status.ONGOING
 
   return (
@@ -51,7 +56,7 @@ export default function TreatmentItem(props: TreatmentItemProps) {
               </ListItem.Subtitle>
             </View>
             <Chip
-              title={translate(status.toLowerCase() as keyof TranslationKeys)}
+              title={translator.translate(status.toLowerCase() as keyof TranslationKeys)}
               type='outline'
               titleStyle={styles(styleProps).status}
               buttonStyle={styles(styleProps).statusButton}

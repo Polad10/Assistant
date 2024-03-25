@@ -7,19 +7,21 @@ import { useContext } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { getTotalPayment } from '../helpers/PaymentHelper'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { language, translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type Props = {
   treatment: Treatment
 }
 
 export default function TreatmentInfo(props: Props) {
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const treatment = props.treatment
-
-  const payments = context.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
+  const payments = dataContext.payments?.filter((p) => p.treatment_id === treatment?.id) ?? []
   const totalPayment = getTotalPayment(payments)
 
   return (
@@ -37,16 +39,16 @@ export default function TreatmentInfo(props: Props) {
         <View style={{ flex: 1 }}>
           <View style={styles(themeContext).priceDetailsView}>
             <View>
-              <Text style={styles(themeContext).text}>{translate('price')}</Text>
+              <Text style={styles(themeContext).text}>{translator.translate('price')}</Text>
               <Text style={[styles(themeContext).paymentsNrText, styles(themeContext).halfOpacity]}>
-                {payments.length} {translate('payments')}
+                {payments.length} {translator.translate('payments')}
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>{totalPayment} ₼ </Text>
               <Text style={[styles(themeContext).valueText, styles(themeContext).halfOpacity]}>
                 {' '}
-                {translate('of')}{' '}
+                {translator.translate('of')}{' '}
               </Text>
               <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}> {treatment.price} ₼</Text>
             </View>
@@ -56,7 +58,7 @@ export default function TreatmentInfo(props: Props) {
       </View>
       <View style={{ flexDirection: 'row' }}>
         <View style={[styles(themeContext).startDateView, styles(themeContext).card, styles(themeContext).rounded]}>
-          <Text style={styles(themeContext).text}>{translate('start')}</Text>
+          <Text style={styles(themeContext).text}>{translator.translate('start')}</Text>
           <Icon
             name='hourglass-start'
             type='font-awesome'
@@ -65,11 +67,11 @@ export default function TreatmentInfo(props: Props) {
             containerStyle={styles(themeContext).dateIconContainer}
           />
           <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
-            {DateTime.fromISO(treatment.start_date).setLocale(language).toFormat('MMMM d, yyyy')}
+            {DateTime.fromISO(treatment.start_date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')}
           </Text>
         </View>
         <View style={[styles(themeContext).endDateView, styles(themeContext).card, styles(themeContext).rounded]}>
-          <Text style={styles(themeContext).text}>{translate('end')}</Text>
+          <Text style={styles(themeContext).text}>{translator.translate('end')}</Text>
           <Icon
             name='hourglass-end'
             type='font-awesome'
@@ -79,7 +81,7 @@ export default function TreatmentInfo(props: Props) {
           />
           <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
             {treatment.end_date
-              ? DateTime.fromISO(treatment.end_date).setLocale(language).toFormat('MMMM d, yyyy')
+              ? DateTime.fromISO(treatment.end_date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
               : '-'}
           </Text>
         </View>

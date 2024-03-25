@@ -3,7 +3,7 @@ import './firebase'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import Patients from './components/Patients'
 import Appointments from './components/Appointments'
@@ -27,9 +27,6 @@ import { ThemeContext } from './contexts/ThemeContext'
 import { StyleSheet } from 'react-native'
 import Settings from './components/Settings'
 import Languages from './components/Languages'
-import { translate } from './helpers/Translator'
-import * as firebaseAuth from 'firebase/auth'
-//import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Signup from './components/Signup'
@@ -42,6 +39,8 @@ import Error from './components/user-messages/Error'
 import { Api } from './helpers/Api'
 import LoadingView from './components/LoadingView'
 import MainView from './components/MainView'
+import LocalizationProvider from './providers/LocalizationProvider'
+import { LocalizationContext } from './contexts/LocalizationContext'
 
 type Tabs = {
   Appointments: undefined
@@ -57,19 +56,22 @@ function Home() {
 
   const themeContext = useContext(ThemeContext)!
   const authContext = useContext(AuthContext)!
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   useEffect(() => {
     if (authContext.user) {
-      context.setApi(new Api(authContext.user))
+      dataContext.setApi(new Api(authContext.user))
     }
   }, [authContext.user])
 
   useEffect(() => {
-    if (context.api) {
+    if (dataContext.api) {
       fetchData()
     }
-  }, [context.api])
+  }, [dataContext.api])
 
   async function retryAfterError() {
     setError(false)
@@ -78,15 +80,16 @@ function Home() {
 
   async function fetchData() {
     try {
-      context.setLoading(true)
-      await context.fetchTreatments()
-      await context.fetchPatients()
-      await context.fetchPayments()
-      await context.fetchAppointments()
+      dataContext.setLoading(true)
+
+      await dataContext.fetchTreatments()
+      await dataContext.fetchPatients()
+      await dataContext.fetchPayments()
+      await dataContext.fetchAppointments()
     } catch (ex) {
       setError(true)
     } finally {
-      context.setLoading(false)
+      dataContext.setLoading(false)
     }
   }
 
@@ -109,8 +112,8 @@ function Home() {
               ),
               tabBarActiveTintColor: themeContext.accent,
               tabBarStyle: { backgroundColor: themeContext.primary },
-              title: translate('agenda'),
-              headerTitle: translate('agenda').toUpperCase(),
+              title: translator.translate('agenda'),
+              headerTitle: translator.translate('agenda').toUpperCase(),
               headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
               headerStyle: { backgroundColor: themeContext.primary },
             }}
@@ -124,8 +127,8 @@ function Home() {
               ),
               tabBarActiveTintColor: themeContext.accent,
               tabBarStyle: { backgroundColor: themeContext.primary },
-              title: translate('patients'),
-              headerTitle: translate('patients').toUpperCase(),
+              title: translator.translate('patients'),
+              headerTitle: translator.translate('patients').toUpperCase(),
               headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
               headerStyle: { backgroundColor: themeContext.primary },
             }}
@@ -139,8 +142,8 @@ function Home() {
               ),
               tabBarActiveTintColor: themeContext.accent,
               tabBarStyle: { backgroundColor: themeContext.primary },
-              title: translate('settings'),
-              headerTitle: translate('settings').toUpperCase(),
+              title: translator.translate('settings'),
+              headerTitle: translator.translate('settings').toUpperCase(),
               headerTitleStyle: [styles.headerTitle, { color: themeContext.neutral }],
               headerStyle: { backgroundColor: themeContext.primary },
             }}
@@ -170,9 +173,11 @@ export default function App() {
       <ActionSheetProvider>
         <AuthProvider>
           <DataProvider>
-            <ThemeProvider>
-              <Navigation />
-            </ThemeProvider>
+            <LocalizationProvider>
+              <ThemeProvider>
+                <Navigation />
+              </ThemeProvider>
+            </LocalizationProvider>
           </DataProvider>
         </AuthProvider>
       </ActionSheetProvider>
@@ -183,6 +188,9 @@ export default function App() {
 function Navigation() {
   const themeContext = useContext(ThemeContext)!
   const authContext = useContext(AuthContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext?.translator
 
   function getContent() {
     if (authContext.user) {
@@ -199,67 +207,67 @@ function Navigation() {
             <Stack.Screen
               name='Patients'
               component={Patients}
-              options={{ headerTitle: translate('patients').toUpperCase() }}
+              options={{ headerTitle: translator.translate('patients').toUpperCase() }}
             />
             <Stack.Screen
               name='Treatments'
               component={Treatments}
-              options={{ headerTitle: translate('treatments').toUpperCase() }}
+              options={{ headerTitle: translator.translate('treatments').toUpperCase() }}
             />
             <Stack.Screen
               name='Patient'
               component={Patient}
-              options={{ headerTitle: translate('patient').toUpperCase() }}
+              options={{ headerTitle: translator.translate('patient').toUpperCase() }}
             />
             <Stack.Screen
               name='Treatment'
               component={Treatment}
-              options={{ headerTitle: translate('treatment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('treatment').toUpperCase() }}
             />
             <Stack.Screen
               name='NewAppointment'
               component={NewAppointment}
-              options={{ headerTitle: translate('appointment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('appointment').toUpperCase() }}
             />
             <Stack.Screen
               name='NewTreatment'
               component={NewTreatment}
-              options={{ headerTitle: translate('treatment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('treatment').toUpperCase() }}
             />
             <Stack.Screen
               name='NewPatient'
               component={NewPatient}
-              options={{ headerTitle: translate('patient').toUpperCase() }}
+              options={{ headerTitle: translator.translate('patient').toUpperCase() }}
             />
             <Stack.Screen
               name='EditAppointment'
               component={EditAppointment}
-              options={{ headerTitle: translate('appointment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('appointment').toUpperCase() }}
             />
             <Stack.Screen
               name='EditPatient'
               component={EditPatient}
-              options={{ headerTitle: translate('patient').toUpperCase() }}
+              options={{ headerTitle: translator.translate('patient').toUpperCase() }}
             />
             <Stack.Screen
               name='EditTreatment'
               component={EditTreatment}
-              options={{ headerTitle: translate('treatment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('treatment').toUpperCase() }}
             />
             <Stack.Screen
               name='EditPayment'
               component={EditPayment}
-              options={{ headerTitle: translate('payment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('payment').toUpperCase() }}
             />
             <Stack.Screen
               name='NewPayment'
               component={NewPayment}
-              options={{ headerTitle: translate('payment').toUpperCase() }}
+              options={{ headerTitle: translator.translate('payment').toUpperCase() }}
             />
             <Stack.Screen
               name='Languages'
               component={Languages}
-              options={{ headerTitle: translate('languages').toUpperCase() }}
+              options={{ headerTitle: translator.translate('languages').toUpperCase() }}
             />
           </Stack.Group>
         </Stack.Group>
@@ -268,17 +276,25 @@ function Navigation() {
       return (
         <Stack.Group>
           <Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
-          <Stack.Screen name='Login' component={Login} options={{ headerTitle: translate('login').toUpperCase() }} />
-          <Stack.Screen name='Signup' component={Signup} options={{ headerTitle: translate('signUp').toUpperCase() }} />
+          <Stack.Screen
+            name='Login'
+            component={Login}
+            options={{ headerTitle: translator.translate('login').toUpperCase() }}
+          />
+          <Stack.Screen
+            name='Signup'
+            component={Signup}
+            options={{ headerTitle: translator.translate('signUp').toUpperCase() }}
+          />
           <Stack.Screen
             name='ForgotPassword'
             component={ForgotPassword}
-            options={{ headerTitle: translate('resetPassword').toUpperCase() }}
+            options={{ headerTitle: translator.translate('resetPassword').toUpperCase() }}
           />
           <Stack.Screen
             name='EmailSent'
             component={EmailSent}
-            options={{ headerTitle: translate('emailSent').toUpperCase() }}
+            options={{ headerTitle: translator.translate('emailSent').toUpperCase() }}
           />
         </Stack.Group>
       )
@@ -293,7 +309,7 @@ function Navigation() {
         screenOptions={{
           headerRightContainerStyle: styles.headerRightContainer,
           headerLeftContainerStyle: styles.headerLeftContainer,
-          headerBackTitle: translate('back'),
+          headerBackTitle: translator.translate('back'),
           headerBackTitleStyle: { color: themeContext.accent },
           headerStyle: { backgroundColor: themeContext.primary },
           headerTintColor: themeContext.accent,

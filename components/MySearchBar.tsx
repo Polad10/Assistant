@@ -5,7 +5,7 @@ import { SearchBar as BaseSearchBar } from '@rneui/base'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 type Props = {
   placeholder: string
@@ -18,8 +18,11 @@ type SearchBarRefType = {
 
 const MySearchBar = forwardRef((props: Props, ref) => {
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
   const [search, setSearch] = useState('')
 
+  const translator = localizationContext.translator
   const searchBarRef = useRef<TextInput & PropsWithChildren<BaseSearchBar>>(null)
 
   useImperativeHandle(ref, () => {
@@ -50,7 +53,7 @@ const MySearchBar = forwardRef((props: Props, ref) => {
       inputStyle={styles(themeContext).searchBarInput}
       searchIcon={<Ionicons name='search-outline' size={20} color={themeContext.neutral} />}
       clearIcon={<MaterialIcons name='clear' size={20} color={themeContext.neutral} onPress={clear} />}
-      cancelButtonTitle={translate('cancel')}
+      cancelButtonTitle={translator.translate('cancel')}
       value={search}
       onChangeText={updateSearch}
     />

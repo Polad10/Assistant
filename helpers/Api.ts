@@ -4,6 +4,7 @@ import { Patient, PatientRequest } from "../modals/Patient";
 import { Appointment, AppointmentRequest } from "../modals/Appointment";
 import { Treatment, TreatmentRequest } from "../modals/Treatment";
 import { Payment, PaymentRequest } from "../modals/Payment";
+import { Setting } from "../modals/Setting";
 
 export class Api {
   user: User
@@ -13,6 +14,7 @@ export class Api {
   appointmentsApi = '/appointments'
   treatmentsApi = '/treatments'
   paymentsApi = '/payments'
+  settingsApi = '/settings'
 
   constructor(user: User) {
     this.user = user
@@ -51,6 +53,12 @@ export class Api {
     return (await axios.get<Payment[]>(this.paymentsApi, { headers: { Authorization: idToken } })).data
   }
 
+  async fetchSetting() {
+    const idToken = await this.user.getIdToken()
+
+    return (await axios.get<Setting>(this.settingsApi, { headers: { Authorization: idToken } })).data
+  }
+
   async createAppointment(appointment: AppointmentRequest) {
     const idToken = await this.user.getIdToken()
 
@@ -75,6 +83,12 @@ export class Api {
     return (await axios.post<Payment>(this.paymentsApi, payment, { headers: { Authorization: idToken } })).data
   }
 
+  async createSetting(setting: Setting) {
+    const idToken = await this.user.getIdToken()
+
+    return (await axios.post<Setting>(this.settingsApi, setting, { headers: { Authorization: idToken } })).data
+  }
+
   async updateAppointment(appointment: AppointmentRequest) {
     const idToken = await this.user.getIdToken()
 
@@ -97,6 +111,12 @@ export class Api {
     const idToken = await this.user.getIdToken()
 
     return (await axios.put<Payment>(this.paymentsApi, payment, { headers: { Authorization: idToken } })).data
+  }
+
+  async updateSetting(setting: Setting) {
+    const idToken = await this.user.getIdToken()
+
+    return (await axios.put<Setting>(this.settingsApi, setting, { headers: { Authorization: idToken } })).data
   }
 
   async deleteAppointment(appointmentId: number) {

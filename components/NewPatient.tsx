@@ -9,11 +9,14 @@ import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function NewPatient() {
   const navigation = useNavigation<RootStackScreenProps<'NewPatient'>['navigation']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -21,9 +24,9 @@ export default function NewPatient() {
   const handlePatientSave = useCallback(async (patient: PatientRequest) => {
     try {
       setLoading(true)
-      const newPatient = await context.createPatient(patient)
+      const newPatient = await dataContext.createPatient(patient)
 
-      showSuccessMessage(translate('patientAdded'))
+      showSuccessMessage(translator.translate('patientAdded'))
 
       if (DeviceEventEmitter.listenerCount('patientCreated') > 0) {
         DeviceEventEmitter.emit('patientCreated', newPatient)

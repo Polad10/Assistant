@@ -24,34 +24,37 @@ import NoAppointments from './user-messages/NoAppointments'
 import NoTreatments from './user-messages/NoTreatments'
 import NoPayments from './user-messages/NoPayments'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { language, translate } from '../helpers/Translator'
 import { DateTime } from 'luxon'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { patientId } = route.params
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton title={translate('edit')} onPress={handleEdit} />,
+      headerRight: () => <HeaderButton title={translator.translate('edit')} onPress={handleEdit} />,
     })
   }, [])
 
-  const patient = context.patients?.find((p) => p.id === patientId)
+  const patient = dataContext.patients?.find((p) => p.id === patientId)
 
   if (!patient) {
     return
   }
 
-  const treatments = getPatientTreatments(context.treatments ?? [], patient.id)
+  const treatments = getPatientTreatments(dataContext.treatments ?? [], patient.id)
   const ongoingTreatments = getOngoingTreatments(treatments)
-  const payments = getPaymentsForTreatments(context.payments ?? [], treatments)
+  const payments = getPaymentsForTreatments(dataContext.payments ?? [], treatments)
 
-  const appointments = getAppointmentsForTreatments(context.appointments ?? [], ongoingTreatments)
+  const appointments = getAppointmentsForTreatments(dataContext.appointments ?? [], ongoingTreatments)
   const ongoingAppointments = getOngoingAppointments(appointments)
 
   const groupedAppointments = getGroupedAppointments(ongoingAppointments) ?? new Map()
@@ -128,7 +131,9 @@ export default function Patient({ navigation, route }: RootStackScreenProps<'Pat
         <View style={styles(themeContext).infoField}>
           <MaterialCommunityIcons name='cake-variant-outline' size={22} style={styles(themeContext).infoIcon} />
           <Text style={styles(themeContext).text}>
-            {patient.dob ? DateTime.fromISO(patient.dob).setLocale(language).toFormat('MMMM d, yyyy') : '-'}
+            {patient.dob
+              ? DateTime.fromISO(patient.dob).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
+              : '-'}
           </Text>
         </View>
         <View style={styles(themeContext).infoField}>

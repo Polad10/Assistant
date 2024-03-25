@@ -10,25 +10,28 @@ import DeleteButton from './DeleteButton'
 import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
-import { translate } from '../helpers/Translator'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditPayment'>['route']>()
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
+
+  const translator = localizationContext.translator
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const paymentId = route.params.paymentId
-  const payment = context.payments?.find((p) => p.id === paymentId)
+  const payment = dataContext.payments?.find((p) => p.id === paymentId)
 
   const handlePaymentSave = useCallback(async (payment: PaymentRequest) => {
     try {
       setLoading(true)
-      await context.updatePayment(payment)
+      await dataContext.updatePayment(payment)
 
-      showMessage(translate('saved'))
+      showMessage(translator.translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -40,9 +43,9 @@ export default function EditPayment() {
   const handleDelete = useCallback(async () => {
     try {
       setLoading(true)
-      await context.deletePayment(paymentId)
+      await dataContext.deletePayment(paymentId)
 
-      showDangerMessage(translate('paymentDeleted'))
+      showDangerMessage(translator.translate('paymentDeleted'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

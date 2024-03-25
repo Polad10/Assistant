@@ -10,12 +10,14 @@ import PatientList from './PatientList'
 import { searchPatients } from '../helpers/Searcher'
 import { sortPatients } from '../helpers/PatientHelper'
 import NoPatients from './user-messages/NoPatients'
-import { translate } from '../helpers/Translator'
 import LoadingView from './LoadingView'
+import { LocalizationContext } from '../contexts/LocalizationContext'
 
 export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
 
+  const translator = localizationContext.translator
   const searchEventName = 'searchPatient'
 
   const [patientsInitial, setPatientsInitial] = useState<Patient[]>([])
@@ -33,13 +35,13 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   )
 
   function getPatientsContentView() {
-    if (context.loading) {
+    if (dataContext.loading) {
       return <LoadingView />
     } else if (patientsInitial.length > 0) {
       return (
         <MainView>
           <MySearchBar
-            placeholder={`${translate('enterPatientName')}...`}
+            placeholder={`${translator.translate('enterPatientName')}...`}
             searchEventName={searchEventName}
             ref={ref}
           />
@@ -55,11 +57,11 @@ export default function Patients({ navigation, route }: RootStackScreenProps<'Pa
   useEffect(() => {
     ref.current?.clear()
 
-    const patientsInitial = sortPatients(context.patients ?? [])
+    const patientsInitial = sortPatients(dataContext.patients ?? [])
 
     setPatientsInitial(patientsInitial)
     setPatients(patientsInitial)
-  }, [context.patients])
+  }, [dataContext.patients])
 
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener(searchEventName, handleSearch)
