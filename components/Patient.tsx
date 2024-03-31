@@ -27,8 +27,12 @@ import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import { DateTime } from 'luxon'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
-export default function Patient({ navigation, route }: RootStackScreenProps<'Patient'>) {
+export default function Patient() {
+  const navigation = useNavigation<RootStackScreenProps<'Patient'>['navigation']>()
+  const route = useRoute<RootStackScreenProps<'Patient'>['route']>()
+
   const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!

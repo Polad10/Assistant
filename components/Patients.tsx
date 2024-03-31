@@ -12,8 +12,11 @@ import { sortPatients } from '../helpers/PatientHelper'
 import NoPatients from './user-messages/NoPatients'
 import LoadingView from './LoadingView'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { useNavigation } from '@react-navigation/native'
 
-export default function Patients({ navigation, route }: RootStackScreenProps<'Patients'>) {
+export default function Patients() {
+  const navigation = useNavigation<RootStackScreenProps<'Patients'>['navigation']>()
+
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
 

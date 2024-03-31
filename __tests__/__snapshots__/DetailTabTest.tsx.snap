@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailTab renders NOT selected tab correctly 1`] = `
+<View
+  style={
+    {
+      "overflow": "hidden",
+    }
+  }
+  testID="RNE__ICON__CONTAINER"
+>
+  <View
+    accessibilityRole="button"
+    android_ripple={
+      {
+        "borderless": false,
+        "color": "rgba(0, 0, 0, 0.3)",
+        "radius": -5,
+      }
+    }
+    disabled={false}
+    style={
+      {
+        "opacity": 0.6,
+      }
+    }
+    testID="RNE__ICON__CONTAINER_ACTION"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "justifyContent": "center",
+        }
+      }
+      testID="RNE__ICON"
+    >
+      <Text />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`DetailTab renders selected tab correctly 1`] = `
+<View
+  style={
+    {
+      "overflow": "hidden",
+    }
+  }
+  testID="RNE__ICON__CONTAINER"
+>
+  <View
+    accessibilityRole="button"
+    android_ripple={
+      {
+        "borderless": false,
+        "color": "rgba(0, 0, 0, 0.3)",
+        "radius": -5,
+      }
+    }
+    disabled={false}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+    testID="RNE__ICON__CONTAINER_ACTION"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "justifyContent": "center",
+        }
+      }
+      testID="RNE__ICON"
+    >
+      <Text />
+    </View>
+  </View>
+</View>
+`;

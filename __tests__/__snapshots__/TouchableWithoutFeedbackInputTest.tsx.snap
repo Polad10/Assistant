@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TouchableWithoutFeedbackInput renders correctly 1`] = `
+<RNGestureHandlerButton
+  collapsable={false}
+  delayLongPress={600}
+  enabled={true}
+  exclusive={true}
+  handlerTag={1}
+  handlerType="NativeViewGestureHandler"
+  onGestureEvent={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onHandlerStateChange={[Function]}
+  rippleColor={0}
+  touchSoundDisabled={false}
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    style={{}}
+  >
+    <View
+      style={
+        {
+          "paddingHorizontal": 0,
+          "width": "100%",
+        }
+      }
+      testID="RNE__Input__view-wrapper"
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "alignItems": "center",
+            "borderBottomWidth": 1,
+            "borderColor": "#374151",
+            "borderRadius": 10,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "marginBottom": 20,
+            "transform": [
+              {
+                "translateX": 0,
+              },
+            ],
+          }
+        }
+      >
+        <TextInput
+          autoCorrect={false}
+          editable={false}
+          onBlur={[Function]}
+          onFocus={[Function]}
+          placeholderTextColor="#86939e"
+          pointerEvents="none"
+          returnKeyType="done"
+          selectionColor="#faf8ff"
+          style={
+            {
+              "color": "#faf8ff",
+              "flex": 1,
+              "fontSize": 18,
+              "minHeight": 40,
+              "opacity": 0.5,
+              "paddingHorizontal": 10,
+              "paddingTop": 20,
+              "paddingVertical": 20,
+            }
+          }
+          testID="RNE__Input__text-input"
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <Text
+        style={
+          {
+            "color": "#ff190c",
+            "fontSize": 12,
+            "height": 0,
+            "margin": 0,
+            "padding": 0,
+          }
+        }
+      />
+    </View>
+  </View>
+</RNGestureHandlerButton>
+`;

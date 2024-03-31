@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TreatmentItem renders correctly 1`] = `
+<RNGestureHandlerButton
+  collapsable={false}
+  delayLongPress={600}
+  enabled={true}
+  exclusive={true}
+  handlerTag={1}
+  handlerType="NativeViewGestureHandler"
+  onGestureEvent={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onHandlerStateChange={[Function]}
+  rippleColor={0}
+  touchSoundDisabled={false}
+>
+  <View
+    accessible={true}
+    collapsable={false}
+    style={{}}
+  >
+    <View
+      style={null}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#121212",
+            "borderColor": "#bcbbc1",
+            "flexDirection": "row",
+            "padding": 14,
+          }
+        }
+        testID="RNE__LISTITEM__padView"
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "flex-start",
+                "flex": 1,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
+          }
+          theme={
+            {
+              "colors": {
+                "background": "#ffffff",
+                "black": "#242424",
+                "disabled": "hsl(208, 8%, 90%)",
+                "divider": "#bcbbc1",
+                "error": "#ff190c",
+                "grey0": "#393e42",
+                "grey1": "#43484d",
+                "grey2": "#5e6977",
+                "grey3": "#86939e",
+                "grey4": "#bdc6cf",
+                "grey5": "#e1e8ee",
+                "greyOutline": "#bbb",
+                "platform": {
+                  "android": {
+                    "error": "#f44336",
+                    "grey": "rgba(0, 0, 0, 0.54)",
+                    "primary": "#2196f3",
+                    "searchBg": "#dcdce1",
+                    "secondary": "#9C27B0",
+                    "success": "#4caf50",
+                    "warning": "#ffeb3b",
+                  },
+                  "default": {
+                    "error": "#ff3b30",
+                    "grey": "#7d7d7d",
+                    "primary": "#007aff",
+                    "searchBg": "#dcdce1",
+                    "secondary": "#5856d6",
+                    "success": "#4cd964",
+                    "warning": "#ffcc00",
+                  },
+                  "ios": {
+                    "error": "#ff3b30",
+                    "grey": "#7d7d7d",
+                    "primary": "#007aff",
+                    "searchBg": "#dcdce1",
+                    "secondary": "#5856d6",
+                    "success": "#4cd964",
+                    "warning": "#ffcc00",
+                  },
+                  "web": {
+                    "error": "#ff190c",
+                    "grey": "#393e42",
+                    "primary": "#2089dc",
+                    "searchBg": "#303337",
+                    "secondary": "#ca71eb",
+                    "success": "#52c41a",
+                    "warning": "#faad14",
+                  },
+                },
+                "primary": "#2089dc",
+                "searchBg": "#303337",
+                "secondary": "#ad1457",
+                "success": "#52c41a",
+                "warning": "#faad14",
+                "white": "#ffffff",
+              },
+              "spacing": {
+                "lg": 12,
+                "md": 8,
+                "sm": 4,
+                "xl": 24,
+                "xs": 2,
+              },
+            }
+          }
+        >
+          <Text
+            accessibilityRole="text"
+            style={
+              {
+                "backgroundColor": "transparent",
+                "color": "#faf8ff",
+                "fontSize": 17,
+              }
+            }
+            testID="listItemTitle"
+          >
+            Title
+          </Text>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "width": "100%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <Text
+                accessibilityRole="text"
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#faf8ff",
+                    "fontSize": 15,
+                    "marginRight": 10,
+                    "opacity": 0.5,
+                  }
+                }
+                testID="listItemTitle"
+              >
+                <Text />
+              </Text>
+              <Text
+                accessibilityRole="text"
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#faf8ff",
+                    "fontSize": 15,
+                    "opacity": 0.6,
+                  }
+                }
+                testID="listItemTitle"
+              >
+                FirstName LastName
+              </Text>
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "overflow": "hidden",
+                  },
+                  {
+                    "borderRadius": 30,
+                  },
+                  undefined,
+                  false,
+                ]
+              }
+              testID="RNE_BUTTON_WRAPPER"
+            >
+              <View
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": false,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "backgroundColor": "transparent",
+                    "borderColor": "orange",
+                    "borderRadius": 30,
+                    "borderWidth": 0.5,
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "padding": 8,
+                    "paddingHorizontal": 10,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "orange",
+                      "fontSize": 14,
+                      "paddingHorizontal": 2,
+                      "paddingVertical": 1,
+                      "textAlign": "center",
+                    }
+                  }
+                >
+                  Ongoing
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RNGestureHandlerButton>
+`;

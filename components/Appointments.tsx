@@ -15,8 +15,11 @@ import { configureCalendar } from '../helpers/CalendarConfig'
 import { DateTime } from 'luxon'
 import LoadingView from './LoadingView'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { useNavigation } from '@react-navigation/native'
 
-export default function Appointments({ navigation }: RootStackScreenProps<'Appointments'>) {
+export default function Appointments() {
+  const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
+
   const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!

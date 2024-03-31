@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
 import DetailTab from './DetailTab'
@@ -29,8 +29,10 @@ type StyleProps = {
   treatmentFinished: boolean | undefined
 }
 
-export default function Treatment({ route }: RootStackScreenProps<'Treatment'>) {
+export default function Treatment() {
   const navigation = useNavigation<RootStackScreenProps<'Treatment'>['navigation']>()
+  const route = useRoute<RootStackScreenProps<'Treatment'>['route']>()
+
   const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!

@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AgendaItem renders correctly 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#121212",
+      "flexDirection": "row",
+      "opacity": 1,
+      "padding": 10,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#faf8ff",
+              "fontSize": 16,
+            },
+            {
+              "color": "#faf8ff",
+              "fontWeight": "bold",
+            },
+          ]
+        }
+      >
+        Invalid DateTime
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flex": 4,
+        }
+      }
+    >
+      <View>
+        <Text
+          style={
+            [
+              {
+                "color": "#faf8ff",
+                "fontSize": 16,
+              },
+              {
+                "color": "#d3fbd8",
+              },
+            ]
+          }
+        >
+          FirstName LastName
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "color": "#faf8ff",
+              "fontSize": 16,
+            },
+            {
+              "fontStyle": "italic",
+              "marginTop": 10,
+            },
+          ]
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

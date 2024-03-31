@@ -5,16 +5,18 @@ import MainView from './MainView'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { DeviceEventEmitter } from 'react-native'
-import { getOngoingTreatments, getPatientTreatments, treatmentFinished } from '../helpers/TreatmentHelper'
+import { getOngoingTreatments, getPatientTreatments } from '../helpers/TreatmentHelper'
 import { TreatmentWithPatientName } from '../types/TreatmentWithPatientName'
 import { searchTreatments } from '../helpers/Searcher'
 import MyFAB from './MyFAB'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import NoTreatments from './user-messages/NoTreatments'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 
-export default function Treatments({ route }: RootStackScreenProps<'Treatments'>) {
+export default function Treatments() {
   const navigation = useNavigation<RootStackScreenProps<'Treatments'>['navigation']>()
+  const route = useRoute<RootStackScreenProps<'Treatments'>['route']>()
+
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
 
