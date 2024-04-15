@@ -142,7 +142,7 @@ exports[`NewTreatment renders correctly 1`] = `
                     style={
                       {
                         "color": "#d3fbd8",
-                        "fontSize": 16,
+                        "fontSize": 15,
                         "fontWeight": "bold",
                         "marginBottom": 5,
                       }
@@ -251,7 +251,7 @@ exports[`NewTreatment renders correctly 1`] = `
                     style={
                       {
                         "color": "#d3fbd8",
-                        "fontSize": 16,
+                        "fontSize": 15,
                         "fontWeight": "bold",
                         "marginBottom": 5,
                       }
@@ -352,7 +352,7 @@ exports[`NewTreatment renders correctly 1`] = `
                 style={
                   {
                     "color": "#d3fbd8",
-                    "fontSize": 16,
+                    "fontSize": 15,
                     "fontWeight": "bold",
                     "marginBottom": 5,
                   }
@@ -430,7 +430,7 @@ exports[`NewTreatment renders correctly 1`] = `
                 style={
                   {
                     "color": "#d3fbd8",
-                    "fontSize": 16,
+                    "fontSize": 15,
                     "fontWeight": "bold",
                     "marginBottom": 5,
                   }
@@ -523,7 +523,7 @@ exports[`NewTreatment renders correctly 1`] = `
                 style={
                   {
                     "color": "#d3fbd8",
-                    "fontSize": 16,
+                    "fontSize": 15,
                     "fontWeight": "bold",
                     "marginBottom": 5,
                   }

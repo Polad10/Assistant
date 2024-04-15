@@ -129,4 +129,12 @@ export const ruTranslation = {
   checkYourEmail: 'Проверьте свою электронную почту',
   weSentEmailTo: 'Мы отправили электронное письмо на',
   backToLogin: 'Вернуться к входу',
+  appointmentCancelled: 'Встреча отменена',
+  appointmentFinished: 'Встреча завершена',
+  appointmentRestored: 'Встреча восстановлена',
+  restore: 'Восстановить',
+  finish: 'Завершить',
+  expected: 'Ожидается',
+  cancelled: 'Отменено',
+  status: 'Статус'
 }

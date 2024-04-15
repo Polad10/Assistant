@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Setting } from "../modals/Setting";
+import { Setting } from "../models/Setting";
 
 const settingKey = 'setting'
 

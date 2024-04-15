@@ -1,6 +1,7 @@
-import { Appointment } from '../modals/Appointment'
+import { Appointment } from '../models/Appointment'
 import { DateTime } from 'luxon'
-import { Treatment } from '../modals/Treatment'
+import { Treatment } from '../models/Treatment'
+import { AppointmentStatus } from '../enums/AppointmentStatus'
 
 export function getGroupedAppointments(appointments: Appointment[]) {
   let groupedAppointments = new Map<string, Appointment[]>()
@@ -23,7 +24,19 @@ export function getGroupedAppointments(appointments: Appointment[]) {
 
   for (const [date, appointments] of groupedAppointments) {
     appointments.sort((a1, a2) => {
-      return a1.datetime.localeCompare(a2.datetime)
+      if(a1.status === a2.status) {
+        return a1.datetime.localeCompare(a2.datetime)
+      } 
+      
+      if(a2.status === AppointmentStatus.Cancelled) {
+        return 1
+      }
+
+      if(a2.status === AppointmentStatus.Expected) {
+        return -1
+      }
+
+      return a1.status === AppointmentStatus.Cancelled ? -1 : 1
     })
   }
 

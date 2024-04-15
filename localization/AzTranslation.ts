@@ -129,4 +129,12 @@ export const azTranslation = {
   checkYourEmail: 'E-poçtunuzu yoxlayın',
   weSentEmailTo: 'E-məktubu bu ünvana göndərdik',
   backToLogin: 'Girişə qayıt',
+  appointmentCancelled: 'Görüş ləğv edildi',
+  appointmentFinished: 'Görüş tamamlandı',
+  appointmentRestored: 'Görüş bərpa edildi',
+  restore: 'Bərpa et',
+  finish: 'Bitir',
+  expected: 'Gözlənilir',
+  cancelled: 'Ləğv edildi',
+  status: 'Status'
 }

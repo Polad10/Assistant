@@ -1,5 +1,7 @@
-const appointment_1 = { id: 1, datetime: '2024-01-01 19:44:00.000Z', actions: null, treatment_id: 1 }
-const appointment_2 = { id: 2, datetime: '2024-01-02 19:44:00.000Z', actions: null, treatment_id: 2 }
+import { AppointmentStatus } from "../enums/AppointmentStatus"
+
+const appointment_1 = { id: 1, datetime: '2024-01-01 19:44:00.000Z', actions: null, treatment_id: 1, status: AppointmentStatus.Expected }
+const appointment_2 = { id: 2, datetime: '2024-01-02 19:44:00.000Z', actions: null, treatment_id: 2, status: AppointmentStatus.Cancelled }
 
 const patient_1 = {
   id: 1,

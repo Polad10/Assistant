@@ -7,13 +7,15 @@ import {
   TreatmentsType,
 } from '../contexts/DataContext'
 import { ReactNode, useContext, useState } from 'react'
-import { PatientRequest } from '../modals/Patient'
-import { AppointmentRequest } from '../modals/Appointment'
-import { TreatmentRequest } from '../modals/Treatment'
-import { PaymentRequest } from '../modals/Payment'
+import { PatientRequest } from '../models/Patient'
+import { AppointmentRequest } from '../models/Appointment'
+import { TreatmentRequest } from '../models/Treatment'
+import { PaymentRequest } from '../models/Payment'
 import { Api } from '../helpers/Api'
-import { Setting } from '../modals/Setting'
+import { Setting } from '../models/Setting'
 import AsyncStorageHelper from '../helpers/AsyncStorageHelper'
+import { DateTime } from 'luxon'
+import { AppointmentStatus } from '../enums/AppointmentStatus'
 
 interface DataProviderProps {
   children: ReactNode
@@ -36,7 +38,17 @@ export default function DataProvider({ children }: DataProviderProps) {
   }
 
   async function fetchAppointments() {
-    const appointments = await api!.fetchAppointments()
+    let appointments = await api!.fetchAppointments()
+
+    appointments = appointments.map((a) => {
+      const dateIsPast = DateTime.fromISO(a.datetime).toISODate()! < DateTime.local().toISODate()!
+
+      if (dateIsPast && a.status == AppointmentStatus.Expected) {
+        a.status = AppointmentStatus.Finished
+      }
+
+      return a
+    })
 
     setAppointments(appointments)
   }

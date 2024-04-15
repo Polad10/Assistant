@@ -1,6 +1,6 @@
 import Fuse from "fuse.js"
 import { TreatmentWithPatientName } from "../types/TreatmentWithPatientName"
-import { Patient } from "../modals/Patient"
+import { Patient } from "../models/Patient"
 
 const treatmentSearchOptions = {
   keys: [

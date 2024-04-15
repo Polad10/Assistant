@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
 import { Agenda, DateData } from 'react-native-calendars'
 import { useContext, useEffect, useState } from 'react'
 import AgendaItem from './AgendaItem'
@@ -7,7 +7,7 @@ import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { DataContext } from '../contexts/DataContext'
 import { getGroupedAppointments } from '../helpers/AppointmentHelper'
-import { Appointment } from '../modals/Appointment'
+import { Appointment } from '../models/Appointment'
 import NoAppointments from './user-messages/NoAppointments'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { Divider } from '@rneui/themed'
@@ -27,6 +27,17 @@ export default function Appointments() {
   const [agendaKey, setAgendaKey] = useState(Math.random())
   const [agendaItems, setAgendaItems] = useState({})
   const [dayIsEmpty, setDayIsEmpty] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const loadingListener = DeviceEventEmitter.addListener('loading', () => setLoading(true))
+    const loadingFinishedListener = DeviceEventEmitter.addListener('loadingFinished', () => setLoading(false))
+
+    return () => {
+      loadingListener.remove()
+      loadingFinishedListener.remove()
+    }
+  }, [])
 
   useEffect(() => {
     configureCalendar(localizationContext.language)
@@ -95,7 +106,10 @@ export default function Appointments() {
             dotColor: themeContext.info,
           }}
         />
+
         {!dayIsEmpty && <MyFAB onPress={() => navigation.navigate('NewAppointment')} />}
+
+        {loading && <LoadingView />}
       </MainView>
     )
   }

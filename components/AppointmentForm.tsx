@@ -1,4 +1,4 @@
-import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter, View } from 'react-native'
+import { NativeSyntheticEvent, TextInputChangeEventData, DeviceEventEmitter, View, Text } from 'react-native'
 import DateInput, { DateInputRefType } from './DateInput'
 import TimeInput, { TimeInputRefType } from './TimeInput'
 import MyInput from './MyInput'
@@ -7,18 +7,21 @@ import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
-import { Treatment } from '../modals/Treatment'
-import { Appointment, AppointmentRequest } from '../modals/Appointment'
+import { Treatment } from '../models/Treatment'
+import { Appointment, AppointmentRequest } from '../models/Appointment'
 import { DateTime } from 'luxon'
 import HeaderButton from './HeaderButton'
 import CreateButton from './CreateButton'
 import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
-import { Patient } from '../modals/Patient'
+import { Patient } from '../models/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ThemeContext } from '../contexts/ThemeContext'
+import { AppointmentStatus } from '../enums/AppointmentStatus'
+import StatusChip from './StatusChip'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -31,6 +34,7 @@ export default function AppointmentForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const themeContext = useContext(ThemeContext)!
 
   const translator = localizationContext.translator
 
@@ -43,7 +47,7 @@ export default function AppointmentForm(props: Props) {
   }
 
   const treatmentEditable = !treatment
-
+  const statusEditable = (appointment && appointment.datetime >= DateTime.local().toISODate()!) ?? false
   const initialDateTime = appointment ? new Date(appointment.datetime) : undefined
 
   const [showActionsInputError, setShowActionsInputError] = useState(false)
@@ -53,6 +57,7 @@ export default function AppointmentForm(props: Props) {
 
   const [actions, setActions] = useState(appointment?.actions ?? undefined)
   const [selectedTreatment, setSelectedTreatment] = useState(treatment)
+  const [status, setStatus] = useState(appointment?.status)
 
   const dateInputRef = useRef<DateInputRefType>()
   const timeInputRef = useRef<TimeInputRefType>()
@@ -68,6 +73,7 @@ export default function AppointmentForm(props: Props) {
         datetime: DateTime.fromJSDate(dateTime).toISO()!,
         actions: actions,
         treatment_id: selectedTreatment!.id,
+        status: status,
       }
 
       if (appointment) {
@@ -78,7 +84,7 @@ export default function AppointmentForm(props: Props) {
     } else {
       showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
-  }, [actions, selectedTreatment])
+  }, [actions, selectedTreatment, status])
 
   function validate() {
     let valid = true
@@ -129,6 +135,12 @@ export default function AppointmentForm(props: Props) {
     }
   }
 
+  function handleStatusChange(status: AppointmentStatus) {
+    if (statusEditable) {
+      setStatus(status)
+    }
+  }
+
   function combineDateTime(date: Date, time: Date) {
     const dateObj = DateTime.fromJSDate(date)
     const timeObj = DateTime.fromJSDate(time)
@@ -155,6 +167,52 @@ export default function AppointmentForm(props: Props) {
       treatmentCreatedListener.remove()
     }
   }, [])
+
+  function StatusInput() {
+    if (status) {
+      return (
+        <>
+          <Text style={{ marginBottom: 5, color: themeContext.info, fontSize: 15, fontWeight: 'bold' }}>
+            {translator.translate('status')}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: 20,
+              borderWidth: 1,
+              borderColor: themeContext.border,
+              borderRadius: 10,
+            }}
+          >
+            <StatusChip
+              title={translator.translate('expected')}
+              color={themeContext.defaultStatus}
+              selected={status === AppointmentStatus.Expected}
+              pressable={statusEditable}
+              onPress={() => handleStatusChange(AppointmentStatus.Expected)}
+            />
+            <StatusChip
+              title={translator.translate('cancelled')}
+              color={themeContext.warning}
+              selected={status === AppointmentStatus.Cancelled}
+              pressable={statusEditable}
+              onPress={() => handleStatusChange(AppointmentStatus.Cancelled)}
+            />
+            <StatusChip
+              title={translator.translate('finished')}
+              color={themeContext.success}
+              selected={status === AppointmentStatus.Finished}
+              pressable={statusEditable}
+              onPress={() => handleStatusChange(AppointmentStatus.Finished)}
+            />
+          </View>
+        </>
+      )
+    }
+
+    return undefined
+  }
 
   return (
     <MainView style={{ paddingTop: 20, paddingHorizontal: 10 }}>
@@ -206,6 +264,8 @@ export default function AppointmentForm(props: Props) {
             showError={showTreatmentInputError}
           />
         )}
+
+        <StatusInput />
       </MyKeyboardAvoidingView>
       {!appointment && <CreateButton onPress={handleSave} />}
     </MainView>

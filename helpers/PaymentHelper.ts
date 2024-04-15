@@ -1,5 +1,5 @@
-import { Payment } from "../modals/Payment";
-import { Treatment } from "../modals/Treatment";
+import { Payment } from "../models/Payment";
+import { Treatment } from "../models/Treatment";
 
 export function getTotalPayment(payments: Payment[]) {
   return payments.reduce((sum, payment) => Number(sum) + Number(payment.amount), 0)

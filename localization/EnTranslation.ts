@@ -129,4 +129,12 @@ export const enTranslation = {
   checkYourEmail: 'Check your email',
   weSentEmailTo: 'We sent an email to',
   backToLogin: 'Back to login',
+  appointmentCancelled: 'Appointment cancelled',
+  appointmentFinished: 'Appointment finished',
+  appointmentRestored: 'Appointment restored',
+  restore: 'Restore',
+  finish: 'Finish',
+  expected: 'Expected',
+  cancelled: 'Cancelled',
+  status: 'Status'
 }

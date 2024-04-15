@@ -41,7 +41,7 @@ export default function DeleteButton() {
 
   return (
     <SafeAreaView>
-      <Button titleStyle={{ color: themeContext.warning }} style={styles.button} type='clear' onPress={promptToConfirm}>
+      <Button titleStyle={{ color: themeContext.error }} style={styles.button} type='clear' onPress={promptToConfirm}>
         {translator.translate('delete')}
       </Button>
     </SafeAreaView>

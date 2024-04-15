@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { Patient } from '../modals/Patient'
-import { Treatment } from '../modals/Treatment'
+import { Patient } from '../models/Patient'
+import { Treatment } from '../models/Treatment'
 
 export type RootStackParamList = {
   Home: undefined

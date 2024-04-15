@@ -4,7 +4,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler'
 import { DeviceEventEmitter, StyleSheet } from 'react-native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import { Patient } from '../modals/Patient'
+import { Patient } from '../models/Patient'
 import { useContext } from 'react'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 

@@ -53,6 +53,8 @@ const styles = (styleProps: StyleProps) =>
     label: {
       marginBottom: 5,
       color: styleProps.themeContext.info,
+      fontSize: 15,
+      fontWeight: 'bold',
     },
     inputContainer: {
       borderWidth: 1,

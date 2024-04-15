@@ -2,112 +2,395 @@
 
 exports[`AgendaItem renders correctly 1`] = `
 <View
-  accessibilityState={
-    {
-      "busy": undefined,
-      "checked": undefined,
-      "disabled": undefined,
-      "expanded": undefined,
-      "selected": undefined,
-    }
-  }
-  accessibilityValue={
-    {
-      "max": undefined,
-      "min": undefined,
-      "now": undefined,
-      "text": undefined,
-    }
-  }
-  accessible={true}
   collapsable={false}
-  focusable={true}
-  onClick={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
+  handlerTag={1}
+  handlerType="PanGestureHandler"
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onLayout={[Function]}
   style={
     {
-      "backgroundColor": "#121212",
-      "flexDirection": "row",
-      "opacity": 1,
-      "padding": 10,
+      "overflow": "hidden",
     }
   }
 >
   <View
+    collapsable={false}
     style={
       {
-        "flex": 1,
-        "flexDirection": "row",
+        "bottom": 0,
+        "flexDirection": "row-reverse",
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+        "transform": [
+          {
+            "translateX": -10000,
+          },
+        ],
       }
     }
   >
     <View
       style={
         {
-          "flex": 1,
+          "flexDirection": "row",
         }
       }
     >
-      <Text
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          [
-            {
-              "color": "#faf8ff",
-              "fontSize": 16,
-            },
-            {
-              "color": "#faf8ff",
-              "fontWeight": "bold",
-            },
-          ]
+          {
+            "alignItems": "center",
+            "backgroundColor": "#00e5b0",
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 80,
+          }
         }
       >
-        Invalid DateTime
-      </Text>
+        <Text />
+        <Text
+          style={
+            {
+              "color": "#faf8ff",
+              "marginTop": 5,
+            }
+          }
+        >
+          Finish
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#9f1239",
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 80,
+          }
+        }
+      >
+        <Text />
+        <Text
+          style={
+            {
+              "color": "#faf8ff",
+              "marginTop": 5,
+            }
+          }
+        >
+          Cancel
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#9f1239",
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": 80,
+          }
+        }
+      >
+        <Text />
+        <Text
+          style={
+            {
+              "color": "#faf8ff",
+              "marginTop": 5,
+            }
+          }
+        >
+          Delete
+        </Text>
+      </View>
     </View>
+    <View
+      onLayout={[Function]}
+    />
+  </View>
+  <View
+    collapsable={false}
+    handlerTag={2}
+    handlerType="TapGestureHandler"
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    pointerEvents="auto"
+    style={
+      {
+        "transform": [
+          {
+            "translateX": -0,
+          },
+        ],
+      }
+    }
+  >
     <View
       style={
         {
-          "flex": 4,
+          "backgroundColor": "#121212",
         }
       }
     >
-      <View>
-        <Text
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#121212",
+            "flexDirection": "row",
+            "opacity": 1,
+            "padding": 10,
+          }
+        }
+      >
+        <View
           style={
-            [
-              {
-                "color": "#faf8ff",
-                "fontSize": 16,
-              },
-              {
-                "color": "#d3fbd8",
-              },
-            ]
+            {
+              "flex": 1,
+              "flexDirection": "row",
+            }
           }
         >
-          FirstName LastName
-        </Text>
+          <View
+            style={
+              {
+                "width": 60,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "color": "#faf8ff",
+                    "fontSize": 16,
+                  },
+                  {
+                    "color": "#faf8ff",
+                    "fontWeight": "bold",
+                  },
+                  {
+                    "opacity": 1,
+                    "textDecorationLine": "none",
+                  },
+                ]
+              }
+            >
+              Invalid DateTime
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <View>
+              <Text
+                style={
+                  [
+                    {
+                      "color": "#faf8ff",
+                      "fontSize": 16,
+                    },
+                    {
+                      "color": "#d3fbd8",
+                    },
+                    {
+                      "opacity": 1,
+                      "textDecorationLine": "none",
+                    },
+                  ]
+                }
+              >
+                FirstName LastName
+              </Text>
+            </View>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#faf8ff",
+                    "fontSize": 16,
+                  },
+                  {
+                    "fontStyle": "italic",
+                    "marginTop": 10,
+                  },
+                  {
+                    "opacity": 1,
+                    "textDecorationLine": "none",
+                  },
+                ]
+              }
+            />
+          </View>
+          <View
+            style={
+              {
+                "marginLeft": 10,
+                "width": 100,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={{}}
+                testID="RNE__Badge__Container"
+              >
+                <View
+                  style={
+                    {
+                      "alignItems": "center",
+                      "alignSelf": "center",
+                      "backgroundColor": undefined,
+                      "borderColor": undefined,
+                      "borderRadius": 4,
+                      "borderWidth": 0.5,
+                      "height": 8,
+                      "justifyContent": "center",
+                      "minWidth": 8,
+                      "paddingHorizontal": 0,
+                      "paddingVertical": 0,
+                    }
+                  }
+                  testID="RNE__Badge"
+                />
+              </View>
+              <Text
+                style={
+                  {
+                    "color": "#faf8ff",
+                    "marginLeft": 10,
+                  }
+                }
+              >
+                Expected
+              </Text>
+            </View>
+          </View>
+        </View>
       </View>
-      <Text
-        style={
-          [
-            {
-              "color": "#faf8ff",
-              "fontSize": 16,
-            },
-            {
-              "fontStyle": "italic",
-              "marginTop": 10,
-            },
-          ]
-        }
-      />
     </View>
   </View>
 </View>

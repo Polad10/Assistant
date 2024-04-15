@@ -1,50 +1,172 @@
 import { memo, useCallback, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, DeviceEventEmitter } from 'react-native'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import type { RootStackScreenProps } from '../types/Navigation'
 import { DateTime } from 'luxon'
 import { DataContext } from '../contexts/DataContext'
-import { Appointment } from '../modals/Appointment'
+import { Appointment } from '../models/Appointment'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import { Badge } from '@rneui/themed'
+import { AppointmentStatus } from '../enums/AppointmentStatus'
+import ItemAction from './ItemAction'
+import { showDangerMessage, showMessage, showSuccessMessage } from '../helpers/ToastHelper'
+import { LocalizationContext } from '../contexts/LocalizationContext'
+import { TranslationKeys } from '../localization/TranslationKeys'
 
 type ItemProps = {
   appointment: Appointment
 }
 
 const AgendaItem = (props: ItemProps) => {
-  const { appointment } = props
   const navigation = useNavigation<RootStackScreenProps<'Appointments'>['navigation']>()
   const themeContext = useContext(ThemeContext)!
-  const context = useContext(DataContext)!
+  const dataContext = useContext(DataContext)!
+  const localizationContext = useContext(LocalizationContext)!
 
-  const treatment = context.treatments?.find((t) => t.id === appointment.treatment_id)
-  const patient = context.patients?.find((p) => p.id === treatment?.patient_id)
+  const { appointment } = props
+  const translator = localizationContext.translator
+  const treatment = dataContext.treatments?.find((t) => t.id === appointment.treatment_id)
+  const patient = dataContext.patients?.find((p) => p.id === treatment?.patient_id)
 
   const itemPressed = useCallback(() => {
     navigation.navigate('EditAppointment', { appointmentId: appointment.id })
   }, [])
 
-  return (
-    <TouchableOpacity onPress={itemPressed} style={styles(themeContext).item}>
-      <View style={styles(themeContext).mainView}>
-        <View style={{ flex: 1 }}>
-          <Text style={[styles(themeContext).defaultText, styles(themeContext).time]}>
-            {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
-          </Text>
-        </View>
-        <View style={styles(themeContext).appointmentContent}>
-          <View>
-            <Text style={[styles(themeContext).defaultText, styles(themeContext).patient]}>
-              {getPatientFullName(patient)}
-            </Text>
-          </View>
-          <Text style={[styles(themeContext).defaultText, styles(themeContext).description]}>
-            {appointment.actions}
-          </Text>
-        </View>
+  async function updateStatus(status: AppointmentStatus) {
+    try {
+      DeviceEventEmitter.emit('loading')
+
+      const updatedAppointment = { ...appointment }
+      updatedAppointment.status = status
+
+      await dataContext.updateAppointment(updatedAppointment)
+
+      if (status === AppointmentStatus.Cancelled) {
+        showDangerMessage(translator.translate('appointmentCancelled'))
+      } else if (status === AppointmentStatus.Finished) {
+        showSuccessMessage(translator.translate('appointmentFinished'))
+      } else {
+        showMessage(translator.translate('appointmentRestored'))
+      }
+    } catch (ex) {
+      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+    } finally {
+      DeviceEventEmitter.emit('loadingFinished')
+    }
+  }
+
+  async function deleteAppointment() {
+    try {
+      DeviceEventEmitter.emit('loading')
+
+      await dataContext.deleteAppointment(appointment.id)
+
+      showDangerMessage(translator.translate('appointmentDeleted'))
+    } catch (ex) {
+      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+    } finally {
+      DeviceEventEmitter.emit('loadingFinished')
+    }
+  }
+
+  function rightActions() {
+    let actions = undefined
+
+    if (appointment.datetime >= DateTime.local().toISODate()!) {
+      if (appointment.status !== AppointmentStatus.Expected) {
+        actions = (
+          <ItemAction
+            title={translator.translate('restore')}
+            backgroundColor={themeContext.secondary}
+            iconName='arrow-undo-circle-outline'
+            onPress={() => updateStatus(AppointmentStatus.Expected)}
+          />
+        )
+      } else {
+        actions = (
+          <>
+            <ItemAction
+              title={translator.translate('finish')}
+              backgroundColor={themeContext.success}
+              iconName='checkmark-circle-outline'
+              onPress={() => updateStatus(AppointmentStatus.Finished)}
+            />
+            <ItemAction
+              title={translator.translate('cancel')}
+              backgroundColor={themeContext.warning}
+              iconName='remove-circle-outline'
+              onPress={() => updateStatus(AppointmentStatus.Cancelled)}
+            />
+          </>
+        )
+      }
+    }
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        {actions}
+        <ItemAction
+          title={translator.translate('delete')}
+          backgroundColor={themeContext.error}
+          iconName='trash-outline'
+          onPress={deleteAppointment}
+        />
       </View>
-    </TouchableOpacity>
+    )
+  }
+
+  return (
+    <Swipeable renderRightActions={rightActions}>
+      <View style={{ backgroundColor: themeContext.primary }}>
+        <TouchableOpacity onPress={itemPressed} style={styles(themeContext).item}>
+          <View style={styles(themeContext).mainView}>
+            <View style={{ width: 60 }}>
+              <Text
+                style={[
+                  styles(themeContext).defaultText,
+                  styles(themeContext).time,
+                  statusStyles(appointment.status, themeContext).text,
+                ]}
+              >
+                {DateTime.fromISO(appointment.datetime).toLocaleString(DateTime.TIME_24_SIMPLE)}
+              </Text>
+            </View>
+            <View style={styles(themeContext).appointmentContent}>
+              <View>
+                <Text
+                  style={[
+                    styles(themeContext).defaultText,
+                    styles(themeContext).patient,
+                    statusStyles(appointment.status, themeContext).text,
+                  ]}
+                >
+                  {getPatientFullName(patient)}
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles(themeContext).defaultText,
+                  styles(themeContext).description,
+                  statusStyles(appointment.status, themeContext).text,
+                ]}
+              >
+                {appointment.actions}
+              </Text>
+            </View>
+            <View style={{ width: 100, marginLeft: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Badge badgeStyle={statusStyles(appointment.status, themeContext).badge} />
+                <Text style={{ color: themeContext.neutral, marginLeft: 10 }}>
+                  {translator.translate(AppointmentStatus[appointment.status].toLowerCase() as keyof TranslationKeys)}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </Swipeable>
   )
 }
 
@@ -71,7 +193,7 @@ const styles = (themeContext: ThemeContextType) =>
       fontWeight: 'bold',
     },
     appointmentContent: {
-      flex: 4,
+      flex: 1,
     },
     description: {
       marginTop: 10,
@@ -89,5 +211,33 @@ const styles = (themeContext: ThemeContextType) =>
       fontSize: 14,
     },
   })
+
+const statusStyles = (status: AppointmentStatus, themeContext: ThemeContextType) => {
+  let color = themeContext.defaultStatus
+  let opacity = 1
+  let textDecorationLine: 'none' | 'line-through' = 'none'
+
+  if (status == AppointmentStatus.Cancelled) {
+    color = themeContext.error
+    opacity = 0.5
+    textDecorationLine = 'line-through'
+  }
+
+  if (status == AppointmentStatus.Finished) {
+    color = themeContext.success
+    opacity = 0.5
+  }
+
+  return StyleSheet.create({
+    badge: {
+      backgroundColor: color,
+      borderColor: color,
+    },
+    text: {
+      opacity: opacity,
+      textDecorationLine: textDecorationLine,
+    },
+  })
+}
 
 export default memo(AgendaItem)

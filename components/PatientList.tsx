@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native-gesture-handler'
 import MainView from './MainView'
-import { Patient } from '../modals/Patient'
+import { Patient } from '../models/Patient'
 import { ListRenderItemInfo, StyleSheet, View } from 'react-native'
 import PatientItem from './PatientItem'
 import { Divider } from '@rneui/themed'

@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import PatientForm from './PatientForm'
 import { DeviceEventEmitter } from 'react-native'
-import { PatientRequest } from '../modals/Patient'
+import { PatientRequest } from '../models/Patient'
 import { DataContext } from '../contexts/DataContext'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'

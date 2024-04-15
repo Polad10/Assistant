@@ -1,4 +1,4 @@
-import { Patient } from '../modals/Patient'
+import { Patient } from '../models/Patient'
 
 export function getPatientFullName(patient: Patient | undefined) {
   if (patient) {

@@ -10,6 +10,7 @@ export interface ThemeContextType {
   success: string
   warning: string
   error: string
+  defaultStatus: string
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined)

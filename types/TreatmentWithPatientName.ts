@@ -1,4 +1,4 @@
-import { Treatment } from "../modals/Treatment"
+import { Treatment } from "../models/Treatment"
 
 export interface TreatmentWithPatientName extends Treatment {
   patientFirstName?: string

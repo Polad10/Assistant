@@ -1,9 +1,9 @@
 import { Api } from '../helpers/Api'
-import { Appointment, AppointmentRequest } from '../modals/Appointment'
-import { Patient, PatientRequest } from '../modals/Patient'
-import { Payment, PaymentRequest } from '../modals/Payment'
-import { Setting } from '../modals/Setting'
-import { Treatment, TreatmentRequest } from '../modals/Treatment'
+import { Appointment, AppointmentRequest } from '../models/Appointment'
+import { Patient, PatientRequest } from '../models/Patient'
+import { Payment, PaymentRequest } from '../models/Payment'
+import { Setting } from '../models/Setting'
+import { Treatment, TreatmentRequest } from '../models/Treatment'
 import { Dispatch, SetStateAction, createContext } from 'react'
 
 export type PatientsType = Patient[] | null

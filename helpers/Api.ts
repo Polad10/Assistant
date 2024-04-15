@@ -1,10 +1,10 @@
 import axios from "axios";
 import { User } from "firebase/auth";
-import { Patient, PatientRequest } from "../modals/Patient";
-import { Appointment, AppointmentRequest } from "../modals/Appointment";
-import { Treatment, TreatmentRequest } from "../modals/Treatment";
-import { Payment, PaymentRequest } from "../modals/Payment";
-import { Setting } from "../modals/Setting";
+import { Patient, PatientRequest } from "../models/Patient";
+import { Appointment, AppointmentRequest } from "../models/Appointment";
+import { Treatment, TreatmentRequest } from "../models/Treatment";
+import { Payment, PaymentRequest } from "../models/Payment";
+import { Setting } from "../models/Setting";
 
 export class Api {
   user: User

@@ -1,4 +1,4 @@
-import { Treatment } from "../modals/Treatment";
+import { Treatment } from "../models/Treatment";
 
 export function treatmentFinished(treatment: Treatment) {
   return treatment.end_date ? new Date() > new Date(treatment.end_date) : false

@@ -103,4 +103,12 @@ export type TranslationKeys = {
   checkYourEmail: string
   weSentEmailTo: string
   backToLogin: string
+  appointmentCancelled: string
+  appointmentFinished: string
+  appointmentRestored: string
+  restore: string
+  finish: string
+  expected: string
+  cancelled: string
+  status: string
 }
