@@ -1,12 +1,13 @@
-import { View, StyleSheet, ListRenderItemInfo } from 'react-native'
+import { View, StyleSheet, ListRenderItemInfo, DeviceEventEmitter } from 'react-native'
 import PaymentItem from './PaymentItem'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import { Payment } from '../models/Payment'
 import MainView from './MainView'
 import { FlatList } from 'react-native-gesture-handler'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from '../contexts/ThemeContext'
+import LoadingView from './LoadingView'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -15,6 +16,18 @@ type Props = {
 
 export default function PaymentList(props: Props) {
   const themeContext = useContext(ThemeContext)!
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const loadingListener = DeviceEventEmitter.addListener('loading', () => setLoading(true))
+    const loadingFinishedListener = DeviceEventEmitter.addListener('loadingFinished', () => setLoading(false))
+
+    return () => {
+      loadingListener.remove()
+      loadingFinishedListener.remove()
+    }
+  }, [])
 
   function renderItem(data: ListRenderItemInfo<Payment>) {
     return (
@@ -25,18 +38,18 @@ export default function PaymentList(props: Props) {
     )
   }
 
-  function getPaymentsContentView() {
-    return (
+  return (
+    <MainView>
       <FlatList
         keyboardDismissMode='on-drag'
         data={props.payments}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-    )
-  }
 
-  return <MainView>{getPaymentsContentView()}</MainView>
+      {loading && <LoadingView />}
+    </MainView>
+  )
 }
 
 const styles = StyleSheet.create({
