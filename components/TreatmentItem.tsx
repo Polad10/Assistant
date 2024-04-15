@@ -1,7 +1,7 @@
-import { View, StyleSheet, DeviceEventEmitter } from 'react-native'
+import { View, StyleSheet, DeviceEventEmitter, TouchableOpacity } from 'react-native'
 import { Chip, ListItem } from '@rneui/themed'
 import { useNavigation } from '@react-navigation/native'
-import { TouchableHighlight } from 'react-native-gesture-handler'
+import { Swipeable } from 'react-native-gesture-handler'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { useContext } from 'react'
@@ -13,6 +13,8 @@ import { Status } from '../enums/Status'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { TranslationKeys } from '../localization/TranslationKeys'
+import ItemActionDelete from './ItemActions/ItemActionDelete'
+import { showDangerMessage } from '../helpers/ToastHelper'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -41,30 +43,56 @@ export default function TreatmentItem(props: TreatmentItemProps) {
   const patient = dataContext.patients?.find((p) => p.id === props.treatment.patient_id)
   const status = styleProps.finished ? Status.FINISHED : Status.ONGOING
 
+  async function deleteTreatment() {
+    try {
+      DeviceEventEmitter.emit('loading')
+
+      await dataContext.deleteTreatment(props.treatment.id)
+
+      showDangerMessage(translator.translate('treatmentDeleted'))
+    } catch (ex) {
+      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+    } finally {
+      DeviceEventEmitter.emit('loadingFinished')
+    }
+  }
+
+  function rightActions() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <ItemActionDelete onPress={deleteTreatment} />
+      </View>
+    )
+  }
+
   return (
-    <TouchableHighlight onPress={() => handleTreatmentSelect(props.treatment)}>
-      <ListItem containerStyle={styles(styleProps).listItemContainer}>
-        <ListItem.Content>
-          <ListItem.Title style={styles(styleProps).listItemTitle}>{props.treatment.title}</ListItem.Title>
-          <View style={styles(styleProps).listItemStatus}>
-            <View style={styles(styleProps).listItemRow}>
-              <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).infoIcon]}>
-                <IonIcons name='person-outline' size={14} />
-              </ListItem.Subtitle>
-              <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).patient]}>
-                {getPatientFullName(patient)}
-              </ListItem.Subtitle>
-            </View>
-            <Chip
-              title={translator.translate(status.toLowerCase() as keyof TranslationKeys)}
-              type='outline'
-              titleStyle={styles(styleProps).status}
-              buttonStyle={styles(styleProps).statusButton}
-            />
-          </View>
-        </ListItem.Content>
-      </ListItem>
-    </TouchableHighlight>
+    <Swipeable renderRightActions={rightActions}>
+      <View style={{ backgroundColor: themeContext.primary }}>
+        <TouchableOpacity onPress={() => handleTreatmentSelect(props.treatment)}>
+          <ListItem containerStyle={styles(styleProps).listItemContainer}>
+            <ListItem.Content>
+              <ListItem.Title style={styles(styleProps).listItemTitle}>{props.treatment.title}</ListItem.Title>
+              <View style={styles(styleProps).listItemStatus}>
+                <View style={styles(styleProps).listItemRow}>
+                  <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).infoIcon]}>
+                    <IonIcons name='person-outline' size={14} />
+                  </ListItem.Subtitle>
+                  <ListItem.Subtitle style={[styles(styleProps).listItemSubtitle, styles(styleProps).patient]}>
+                    {getPatientFullName(patient)}
+                  </ListItem.Subtitle>
+                </View>
+                <Chip
+                  title={translator.translate(status.toLowerCase() as keyof TranslationKeys)}
+                  type='outline'
+                  titleStyle={styles(styleProps).status}
+                  buttonStyle={styles(styleProps).statusButton}
+                />
+              </View>
+            </ListItem.Content>
+          </ListItem>
+        </TouchableOpacity>
+      </View>
+    </Swipeable>
   )
 
   function handleTreatmentSelect(treatment: Treatment) {
