@@ -10,10 +10,11 @@ import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { Badge } from '@rneui/themed'
 import { AppointmentStatus } from '../enums/AppointmentStatus'
-import ItemAction from './ItemAction'
+import ItemAction from './ItemActions/ItemAction'
 import { showDangerMessage, showMessage, showSuccessMessage } from '../helpers/ToastHelper'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { TranslationKeys } from '../localization/TranslationKeys'
+import ItemActionDelete from './ItemActions/ItemActionDelete'
 
 type ItemProps = {
   appointment: Appointment
@@ -107,12 +108,7 @@ const AgendaItem = (props: ItemProps) => {
     return (
       <View style={{ flexDirection: 'row' }}>
         {actions}
-        <ItemAction
-          title={translator.translate('delete')}
-          backgroundColor={themeContext.error}
-          iconName='trash-outline'
-          onPress={deleteAppointment}
-        />
+        <ItemActionDelete onPress={deleteAppointment} />
       </View>
     )
   }

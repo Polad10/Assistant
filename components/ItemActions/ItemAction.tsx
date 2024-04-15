@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { ThemeContext } from '../contexts/ThemeContext'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 type Props = {
   backgroundColor: string

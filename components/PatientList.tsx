@@ -1,13 +1,14 @@
 import { FlatList } from 'react-native-gesture-handler'
 import MainView from './MainView'
 import { Patient } from '../models/Patient'
-import { ListRenderItemInfo, StyleSheet, View } from 'react-native'
+import { DeviceEventEmitter, ListRenderItemInfo, StyleSheet, View } from 'react-native'
 import PatientItem from './PatientItem'
 import { Divider } from '@rneui/themed'
 import { RootStackParamList } from '../types/Navigation'
 import PatientsNotFound from './user-messages/PatientsNotFound'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from '../contexts/ThemeContext'
+import LoadingView from './LoadingView'
 
 type Props = {
   patients: Patient[]
@@ -16,6 +17,18 @@ type Props = {
 
 export default function PatientList(props: Props) {
   const themeContext = useContext(ThemeContext)!
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const loadingListener = DeviceEventEmitter.addListener('loading', () => setLoading(true))
+    const loadingFinishedListener = DeviceEventEmitter.addListener('loadingFinished', () => setLoading(false))
+
+    return () => {
+      loadingListener.remove()
+      loadingFinishedListener.remove()
+    }
+  }, [])
 
   function renderItem(data: ListRenderItemInfo<Patient>) {
     return (
@@ -41,7 +54,12 @@ export default function PatientList(props: Props) {
     }
   }
 
-  return <MainView>{getContent()}</MainView>
+  return (
+    <MainView>
+      {getContent()}
+      {loading && <LoadingView />}
+    </MainView>
+  )
 }
 
 const styles = StyleSheet.create({
