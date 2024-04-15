@@ -23,4 +23,4 @@ jest.mock('@react-navigation/elements')
 jest.mock('@react-native-async-storage/async-storage')
 jest.mock('@react-native-community/hooks')
 
-jest.useFakeTimers({now: new Date(2024, 0, 1)})
+jest.useFakeTimers({now: new Date(2024, 0, 1, 0, 0, 0)})

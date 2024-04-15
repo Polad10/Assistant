@@ -22,6 +22,7 @@ const themeContextMock = {
   success: '#00e5b0',
   warning: '#9f1239',
   error: '#9f1239',
+  defaultStatus: '#5f1239',
 }
 
 const localizationContextMock = {

@@ -94,6 +94,7 @@ export default function Appointments() {
           renderEmptyData={renderEmptyData}
           showOnlySelectedDayItems={true}
           onDayPress={handleDayChange}
+          date={new Date()}
           theme={{
             calendarBackground: themeContext.primary,
             monthTextColor: themeContext.neutral,
