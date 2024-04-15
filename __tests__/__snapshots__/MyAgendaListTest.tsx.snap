@@ -494,8 +494,8 @@ exports[`MyAgendaList renders correctly 1`] = `
                               {
                                 "alignItems": "center",
                                 "alignSelf": "center",
-                                "backgroundColor": undefined,
-                                "borderColor": undefined,
+                                "backgroundColor": "#5f1239",
+                                "borderColor": "#5f1239",
                                 "borderRadius": 4,
                                 "borderWidth": 0.5,
                                 "height": 8,

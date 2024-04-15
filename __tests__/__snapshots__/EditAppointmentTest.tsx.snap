@@ -571,8 +571,8 @@ exports[`EditAppointment renders correctly 1`] = `
                   style={
                     {
                       "alignItems": "center",
-                      "backgroundColor": "#2089dc",
-                      "borderColor": undefined,
+                      "backgroundColor": "#5f1239",
+                      "borderColor": "#5f1239",
                       "borderRadius": 30,
                       "borderWidth": 0,
                       "flexDirection": "row",
