@@ -66,7 +66,7 @@ const DateInput = forwardRef((props: Props, ref) => {
         placeholder={props.placeholder}
         value={date}
         rightIcon={
-          <IonIcons name='calendar-outline' size={25} color={themeContext.neutral} onPress={handleIconPress} />
+          <IonIcons name='calendar-clear-outline' size={25} color={themeContext.neutral} onPress={handleIconPress} />
         }
         showError={props.showError}
         onFocus={props.onFocus}

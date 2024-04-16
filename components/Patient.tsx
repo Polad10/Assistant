@@ -60,7 +60,7 @@ export default function Patient() {
 
   const buttons = [
     {
-      element: () => <DetailTab name='calendar' type='feather' index={0} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab name='calendar-clear-outline' type='ionicon' index={0} selectedIndex={selectedIndex} />,
     },
     {
       element: () => (

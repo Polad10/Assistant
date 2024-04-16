@@ -77,7 +77,7 @@ export default function Treatment() {
       ),
     },
     {
-      element: () => <DetailTab name='calendar' type='feather' index={1} selectedIndex={selectedIndex} />,
+      element: () => <DetailTab name='calendar-clear-outline' type='ionicon' index={1} selectedIndex={selectedIndex} />,
     },
     {
       element: () => <DetailTab name='cash-outline' type='ionicon' index={2} selectedIndex={selectedIndex} />,
