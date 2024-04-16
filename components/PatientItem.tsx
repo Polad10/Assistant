@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import { ListItem } from '@rneui/themed'
 import { Swipeable } from 'react-native-gesture-handler'
-import { DeviceEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, DeviceEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import { Patient } from '../models/Patient'
@@ -27,14 +27,6 @@ export default function PatientItem(props: Props) {
   const translator = localizationContext.translator
   const toast = toastContext.toast!
 
-  function rightActions() {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <ItemActionDelete onPress={deletePatient} />
-      </View>
-    )
-  }
-
   async function deletePatient() {
     try {
       DeviceEventEmitter.emit('loading')
@@ -47,6 +39,21 @@ export default function PatientItem(props: Props) {
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }
+  }
+
+  async function handleDelete() {
+    Alert.alert(translator.translate('areYouSure'), translator.translate('patientDeleteQuestion'), [
+      { text: translator.translate('yes'), onPress: deletePatient },
+      { text: translator.translate('no') },
+    ])
+  }
+
+  function rightActions() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <ItemActionDelete onPress={handleDelete} />
+      </View>
+    )
   }
 
   return (

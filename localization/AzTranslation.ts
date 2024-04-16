@@ -136,5 +136,12 @@ export const azTranslation = {
   finish: 'Bitir',
   expected: 'Gözlənilir',
   cancelled: 'Ləğv edildi',
-  status: 'Status'
+  status: 'Status',
+  areYouSure: 'Əminsiz?',
+  appointmentDeleteQuestion: 'Bu görüşü silmək istədiyinizə əminsiniz?',
+  patientDeleteQuestion: 'Bu pasiyenti silmək istədiyinizə əminsiniz?',
+  treatmentDeleteQuestion: 'Bu müalicəni silmək istədiyinizə əminsiniz?',
+  paymentDeleteQuestion: 'Bu ödənişi silmək istədiyinizə əminsiniz?',
+  yes: 'Hə',
+  no: 'Yox'
 }

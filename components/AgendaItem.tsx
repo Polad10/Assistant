@@ -1,6 +1,6 @@
 import { memo, useCallback, useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { View, Text, StyleSheet, TouchableOpacity, DeviceEventEmitter } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, DeviceEventEmitter, Alert } from 'react-native'
 import { getPatientFullName } from '../helpers/PatientHelper'
 import type { RootStackScreenProps } from '../types/Navigation'
 import { DateTime } from 'luxon'
@@ -75,6 +75,13 @@ const AgendaItem = (props: ItemProps) => {
     }
   }
 
+  async function handleDelete() {
+    Alert.alert(translator.translate('areYouSure'), translator.translate('appointmentDeleteQuestion'), [
+      { text: translator.translate('yes'), onPress: deleteAppointment },
+      { text: translator.translate('no') },
+    ])
+  }
+
   function rightActions() {
     let actions = undefined
 
@@ -111,7 +118,7 @@ const AgendaItem = (props: ItemProps) => {
     return (
       <View style={{ flexDirection: 'row' }}>
         {actions}
-        <ItemActionDelete onPress={deleteAppointment} />
+        <ItemActionDelete onPress={handleDelete} />
       </View>
     )
   }

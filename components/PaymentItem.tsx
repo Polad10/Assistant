@@ -1,5 +1,5 @@
 import { ListItem } from '@rneui/themed'
-import { DeviceEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, DeviceEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { Payment } from '../models/Payment'
@@ -31,14 +31,6 @@ export default function PaymentItem(props: Props) {
   const date = DateTime.fromISO(props.payment.date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
   const treatment = dataContext.treatments?.find((t) => t.id === props.payment.treatment_id)
 
-  function rightActions() {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <ItemActionDelete onPress={deletePayment} />
-      </View>
-    )
-  }
-
   async function deletePayment() {
     try {
       DeviceEventEmitter.emit('loading')
@@ -51,6 +43,21 @@ export default function PaymentItem(props: Props) {
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }
+  }
+
+  async function handleDelete() {
+    Alert.alert(translator.translate('areYouSure'), translator.translate('paymentDeleteQuestion'), [
+      { text: translator.translate('yes'), onPress: deletePayment },
+      { text: translator.translate('no') },
+    ])
+  }
+
+  function rightActions() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <ItemActionDelete onPress={handleDelete} />
+      </View>
+    )
   }
 
   return (

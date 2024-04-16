@@ -136,5 +136,12 @@ export const ruTranslation = {
   finish: 'Завершить',
   expected: 'Ожидается',
   cancelled: 'Отменено',
-  status: 'Статус'
+  status: 'Статус',
+  areYouSure: 'Вы уверены?',
+  appointmentDeleteQuestion: 'Вы уверены, что хотите удалить эту встречу?',
+  patientDeleteQuestion: 'Вы уверены, что хотите удалить этого пациента?',
+  treatmentDeleteQuestion: 'Вы уверены, что хотите удалить это лечение?',
+  paymentDeleteQuestion: 'Вы уверены, что хотите удалить эту оплату?',
+  yes: 'Да',
+  no: 'Нет'
 }

@@ -1,4 +1,4 @@
-import { View, StyleSheet, DeviceEventEmitter, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, DeviceEventEmitter, TouchableOpacity, Alert } from 'react-native'
 import { Chip, ListItem } from '@rneui/themed'
 import { useNavigation } from '@react-navigation/native'
 import { Swipeable } from 'react-native-gesture-handler'
@@ -59,10 +59,17 @@ export default function TreatmentItem(props: TreatmentItemProps) {
     }
   }
 
+  async function handleDelete() {
+    Alert.alert(translator.translate('areYouSure'), translator.translate('treatmentDeleteQuestion'), [
+      { text: translator.translate('yes'), onPress: deleteTreatment },
+      { text: translator.translate('no') },
+    ])
+  }
+
   function rightActions() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <ItemActionDelete onPress={deleteTreatment} />
+        <ItemActionDelete onPress={handleDelete} />
       </View>
     )
   }

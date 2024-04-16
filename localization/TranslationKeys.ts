@@ -111,4 +111,11 @@ export type TranslationKeys = {
   expected: string
   cancelled: string
   status: string
+  areYouSure: string
+  appointmentDeleteQuestion: string
+  patientDeleteQuestion: string
+  treatmentDeleteQuestion: string
+  paymentDeleteQuestion: string
+  yes: string
+  no: string
 }

@@ -136,5 +136,12 @@ export const enTranslation = {
   finish: 'Finish',
   expected: 'Expected',
   cancelled: 'Cancelled',
-  status: 'Status'
+  status: 'Status',
+  areYouSure: 'Are you sure?',
+  appointmentDeleteQuestion: 'Are you sure you want to delete this appointment?',
+  patientDeleteQuestion: 'Are you sure you want to delete this patient?',
+  treatmentDeleteQuestion: 'Are you sure you want to delete this treatment?',
+  paymentDeleteQuestion: 'Are you sure you want to delete this payment?',
+  yes: 'Yes',
+  no: 'No'
 }
