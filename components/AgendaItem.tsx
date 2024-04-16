@@ -11,10 +11,10 @@ import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { Badge } from '@rneui/themed'
 import { AppointmentStatus } from '../enums/AppointmentStatus'
 import ItemAction from './ItemActions/ItemAction'
-import { showDangerMessage, showMessage, showSuccessMessage } from '../helpers/ToastHelper'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { TranslationKeys } from '../localization/TranslationKeys'
 import ItemActionDelete from './ItemActions/ItemActionDelete'
+import { ToastContext } from '../contexts/ToastContext'
 
 type ItemProps = {
   appointment: Appointment
@@ -25,9 +25,12 @@ const AgendaItem = (props: ItemProps) => {
   const themeContext = useContext(ThemeContext)!
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const { appointment } = props
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
+
   const treatment = dataContext.treatments?.find((t) => t.id === appointment.treatment_id)
   const patient = dataContext.patients?.find((p) => p.id === treatment?.patient_id)
 
@@ -45,14 +48,14 @@ const AgendaItem = (props: ItemProps) => {
       await dataContext.updateAppointment(updatedAppointment)
 
       if (status === AppointmentStatus.Cancelled) {
-        showDangerMessage(translator.translate('appointmentCancelled'))
+        toast.showDangerMessage(translator.translate('appointmentCancelled'))
       } else if (status === AppointmentStatus.Finished) {
-        showSuccessMessage(translator.translate('appointmentFinished'))
+        toast.showSuccessMessage(translator.translate('appointmentFinished'))
       } else {
-        showMessage(translator.translate('appointmentRestored'))
+        toast.showMessage(translator.translate('appointmentRestored'))
       }
     } catch (ex) {
-      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+      toast.showDangerMessage(translator.translate('somethingWentWrongMessage'))
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }
@@ -64,9 +67,9 @@ const AgendaItem = (props: ItemProps) => {
 
       await dataContext.deleteAppointment(appointment.id)
 
-      showDangerMessage(translator.translate('appointmentDeleted'))
+      toast.showDangerMessage(translator.translate('appointmentDeleted'))
     } catch (ex) {
-      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+      toast.showDangerMessage(translator.translate('somethingWentWrongMessage'))
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }

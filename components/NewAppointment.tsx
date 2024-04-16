@@ -5,19 +5,21 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { AppointmentRequest } from '../models/Appointment'
 import { DeviceEventEmitter } from 'react-native'
-import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function NewAppointment() {
   const navigation = useNavigation<RootStackScreenProps<'NewAppointment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewAppointment'>['route']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -30,7 +32,7 @@ export default function NewAppointment() {
       setLoading(true)
       await dataContext.createAppointment(appointment)
 
-      showSuccessMessage(translator.translate('appointmentAdded'))
+      toast.showSuccessMessage(translator.translate('appointmentAdded'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

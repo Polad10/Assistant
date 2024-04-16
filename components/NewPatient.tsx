@@ -5,18 +5,20 @@ import { PatientRequest } from '../models/Patient'
 import { DataContext } from '../contexts/DataContext'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
-import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function NewPatient() {
   const navigation = useNavigation<RootStackScreenProps<'NewPatient'>['navigation']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -26,7 +28,7 @@ export default function NewPatient() {
       setLoading(true)
       const newPatient = await dataContext.createPatient(patient)
 
-      showSuccessMessage(translator.translate('patientAdded'))
+      toast.showSuccessMessage(translator.translate('patientAdded'))
 
       if (DeviceEventEmitter.listenerCount('patientCreated') > 0) {
         DeviceEventEmitter.emit('patientCreated', newPatient)

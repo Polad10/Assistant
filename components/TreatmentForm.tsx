@@ -17,9 +17,9 @@ import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 type StyleProps = {
   patientEditable: boolean
@@ -37,8 +37,10 @@ export default function TreatmentForm(props: Props) {
   const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [showPatientInputError, setShowPatientInputError] = useState(false)
   const [showTitleInputError, setShowTitleInputError] = useState(false)
@@ -90,7 +92,7 @@ export default function TreatmentForm(props: Props) {
 
       DeviceEventEmitter.emit('treatmentSaved', newTreatmentRequest)
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [selectedPatient, title, price])
 

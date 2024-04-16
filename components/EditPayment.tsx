@@ -7,18 +7,20 @@ import { DeviceEventEmitter } from 'react-native'
 import PaymentForm from './PaymentForm'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
-import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function EditPayment() {
   const navigation = useNavigation<RootStackScreenProps<'EditPayment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditPayment'>['route']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -31,7 +33,7 @@ export default function EditPayment() {
       setLoading(true)
       await dataContext.updatePayment(payment)
 
-      showMessage(translator.translate('saved'))
+      toast.showMessage(translator.translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -45,7 +47,7 @@ export default function EditPayment() {
       setLoading(true)
       await dataContext.deletePayment(paymentId)
 
-      showDangerMessage(translator.translate('paymentDeleted'))
+      toast.showDangerMessage(translator.translate('paymentDeleted'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

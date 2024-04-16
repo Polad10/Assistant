@@ -11,7 +11,7 @@ import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { Swipeable } from 'react-native-gesture-handler'
 import ItemActionDelete from './ItemActions/ItemActionDelete'
-import { showDangerMessage } from '../helpers/ToastHelper'
+import { ToastContext } from '../contexts/ToastContext'
 
 type Props = {
   payment: Payment
@@ -23,8 +23,11 @@ export default function PaymentItem(props: Props) {
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!
   const dataContext = useContext(DataContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
+
   const date = DateTime.fromISO(props.payment.date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
   const treatment = dataContext.treatments?.find((t) => t.id === props.payment.treatment_id)
 
@@ -42,9 +45,9 @@ export default function PaymentItem(props: Props) {
 
       await dataContext.deletePayment(props.payment.id)
 
-      showDangerMessage(translator.translate('paymentDeleted'))
+      toast.showDangerMessage(translator.translate('paymentDeleted'))
     } catch (ex) {
-      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+      toast.showDangerMessage(translator.translate('somethingWentWrongMessage'))
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }

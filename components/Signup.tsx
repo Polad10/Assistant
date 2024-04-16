@@ -4,19 +4,21 @@ import { Button } from '@rneui/themed'
 import { ThemeContext } from '../contexts/ThemeContext'
 import MyInput from './MyInput'
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { Api } from '../helpers/Api'
 import LoadingView from './LoadingView'
 import { Keyboard } from 'react-native'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function Signup() {
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
   const auth = getAuth()
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,24 +41,24 @@ export default function Signup() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
             break
           case 'auth/weak-password':
             setShowPasswordInputError(true)
-            showDangerMessage(translator.translate('enterPassword'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('enterPassword'), Toast.positions.TOP)
             break
           case 'auth/email-already-in-use':
             setShowEmailInputError(true)
-            showDangerMessage(translator.translate('emailAlreadyInUseMessage'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('emailAlreadyInUseMessage'), Toast.positions.TOP)
             break
           default:
-            showDangerMessage(translator.translate('somethingWentWrongMessage'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
       } finally {
         setLoading(false)
       }
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 

@@ -7,18 +7,20 @@ import { Keyboard, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import LoadingView from './LoadingView'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function Login() {
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
   const navigation = useNavigation<RootStackScreenProps<'Login'>['navigation']>()
   const auth = getAuth()
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,23 +41,23 @@ export default function Login() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
             break
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-            showDangerMessage(translator.translate('wrongEmailOrPassword'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('wrongEmailOrPassword'), Toast.positions.TOP)
             break
           case 'auth/too-many-requests':
-            showDangerMessage(translator.translate('tooManyFailedLoginAttemptsMessage'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('tooManyFailedLoginAttemptsMessage'), Toast.positions.TOP)
             break
           default:
-            showDangerMessage(translator.translate('somethingWentWrongMessage'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('somethingWentWrongMessage'), Toast.positions.TOP)
         }
       } finally {
         setLoading(false)
       }
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 

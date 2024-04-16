@@ -16,12 +16,12 @@ import TouchableInput from './TouchableInput'
 import TouchableWithoutFeedbackInput from './TouchableWithoutFeedbackInput'
 import { Patient } from '../models/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { AppointmentStatus } from '../enums/AppointmentStatus'
 import StatusChip from './StatusChip'
+import { ToastContext } from '../contexts/ToastContext'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -35,8 +35,10 @@ export default function AppointmentForm(props: Props) {
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
   const themeContext = useContext(ThemeContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   let treatment = props.treatment
   let appointment = props.appointment
@@ -82,7 +84,7 @@ export default function AppointmentForm(props: Props) {
 
       DeviceEventEmitter.emit('appointmentSaved', newAppointmentRequest)
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [actions, selectedTreatment, status])
 

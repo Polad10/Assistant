@@ -14,7 +14,7 @@ import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { TranslationKeys } from '../localization/TranslationKeys'
 import ItemActionDelete from './ItemActions/ItemActionDelete'
-import { showDangerMessage } from '../helpers/ToastHelper'
+import { ToastContext } from '../contexts/ToastContext'
 
 export type TreatmentItemProps = {
   treatment: Treatment
@@ -32,8 +32,10 @@ export default function TreatmentItem(props: TreatmentItemProps) {
   const themeContext = useContext(ThemeContext)!
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const styleProps: StyleProps = {
     themeContext: themeContext,
@@ -49,9 +51,9 @@ export default function TreatmentItem(props: TreatmentItemProps) {
 
       await dataContext.deleteTreatment(props.treatment.id)
 
-      showDangerMessage(translator.translate('treatmentDeleted'))
+      toast.showDangerMessage(translator.translate('treatmentDeleted'))
     } catch (ex) {
-      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+      toast.showDangerMessage(translator.translate('somethingWentWrongMessage'))
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }

@@ -7,18 +7,20 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { RootStackScreenProps } from '../types/Navigation'
 import MainView from './MainView'
 import DeleteButton from './DeleteButton'
-import { showDangerMessage, showMessage } from '../helpers/ToastHelper'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function EditPatient() {
   const navigation = useNavigation<RootStackScreenProps<'EditPatient'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'EditPatient'>['route']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -31,7 +33,7 @@ export default function EditPatient() {
       setLoading(true)
       await dataContext.updatePatient(patient)
 
-      showMessage(translator.translate('saved'))
+      toast.showMessage(translator.translate('saved'))
       navigation.goBack()
     } catch (ex) {
       setError(true)
@@ -55,7 +57,7 @@ export default function EditPatient() {
       setLoading(true)
       await dataContext.deletePatient(patientId)
 
-      showDangerMessage(translator.translate('patientDeleted'))
+      toast.showDangerMessage(translator.translate('patientDeleted'))
       navigation.popToTop()
     } catch (ex) {
       setError(true)

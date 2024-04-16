@@ -17,9 +17,9 @@ import { Patient } from '../models/Patient'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemeContext } from '../contexts/ThemeContext'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 type Props = {
   pageName: keyof RootStackParamList
@@ -34,8 +34,10 @@ export default function PaymentForm(props: Props) {
   const themeContext = useContext(ThemeContext)!
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const treatmentId = props.payment?.treatment_id || props.treatmentId
   const treatment = dataContext.treatments?.find((t) => t.id === treatmentId)
@@ -69,7 +71,7 @@ export default function PaymentForm(props: Props) {
 
       DeviceEventEmitter.emit('paymentSaved', newPaymentRequest)
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [amount, selectedTreatment])
 

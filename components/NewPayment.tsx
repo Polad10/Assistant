@@ -5,19 +5,21 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { PaymentRequest } from '../models/Payment'
 import { DeviceEventEmitter } from 'react-native'
-import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function NewPayment() {
   const navigation = useNavigation<RootStackScreenProps<'NewPayment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewPayment'>['route']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -30,7 +32,7 @@ export default function NewPayment() {
       setLoading(true)
       await dataContext.createPayment(payment)
 
-      showSuccessMessage(translator.translate('paymentAdded'))
+      toast.showSuccessMessage(translator.translate('paymentAdded'))
       navigation.goBack()
     } catch (ex) {
       setError(true)

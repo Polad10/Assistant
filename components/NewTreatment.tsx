@@ -5,19 +5,21 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { DataContext } from '../contexts/DataContext'
 import { TreatmentRequest } from '../models/Treatment'
 import { DeviceEventEmitter } from 'react-native'
-import { showSuccessMessage } from '../helpers/ToastHelper'
 import MainView from './MainView'
 import LoadingView from './LoadingView'
 import Error from './user-messages/Error'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function NewTreatment() {
   const navigation = useNavigation<RootStackScreenProps<'NewTreatment'>['navigation']>()
   const route = useRoute<RootStackScreenProps<'NewTreatment'>['route']>()
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -27,7 +29,7 @@ export default function NewTreatment() {
       setLoading(true)
       const newTreatment = await dataContext.createTreatment(treatment)
 
-      showSuccessMessage(translator.translate('treatmentAdded'))
+      toast.showSuccessMessage(translator.translate('treatmentAdded'))
 
       if (DeviceEventEmitter.listenerCount('treatmentCreated') > 0) {
         DeviceEventEmitter.emit('treatmentCreated', newTreatment)

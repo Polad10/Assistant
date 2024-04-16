@@ -3,7 +3,6 @@ import MainView from './MainView'
 import { Button, Text } from '@rneui/themed'
 import { ThemeContext } from '../contexts/ThemeContext'
 import MyInput from './MyInput'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { useNavigation } from '@react-navigation/native'
@@ -11,14 +10,17 @@ import { RootStackScreenProps } from '../types/Navigation'
 import { Keyboard } from 'react-native'
 import LoadingView from './LoadingView'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 export default function ForgotPassword() {
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
   const navigation = useNavigation<RootStackScreenProps<'ForgotPassword'>['navigation']>()
   const auth = getAuth()
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [email, setEmail] = useState('')
   const [showEmailInputError, setShowEmailInputError] = useState(false)
@@ -36,7 +38,7 @@ export default function ForgotPassword() {
         switch (error.code) {
           case 'auth/invalid-email':
             setShowEmailInputError(true)
-            showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
+            toast.showDangerMessage(translator.translate('emailIsInvalid'), Toast.positions.TOP)
             break
           default:
             navigation.navigate('EmailSent', { email: email })
@@ -45,7 +47,7 @@ export default function ForgotPassword() {
         setLoading(false)
       }
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }
 

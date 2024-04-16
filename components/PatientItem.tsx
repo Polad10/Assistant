@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import { ListItem } from '@rneui/themed'
-import { Swipeable, TouchableHighlight } from 'react-native-gesture-handler'
+import { Swipeable } from 'react-native-gesture-handler'
 import { DeviceEventEmitter, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { getPatientFullName } from '../helpers/PatientHelper'
@@ -9,8 +9,8 @@ import { useContext } from 'react'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import ItemActionDelete from './ItemActions/ItemActionDelete'
 import { DataContext } from '../contexts/DataContext'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 type Props = {
   patient: Patient
@@ -22,8 +22,10 @@ export default function PatientItem(props: Props) {
   const themeContext = useContext(ThemeContext)!
   const dataContext = useContext(DataContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   function rightActions() {
     return (
@@ -39,9 +41,9 @@ export default function PatientItem(props: Props) {
 
       await dataContext.deletePatient(props.patient.id)
 
-      showDangerMessage(translator.translate('patientDeleted'))
+      toast.showDangerMessage(translator.translate('patientDeleted'))
     } catch (ex) {
-      showDangerMessage(translator.translate('somethingWentWrongMessage'))
+      toast.showDangerMessage(translator.translate('somethingWentWrongMessage'))
     } finally {
       DeviceEventEmitter.emit('loadingFinished')
     }

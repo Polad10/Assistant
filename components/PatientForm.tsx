@@ -1,6 +1,6 @@
 import MyInput from './MyInput'
 import MainView from './MainView'
-import { DeviceEventEmitter, NativeSyntheticEvent, StyleSheet, TextInputChangeEventData } from 'react-native'
+import { DeviceEventEmitter, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList, RootStackScreenProps } from '../types/Navigation'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
@@ -10,9 +10,9 @@ import CreateButton from './CreateButton'
 import MyKeyboardAvoidingView from './MyKeyboardAvoidingView'
 import DateInput, { DateInputRefType } from './DateInput'
 import { DateTime } from 'luxon'
-import { showDangerMessage } from '../helpers/ToastHelper'
 import Toast from 'react-native-root-toast'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
 
 type Props = {
   patient?: Patient
@@ -22,8 +22,10 @@ type Props = {
 export default function PatientForm(props: Props) {
   const navigation = useNavigation<RootStackScreenProps<typeof props.pageName>['navigation']>()
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
+  const toast = toastContext.toast!
 
   const [firstName, setFirstName] = useState(props.patient?.first_name)
   const [lastName, setLastName] = useState(props.patient?.last_name)
@@ -56,7 +58,7 @@ export default function PatientForm(props: Props) {
 
       DeviceEventEmitter.emit('patientSaved', newPatientRequest)
     } else {
-      showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
+      toast.showDangerMessage(translator.translate('fillInAllRequiredFields'), Toast.positions.TOP)
     }
   }, [firstName, lastName, city, phoneNr, extraInfo])
 

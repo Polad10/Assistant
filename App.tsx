@@ -41,6 +41,7 @@ import LoadingView from './components/LoadingView'
 import MainView from './components/MainView'
 import LocalizationProvider from './providers/LocalizationProvider'
 import { LocalizationContext } from './contexts/LocalizationContext'
+import ToastProvider from './providers/ToastProvider'
 
 type Tabs = {
   Appointments: undefined
@@ -175,7 +176,9 @@ export default function App() {
           <DataProvider>
             <LocalizationProvider>
               <ThemeProvider>
-                <Navigation />
+                <ToastProvider>
+                  <Navigation />
+                </ToastProvider>
               </ThemeProvider>
             </LocalizationProvider>
           </DataProvider>
