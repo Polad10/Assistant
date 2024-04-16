@@ -62,7 +62,7 @@ export default function Treatment() {
   const appointments = dataContext.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
   const payments = getTreatmentPayments(dataContext.payments ?? [], treatment.id)
 
-  const groupedAppointments = getGroupedAppointments(appointments) ?? new Map()
+  const groupedAppointments = getGroupedAppointments(appointments, true) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)
 
   const styleProps: StyleProps = {

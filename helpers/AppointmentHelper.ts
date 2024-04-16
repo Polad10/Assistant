@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import { Treatment } from '../models/Treatment'
 import { AppointmentStatus } from '../enums/AppointmentStatus'
 
-export function getGroupedAppointments(appointments: Appointment[]) {
+export function getGroupedAppointments(appointments: Appointment[], sortDesc = false) {
   let groupedAppointments = new Map<string, Appointment[]>()
 
   for (const appointment of appointments) {
@@ -20,7 +20,9 @@ export function getGroupedAppointments(appointments: Appointment[]) {
     groupedAppointments.get(date)?.push(appointment)
   }
 
-  groupedAppointments = new Map([...groupedAppointments.entries()].sort())
+  groupedAppointments = sortDesc 
+    ? new Map([...groupedAppointments.entries()].sort((a1, a2) => a2[0].localeCompare(a1[0]))) 
+    : new Map([...groupedAppointments.entries()].sort())
 
   for (const [date, appointments] of groupedAppointments) {
     appointments.sort((a1, a2) => {

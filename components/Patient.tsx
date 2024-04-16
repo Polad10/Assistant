@@ -5,12 +5,7 @@ import TreatmentList from './TreatmentList'
 import PaymentList from './PaymentList'
 import { DataContext } from '../contexts/DataContext'
 import { getPatientFullName } from '../helpers/PatientHelper'
-import {
-  getAgendaItems,
-  getAppointmentsForTreatments,
-  getGroupedAppointments,
-  getOngoingAppointments,
-} from '../helpers/AppointmentHelper'
+import { getAgendaItems, getAppointmentsForTreatments, getGroupedAppointments } from '../helpers/AppointmentHelper'
 import MyAgendaList from './MyAgendaList'
 import MainView from './MainView'
 import HeaderButton from './HeaderButton'
@@ -59,9 +54,8 @@ export default function Patient() {
   const payments = getPaymentsForTreatments(dataContext.payments ?? [], treatments)
 
   const appointments = getAppointmentsForTreatments(dataContext.appointments ?? [], ongoingTreatments)
-  const ongoingAppointments = getOngoingAppointments(appointments)
 
-  const groupedAppointments = getGroupedAppointments(ongoingAppointments) ?? new Map()
+  const groupedAppointments = getGroupedAppointments(appointments, true) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)
 
   const buttons = [
