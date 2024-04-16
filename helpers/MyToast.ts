@@ -24,6 +24,10 @@ export class MyToast {
   }
   
   showDangerMessage(message: string, position = this.defaultPosition) {
-    Toast.show(message, {backgroundColor: this.themeContext.error, position: position, duration: this.duration, containerStyle: this.containerStyle, shadowColor: 'black'})
+    Toast.show(message, {backgroundColor: this.themeContext.error, position: position, duration: this.duration, containerStyle: this.containerStyle})
+  }
+
+  showWarningMessage(message: string, position = this.defaultPosition) {
+    Toast.show(message, {backgroundColor: this.themeContext.warning, position: position, duration: this.duration, containerStyle: this.containerStyle})
   }
 }

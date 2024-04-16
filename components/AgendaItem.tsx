@@ -48,7 +48,7 @@ const AgendaItem = (props: ItemProps) => {
       await dataContext.updateAppointment(updatedAppointment)
 
       if (status === AppointmentStatus.Cancelled) {
-        toast.showDangerMessage(translator.translate('appointmentCancelled'))
+        toast.showWarningMessage(translator.translate('appointmentCancelled'))
       } else if (status === AppointmentStatus.Finished) {
         toast.showSuccessMessage(translator.translate('appointmentFinished'))
       } else {
