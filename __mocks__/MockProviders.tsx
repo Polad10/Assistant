@@ -11,6 +11,8 @@ import { AuthContext } from '../contexts/AuthContext'
 import { DataContext } from '../contexts/DataContext'
 import { ThemeContext } from '../contexts/ThemeContext'
 import { LocalizationContext } from '../contexts/LocalizationContext'
+import { ToastContext } from '../contexts/ToastContext'
+import { MyToast } from '../helpers/MyToast'
 
 const themeContextMock = {
   primary: '#121212',
@@ -74,13 +76,19 @@ const dataContextMock = {
   setting: mockModels.setting,
 }
 
+const toastContextMock = {
+  toast: new MyToast(themeContextMock),
+}
+
 export default function MockProviders({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider value={authContextMock}>
       <DataContext.Provider value={dataContextMock}>
-        <ThemeContext.Provider value={themeContextMock}>
-          <LocalizationContext.Provider value={localizationContextMock}>{children}</LocalizationContext.Provider>
-        </ThemeContext.Provider>
+        <LocalizationContext.Provider value={localizationContextMock}>
+          <ThemeContext.Provider value={themeContextMock}>
+            <ToastContext.Provider value={toastContextMock}>{children}</ToastContext.Provider>
+          </ThemeContext.Provider>
+        </LocalizationContext.Provider>
       </DataContext.Provider>
     </AuthContext.Provider>
   )
