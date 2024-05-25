@@ -8,8 +8,8 @@ export default {
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "assisstant",
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "scheme": "assistant",
+    //"plugins": ["@react-native-google-signin/google-signin"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
