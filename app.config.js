@@ -30,7 +30,7 @@ export default {
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.polad10.Assistant",
-      "googleServicesFile": "./google-services.json"
+      //"googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
