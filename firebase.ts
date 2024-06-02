@@ -1,7 +1,7 @@
-import { getApp, getApps, initializeApp } from "firebase/app"
+import { getApp, getApps, initializeApp } from 'firebase/app'
 import * as firebaseAuth from 'firebase/auth'
 import Constants from 'expo-constants'
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const firebaseConfig = {
   apiKey: Constants.expoConfig?.extra?.firebaseApiKey,
@@ -10,8 +10,8 @@ const firebaseConfig = {
   storageBucket: Constants.expoConfig?.extra?.firebaseStorageBucket,
   messagingSenderId: Constants.expoConfig?.extra?.firebaseMessagingSenderId,
   appId: Constants.expoConfig?.extra?.firebaseAppId,
-  measurementId: Constants.expoConfig?.extra?.firebaseMeasurementId
-};
+  measurementId: Constants.expoConfig?.extra?.firebaseMeasurementId,
+}
 
 // Initialize Firebase
 const appsNr = getApps().length

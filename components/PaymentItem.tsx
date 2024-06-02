@@ -28,7 +28,7 @@ export default function PaymentItem(props: Props) {
   const translator = localizationContext.translator
   const toast = toastContext.toast!
 
-  const date = DateTime.fromISO(props.payment.date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
+  const date = DateTime.fromISO(props.payment.date).toISODate()
   const treatment = dataContext.treatments?.find((t) => t.id === props.payment.treatment_id)
 
   async function deletePayment() {

@@ -21,6 +21,9 @@ export type TranslationKeys = {
   noTreatments: string
   noTreatmentsMessage: string
   addTreatment: string
+  noAlbums: string
+  noAlbumsMessage: string
+  addAlbum: string
   patientNotFound: string
   patientNotFoundMessage: string
   treatmentNotFound: string
@@ -118,4 +121,7 @@ export type TranslationKeys = {
   paymentDeleteQuestion: string
   yes: string
   no: string
+  newAlbum: string
+  enterAlbumName: string
+  albumAdded: string
 }

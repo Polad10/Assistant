@@ -1,4 +1,5 @@
 import { Api } from '../helpers/Api'
+import { Album, AlbumRequest } from '../models/Album'
 import { Appointment, AppointmentRequest } from '../models/Appointment'
 import { Patient, PatientRequest } from '../models/Patient'
 import { Payment, PaymentRequest } from '../models/Payment'
@@ -10,6 +11,7 @@ export type PatientsType = Patient[] | null
 export type AppointmentsType = Appointment[] | null
 export type TreatmentsType = Treatment[] | null
 export type PaymentsType = Payment[] | null
+export type AlbumsType = Album[] | null
 export type SettingType = Setting | null
 
 export interface DataContextType {
@@ -17,6 +19,7 @@ export interface DataContextType {
   fetchAppointments: () => Promise<void>
   fetchTreatments: () => Promise<void>
   fetchPayments: () => Promise<void>
+  fetchAlbums: () => Promise<void>
   fetchSetting: () => Promise<void>
 
   createAppointment: (appointment: AppointmentRequest) => Promise<Appointment>
@@ -35,6 +38,10 @@ export interface DataContextType {
   updatePayment: (payment: PaymentRequest) => Promise<Payment>
   deletePayment: (paymentId: number) => Promise<void>
 
+  createAlbum: (album: AlbumRequest) => Promise<Album>
+  updateAlbum: (album: AlbumRequest) => Promise<Album>
+  deleteAlbum: (albumId: number) => Promise<void>
+
   createSetting: (setting: Setting) => Promise<void>
   updateSetting: (setting: Setting) => Promise<void>
 
@@ -48,6 +55,7 @@ export interface DataContextType {
   appointments: AppointmentsType
   treatments: TreatmentsType
   payments: PaymentsType
+  albums: AlbumsType
   setting: SettingType
 }
 

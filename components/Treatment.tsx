@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../types/Navigation'
 import DetailTab from './DetailTab'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, ScrollView } from 'react-native'
 import MyFAB from './MyFAB'
 import PaymentList from './PaymentList'
 import { DataContext } from '../contexts/DataContext'
@@ -14,7 +14,7 @@ import MyAgendaList from './MyAgendaList'
 import HeaderButton from './HeaderButton'
 import { treatmentFinished } from '../helpers/TreatmentHelper'
 import MyButtonGroup from './MyButtonGroup'
-import { Chip } from '@rneui/themed'
+import { Button, Chip, Overlay } from '@rneui/themed'
 import IonIcons from '@expo/vector-icons/Ionicons'
 import TreatmentInfo from './TreatmentInfo'
 import { getTreatmentPayments } from '../helpers/PaymentHelper'
@@ -23,6 +23,13 @@ import NoAppointments from './user-messages/NoAppointments'
 import { ThemeContext, ThemeContextType } from '../contexts/ThemeContext'
 import { LocalizationContext } from '../contexts/LocalizationContext'
 import { TranslationKeys } from '../localization/TranslationKeys'
+import NoAlbums from './user-messages/NoAlbums'
+import MyInput from './MyInput'
+import { Divider } from '@rneui/base'
+import { AlbumRequest } from '../models/Album'
+import { ToastContext } from '../contexts/ToastContext'
+import AlbumIllustration from './illustrations/AlbumIllustration'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type StyleProps = {
   themeContext: ThemeContextType
@@ -36,11 +43,18 @@ export default function Treatment() {
   const dataContext = useContext(DataContext)!
   const themeContext = useContext(ThemeContext)!
   const localizationContext = useContext(LocalizationContext)!
+  const toastContext = useContext(ToastContext)!
 
   const translator = localizationContext.translator
   const { treatmentId } = route.params
 
+  const toast = toastContext.toast!
+
   const [selectedIndex, setSelectedIndex] = useState(0)
+
+  const [newAlbumTitle, setNewAlbumTitle] = useState('')
+  const [newAlbumSaveDisabled, setNewAlbumSaveDisabled] = useState(true)
+  const [albumTitlePromptVisible, setAlbumTitlePromptVisible] = useState(false)
 
   function handleEdit() {
     navigation.navigate('EditTreatment', { treatmentId: treatmentId })
@@ -61,6 +75,7 @@ export default function Treatment() {
   const patient = dataContext.patients?.find((p) => p.id === treatment?.patient_id)
   const appointments = dataContext.appointments?.filter((a) => a.treatment_id === treatment?.id) ?? []
   const payments = getTreatmentPayments(dataContext.payments ?? [], treatment.id)
+  const albums = dataContext.albums?.filter((a) => a.treatment_id === treatment.id) ?? []
 
   const groupedAppointments = getGroupedAppointments(appointments, true) ?? new Map()
   const agendaItems = getAgendaItems(groupedAppointments)
@@ -68,6 +83,52 @@ export default function Treatment() {
   const styleProps: StyleProps = {
     themeContext: themeContext,
     treatmentFinished: treatmentFinished(treatment),
+  }
+
+  const albumElements = albums.map((a) => (
+    <TouchableOpacity key={a.id}>
+      <View
+        style={{
+          backgroundColor: themeContext.secondary,
+          padding: 10,
+          borderRadius: 20,
+        }}
+      >
+        <AlbumIllustration />
+      </View>
+      <Text
+        style={{
+          color: themeContext.neutral,
+          textAlign: 'center',
+          marginTop: 5,
+          fontSize: 20,
+        }}
+      >
+        {a.title}
+      </Text>
+    </TouchableOpacity>
+  ))
+
+  function handleNewAlbumTextChange(val: string) {
+    setNewAlbumTitle(val)
+
+    if (val) {
+      setNewAlbumSaveDisabled(false)
+    } else {
+      setNewAlbumSaveDisabled(true)
+    }
+  }
+
+  function saveNewAlbum() {
+    try {
+      const newAlbum: AlbumRequest = { title: newAlbumTitle, treatment_id: treatmentId }
+      dataContext.createAlbum(newAlbum)
+
+      setAlbumTitlePromptVisible(false)
+      toast.showSuccessMessage(translator.translate('albumAdded'))
+    } catch (ex) {
+      toast.showDangerMessage(translator.translate('somethingWentWrongMessage'))
+    }
   }
 
   const buttons = [
@@ -81,6 +142,9 @@ export default function Treatment() {
     },
     {
       element: () => <DetailTab name='cash-outline' type='ionicon' index={2} selectedIndex={selectedIndex} />,
+    },
+    {
+      element: () => <DetailTab name='images-outline' type='ionicon' index={3} selectedIndex={selectedIndex} />,
     },
   ]
 
@@ -112,6 +176,29 @@ export default function Treatment() {
         } else {
           return <NoPayments addBtnOnPress={() => navigation.navigate('NewPayment', { treatmentId: treatment.id })} />
         }
+      case 3:
+        if (albums.length > 0) {
+          return (
+            <MainView>
+              <ScrollView>
+                <MainView
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    rowGap: 20,
+                    columnGap: 20,
+                    padding: 10,
+                  }}
+                >
+                  {albumElements}
+                </MainView>
+              </ScrollView>
+              <MyFAB onPress={() => setAlbumTitlePromptVisible(true)} />
+            </MainView>
+          )
+        } else {
+          return <NoAlbums addBtnOnPress={() => setAlbumTitlePromptVisible(true)} />
+        }
       default:
         return null
     }
@@ -141,6 +228,48 @@ export default function Treatment() {
       <MyButtonGroup buttons={buttons} selectedIndex={selectedIndex} onPress={(value) => setSelectedIndex(value)} />
       <View style={styles(styleProps).additionalInfoView}>
         <TabContent />
+        <Overlay
+          isVisible={albumTitlePromptVisible}
+          onBackdropPress={() => setAlbumTitlePromptVisible(false)}
+          overlayStyle={{ width: '70%', borderRadius: 20, backgroundColor: themeContext.primary, bottom: 100 }}
+          backdropStyle={{ opacity: 0.8, backgroundColor: 'black' }}
+        >
+          <View style={{ alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: themeContext.neutral, marginBottom: 5 }}>
+              {translator.translate('newAlbum')}
+            </Text>
+            <Text style={{ color: themeContext.neutral }}>{translator.translate('enterAlbumName')}</Text>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <MyInput
+              style={{ paddingVertical: 0, paddingTop: 0 }}
+              placeholder={translator.translate('title')}
+              autoFocus={true}
+              onChangeText={handleNewAlbumTextChange}
+            />
+          </View>
+          <Divider color={themeContext.border} />
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              containerStyle={{ flex: 1 }}
+              titleStyle={{ fontWeight: 'bold', color: themeContext.accent }}
+              type='clear'
+              onPress={() => setAlbumTitlePromptVisible(false)}
+            >
+              {translator.translate('cancel')}
+            </Button>
+            <Divider color={themeContext.border} orientation='vertical' />
+            <Button
+              containerStyle={{ flex: 1 }}
+              titleStyle={{ color: themeContext.accent }}
+              type='clear'
+              disabled={newAlbumSaveDisabled}
+              onPress={saveNewAlbum}
+            >
+              {translator.translate('save')}
+            </Button>
+          </View>
+        </Overlay>
       </View>
     </MainView>
   )

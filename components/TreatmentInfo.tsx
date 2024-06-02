@@ -67,7 +67,7 @@ export default function TreatmentInfo(props: Props) {
             containerStyle={styles(themeContext).dateIconContainer}
           />
           <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
-            {DateTime.fromISO(treatment.start_date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')}
+            {DateTime.fromISO(treatment.start_date).toISODate()}
           </Text>
         </View>
         <View style={[styles(themeContext).endDateView, styles(themeContext).card, styles(themeContext).rounded]}>
@@ -80,9 +80,7 @@ export default function TreatmentInfo(props: Props) {
             containerStyle={styles(themeContext).dateIconContainer}
           />
           <Text style={[styles(themeContext).valueText, styles(themeContext).bold]}>
-            {treatment.end_date
-              ? DateTime.fromISO(treatment.end_date).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
-              : '-'}
+            {treatment.end_date ? DateTime.fromISO(treatment.end_date).toISODate() : '-'}
           </Text>
         </View>
       </View>

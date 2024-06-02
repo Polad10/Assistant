@@ -83,10 +83,12 @@ function Home() {
     try {
       dataContext.setLoading(true)
 
+      await dataContext.fetchSetting()
       await dataContext.fetchTreatments()
       await dataContext.fetchPatients()
       await dataContext.fetchPayments()
       await dataContext.fetchAppointments()
+      await dataContext.fetchAlbums()
     } catch (ex) {
       setError(true)
     } finally {

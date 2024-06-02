@@ -29,7 +29,7 @@ export default function MyInput(props: Props) {
   return (
     <Input
       {...props}
-      style={[props.style, { paddingHorizontal: 10, paddingVertical: 20, paddingTop: props.multiline ? 15 : 20 }]}
+      style={[{ paddingHorizontal: 10, paddingVertical: 20, paddingTop: props.multiline ? 15 : 20 }, props.style]}
       rightIconContainerStyle={{ marginRight: 10, paddingRight: 0 }}
       inputStyle={styles(styleProps).input}
       labelStyle={styles(styleProps).label}

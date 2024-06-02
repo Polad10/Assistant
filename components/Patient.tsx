@@ -128,11 +128,7 @@ export default function Patient() {
         </View>
         <View style={styles(themeContext).infoField}>
           <MaterialCommunityIcons name='cake-variant-outline' size={22} style={styles(themeContext).infoIcon} />
-          <Text style={styles(themeContext).text}>
-            {patient.dob
-              ? DateTime.fromISO(patient.dob).setLocale(localizationContext.language).toFormat('MMMM d, yyyy')
-              : '-'}
-          </Text>
+          <Text style={styles(themeContext).text}>{patient.dob ? DateTime.fromISO(patient.dob).toISODate() : '-'}</Text>
         </View>
         <View style={styles(themeContext).infoField}>
           <IonIcons name='call-outline' size={22} style={styles(themeContext).infoIcon} />
